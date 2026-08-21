@@ -19,7 +19,8 @@ from inhoud import (CONTACT, MERKNAAM, SLOGAN, KETEN, NAV, NAV_CTA,
                     VOET_DIENSTEN, VOET_PRAKTISCH, PRIJS_WEB, PRIJS_CRM,
                     PRIJS_SYS, PRIJS_OS, PRIJS_ZICHT, PRIJS_ONDERHOUD,
                     ABON_VOORWAARDEN, SCAN_GROEPEN, NIET_DOEN, SPOREN, CASE,
-                    PERSOON, KEUZEHULP, FAQ, CTA_PER_PAGINA, VERWANT, CASE2)
+                    PERSOON, KEUZEHULP, FAQ, CTA_PER_PAGINA, VERWANT, CASE2,
+                    CASE_JEZZ, DEMOS)
 
 WORTEL = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DOMEIN = "https://" + CONTACT["domein"]
@@ -764,7 +765,24 @@ def bouw_scan():
 # ===========================================================================
 def bouw_werk():
     impact2 = "".join(f"<li>{p}</li>" for p in CASE2["impact"])
+    impact_j = "".join(f"<li>{p}</li>" for p in CASE_JEZZ["impact"])
+    demo_tegels = "".join(
+        f'<div class="demo-tegel"><b>{wie}</b><span>{wat}</span></div>'
+        for wie, wat in DEMOS)
     blokken = f"""<section class="sectie">
+  <div class="wrap">
+    <p class="eyebrow">Live te bekijken</p>
+    <h2 class="display">{CASE_JEZZ["kop"]}</h2>
+    <div class="case-poi kolommen">
+      <div><h3>Probleem</h3><p>{CASE_JEZZ["probleem"]}</p></div>
+      <div><h3>Oplossing</h3><p>{CASE_JEZZ["oplossing"]}</p></div>
+      <div><h3>Impact</h3><ul class="ticks">{impact_j}</ul></div>
+    </div>
+    <p class="case-link"><a class="btn btn-ghost" href="{CASE_JEZZ["url"]}" rel="noopener">Bekijk jezz-media.nl</a>
+    <span class="case-noot">{CASE_JEZZ["naam"]} is het makelaars- en hypotheekmerk van dezelfde oprichter; het platform is door {MERKNAAM} gebouwd en draait live.</span></p>
+  </div>
+</section>
+<section class="sectie band">
   <div class="wrap case-grid">
     <div>
       <p class="eyebrow">{CASE["pakket"]}</p>
@@ -785,7 +803,7 @@ def bouw_werk():
     </div>
   </div>
 </section>
-<section class="sectie band">
+<section class="sectie">
   <div class="wrap">
     <p class="eyebrow">Eigen werk als bewijs</p>
     <h2 class="display">{CASE2["kop"]}</h2>
@@ -794,6 +812,8 @@ def bouw_werk():
       <div><h3>Oplossing</h3><p>{CASE2["oplossing"]}</p></div>
       <div><h3>Impact</h3><ul class="ticks">{impact2}</ul></div>
     </div>
+    <div class="demo-raster">{demo_tegels}</div>
+    <p class="case-noot">Zonder naam of merk, want deze demo's zijn ongevraagd gebouwd als kennismaking. De bedrijven bestaan echt; de koppelingen draaien op hun echte boekingssysteem.</p>
   </div>
 </section>
 <section class="sectie">

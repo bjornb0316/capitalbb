@@ -297,3 +297,44 @@ CASE2 = {
         "De aanpak is dezelfde die Capital BB voor klanten inzet: eerst bouwen, dan beslissen",
     ],
 }
+
+
+# ---------------------------------------------------------------------------
+# Case met naam: jezz-media.nl. Live en verifieerbaar. Bewust omschreven als
+# "gebouwd door Capital BB", zonder de klantrelatie te labelen: het merk is
+# van dezelfde oprichter en de site voert een eigen gezicht. Feiten over de
+# inhoud komen van de live site zelf (gecontroleerd 21 augustus 2026).
+# ---------------------------------------------------------------------------
+CASE_JEZZ = {
+    "naam": "Jezz-Media",
+    "url": "https://jezz-media.nl",
+    "kop": "Een compleet platform voor makelaars en hypotheekadviseurs",
+    "probleem": ("Makelaars en hypotheekadviseurs kopen magazines, websites, CRM en "
+                 "vindbaarheid bij vier verschillende leveranciers die elkaar niet "
+                 "kennen. Jezz-Media wilde dat als één samenhangend aanbod brengen, "
+                 "en had daar een platform voor nodig dat die samenhang ook toont."),
+    "oplossing": ("Capital BB bouwde jezz-media.nl: een site waarin magazines, "
+                  "websites, CRM met AI en vindbaarheid als één geheel worden "
+                  "gepresenteerd, met een kennisbank, cases, veelgestelde vragen "
+                  "en een duidelijke gespreksroute."),
+    "impact": [
+        "Vier diensten die als één verhaal worden verteld in plaats van als losse producten",
+        "Een kennisbank en cases die de site inhoudelijk laten groeien",
+        "Live te bekijken op jezz-media.nl",
+    ],
+}
+
+# ---------------------------------------------------------------------------
+# Geanonimiseerd werkoverzicht: gebouwde demosites, zonder naam of merk.
+# (branche en plaats, bijzonderheid)
+# ---------------------------------------------------------------------------
+DEMOS = [
+    ("Barbershop, Didam", "Zeskoppig team, gekoppeld aan Knipklok"),
+    ("Kapsalon, Zevenaar", "Echte prijslijst en openingstijden, gekoppeld aan Knipklok"),
+    ("Nagelstudio, Doetinchem", "Avondstudio, gekoppeld aan Salonized"),
+    ("Barbershop, Zutphen", "Bewust zónder planner: de zaak werkt zonder afspraak"),
+    ("Kapsalon, Zevenaar", "Zaak sinds 2008, gekoppeld aan Afspraakpro"),
+    ("Barbershop, Zutphen", "Gekoppeld aan Knipklok, met live openingsstatus"),
+    ("Kapsalon, Winterswijk", "Eigen afsprakenplanner op het echte weekrooster"),
+    ("Beautystudio", "Gekoppeld aan Altegio"),
+]
