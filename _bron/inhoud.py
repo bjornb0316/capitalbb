@@ -1,0 +1,191 @@
+# -*- coding: utf-8 -*-
+"""
+Alle inhoud van de Capital BB-site staat in dit ene bestand.
+Tekst wijzigen: hier aanpassen en daarna `python _bron/bouw.py` draaien.
+De map _bron wordt door GitHub Pages genegeerd (naam begint met _).
+"""
+
+# ---------------------------------------------------------------------------
+# CONTACT. VUL IN VOOR LIVEGANG. Lege velden = knoppen tonen een nette melding.
+# whatsapp: internationaal, zonder plus en spaties, bijv. "31612345678"
+# ---------------------------------------------------------------------------
+CONTACT = {
+    "telefoon": "06 14664161",
+    "whatsapp": "31614664161",
+    "email": "bjorn@capitalbb.nl",
+    "domein": "capitalbb.nl",
+    "kvk": "98747460",
+}
+
+MERKNAAM = "Capital BB"
+SLOGAN = "Wij bouwen het systeem achter uw bedrijf"
+
+# De keten die de hero vertelt en die op meer plekken terugkomt.
+KETEN = ["Website", "Leads", "CRM", "AI-medewerkers", "Automatisering", "Business OS"]
+
+# ---------------------------------------------------------------------------
+# NAVIGATIE
+# ---------------------------------------------------------------------------
+NAV = [
+    ("meer-klanten", "Meer klanten"),
+    ("slimmer-werken", "Slimmer werken"),
+    ("werk", "Werk"),
+    ("prijzen", "Prijzen"),
+    ("werkwijze", "Werkwijze"),
+]
+NAV_CTA = ("scan", "Website Performance Scan")
+
+# Voettekst: dienstlinks (vindbaarheid) + praktisch.
+VOET_DIENSTEN = [
+    ("websites", "Websites en leadmachines"),
+    ("vindbaarheid", "Vindbaarheid, SEO en GEO"),
+    ("ai-medewerkers", "AI-medewerkers"),
+    ("crm", "CRM"),
+    ("automatisering", "Automatisering en bedrijfssystemen"),
+    ("business-os", "Business OS"),
+]
+VOET_PRAKTISCH = [
+    ("scan", "Website Performance Scan"),
+    ("werk", "Werk"),
+    ("prijzen", "Prijzen"),
+    ("werkwijze", "Werkwijze"),
+    ("contact", "Contact"),
+    ("privacy", "Privacyverklaring"),
+]
+
+# ---------------------------------------------------------------------------
+# PRIJZEN (excl. 21% btw). Bron: prijslijsten Capital BB, websiteprijzen
+# bijgewerkt 20 augustus 2026.
+# ---------------------------------------------------------------------------
+PRIJS_WEB = [
+    ("Basis", "795", "eenmalig, vanaf",
+     "Tot vijf pagina's, responsive, contactformulier, technische SEO-basis, één correctieronde."),
+    ("Premium", "1.595", "eenmalig, vanaf",
+     "Tot tien pagina's, maatwerk in homepage en secties, conversiegerichte opbouw, lokale SEO-basis, analytics, twee correctierondes.", True),
+    ("Signature", "2.995", "eenmalig, vanaf",
+     "Tot vijftien pagina's, uitgesproken maatwerkdesign, merkverhaal, geavanceerdere interacties, drie correctierondes."),
+    ("Maatwerk", "4.945", "eenmalig, vanaf",
+     "Eigen functionaliteit, koppelingen en een ontwerp dat nergens anders staat."),
+]
+PRIJS_CRM = [
+    ("CRM Start", "159", "p/m, plus 395 eenmalig",
+     "Contacten, leads, eenvoudige pipeline, taken en herinneringen. Tot vijf gebruikers."),
+    ("CRM Groei", "269", "p/m, plus 695 eenmalig",
+     "Offertes, automatische opvolging, rapportages, één koppeling, rollen en rechten. Tot vijftien gebruikers.", True),
+    ("CRM Pro", "495", "p/m, plus 1.250 eenmalig",
+     "Klantportaal, meerdere pipelines, autorisaties, meerdere koppelingen, maatwerkdashboards. Tot 35 gebruikers."),
+]
+PRIJS_SYS = [
+    ("Start", "219", "p/m, plus 695 eenmalig",
+     "Digitaliseert één duidelijk proces: planning, aanvragen, dossiers of werkbonnen."),
+    ("Groei", "379", "p/m, plus 1.195 eenmalig",
+     "Verbindt meerdere processen, met documenten, automatiseringen en rapportages.", True),
+    ("Pro", "699", "p/m, plus 2.250 eenmalig",
+     "Compleet intern platform met afdelingen, geavanceerde rechten en externe koppelingen."),
+]
+PRIJS_OS = [
+    ("OS Start", "349", "p/m, plus 1.195 eenmalig",
+     "CRM, taken, basisplanning en een centraal dashboard in één omgeving."),
+    ("OS Groei", "649", "p/m, plus 1.995 eenmalig",
+     "Plus projecten, medewerkers, documenten, workflows en automatiseringen.", True),
+    ("OS Signature", "1.095", "p/m, plus 3.495 eenmalig",
+     "Klantportaal, AI-functies, maatwerkautomatisering en uitgebreide koppelingen."),
+]
+PRIJS_ZICHT = [
+    ("Basiscontrole", "149", "per maand", "Technische controle, rapportage en kleine optimalisaties."),
+    ("Lokale groei", "299", "per maand", "Lokale SEO, bedrijfsprofiel, contentupdate en zichtbaarheid.", True),
+    ("Actieve zichtbaarheid", "499", "per maand", "Doorlopende content, landingspagina's, autoriteit en GEO-monitoring."),
+]
+PRIJS_ONDERHOUD = [
+    ("Hosting en techniek", "39", "per maand", "Hosting, monitoring, beveiliging, back-ups en updates."),
+    ("Beheer", "79", "per maand", "Alles uit Hosting en techniek, plus kleine wijzigingen.", True),
+    ("Actieve groei", "149", "per maand", "Alles uit Beheer, plus maandelijkse verbetering en prioriteit."),
+]
+ABON_VOORWAARDEN = ("Systemen hebben een minimale looptijd van 24 maanden en zijn daarna maandelijks "
+                    "opzegbaar. Bij jaarlijkse betaling geldt 8% korting. U blijft altijd eigenaar van uw "
+                    "eigen gegevens en kunt het systeem na de looptijd overnemen tegen zes maandtermijnen.")
+
+# ---------------------------------------------------------------------------
+# DE SCAN (17 punten uit het Ai Website Audit OS)
+# ---------------------------------------------------------------------------
+SCAN_GROEPEN = [
+    ("Wat de bezoeker meemaakt", [
+        "Gedrag op een telefoon, van 320 pixels breed tot tablet",
+        "Visuele kwaliteit en of de site vertrouwen wekt",
+        "Of binnen enkele seconden duidelijk is wat u doet en voor wie",
+        "Navigatie en of iemand vindt wat hij zoekt",
+        "Leesbaarheid en toegankelijkheid",
+    ]),
+    ("Of er iets binnenkomt", [
+        "Bereikbaarheid: telefoon, formulier en afspraak maken",
+        "Of de knoppen doen wat ze beloven",
+        "Conversiegerichtheid van de opbouw",
+        "Kansen voor opvolging, CRM en automatisering",
+    ]),
+    ("Of u gevonden wordt", [
+        "Titels, beschrijvingen, koppen en indexeerbaarheid",
+        "Lokale vindbaarheid en zoekintentie",
+        "Vindbaarheid in AI-systemen en heldere bedrijfsgegevens",
+        "Structured data en of uw gegevens kloppen",
+    ]),
+    ("Techniek en vertrouwen", [
+        "Snelheid en de technische basis, voor zover meetbaar",
+        "Beveiliging, privacy en cookiesignalen",
+        "Actualiteit van teksten, team en contactgegevens",
+        "Waarin u zich onderscheidt van uw concurrenten",
+    ]),
+]
+
+# ---------------------------------------------------------------------------
+# WAT WIJ NIET DOEN (uit de eigen werkregels)
+# ---------------------------------------------------------------------------
+NIET_DOEN = [
+    ("Geen verzonnen cijfers",
+     "Wij zetten geen percentages op een pagina die wij niet kunnen aantonen. Een ondernemer prikt daar doorheen, en terecht."),
+    ("Geen valse schaarste",
+     "Geen aflopende klok, geen laatste plek, geen actie die volgende week toevallig weer terug is."),
+    ("Geen garanties die niemand kan geven",
+     "Wij beloven geen vaste plek in Google of in AI-antwoorden. Wij bouwen wat de kans aantoonbaar vergroot."),
+    ("Geen offerte als u eerst wilt zien",
+     "Wij bouwen liever eerst iets echts. Daarna beslist u, met iets tastbaars voor u."),
+]
+
+# ---------------------------------------------------------------------------
+# DE TWEE SPOREN
+# ---------------------------------------------------------------------------
+SPOREN = {
+    "meer-klanten": {
+        "titel": "Ik wil meer klanten",
+        "sub": "Gevonden worden, bezoekers omzetten in aanvragen, en niets meer mislopen.",
+        "links": [
+            ("websites", "Website en leadmachine", "Een site die bezoekers omzet in aanvragen en afspraken."),
+            ("vindbaarheid", "Gevonden worden", "In Google, en in de AI-assistenten waar klanten hun vraag stellen."),
+            ("ai-medewerkers", "Niets meer mislopen", "De telefoon wordt opgenomen, ook als u niet kunt."),
+        ],
+    },
+    "slimmer-werken": {
+        "titel": "Ik wil slimmer werken",
+        "sub": "Overzicht over klanten en opdrachten, minder handwerk, één omgeving.",
+        "links": [
+            ("crm", "Overzicht over klanten", "Elke klant, offerte en opvolgtaak op één plek."),
+            ("automatisering", "Minder handwerk", "Wat u elke week opnieuw typt, één keer inrichten."),
+            ("business-os", "Alles in één omgeving", "Het hele bedrijf vanuit één systeem aansturen."),
+        ],
+    },
+}
+
+# ---------------------------------------------------------------------------
+# CASE (geanonimiseerd, met toestemming van Bjorn: geen naam)
+# ---------------------------------------------------------------------------
+CASE = {
+    "naam": "Zelfstandig hypotheekadviespraktijk",
+    "regio": "Oost-Nederland",
+    "pakket": "Designsysteem IJsseldal",
+    "kop": "Het hele aanbod, niet één bank",
+    "punten": [
+        "Elke zin op de site nagetrokken tot de bron, met controledatum vastgelegd",
+        "Eigen designsysteem dat de blauwwitte huisstijl van de branche bewust vermijdt",
+        "Tien pagina's, waaronder werkwijze, tarieven en veelgestelde vragen",
+        "Gecontroleerd op contrast, mobiel gedrag, laadgewicht en toegankelijkheid",
+    ],
+}

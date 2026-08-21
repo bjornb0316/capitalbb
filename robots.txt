@@ -1,0 +1,9 @@
+# Capital BB
+# Alles mag gelezen worden, ook door AI-crawlers. Dat is het hele punt:
+# wie gevonden wil worden in AI-antwoorden moet zich laten lezen.
+
+User-agent: *
+Allow: /
+Disallow: /_bron/
+
+Sitemap: https://capitalbb.nl/sitemap.xml
