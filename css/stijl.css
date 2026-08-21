@@ -561,7 +561,7 @@ textarea{resize:vertical;line-height:1.5;min-height:0}
   content:"";position:absolute;left:50%;top:3px;width:5px;height:5px;border-radius:50%;
   transform:translateX(-50%);background:#2E2E31;z-index:2;
 }
-.laptop-scroll img{display:block;width:100%;height:auto;animation:jezzscroll 30s ease-in-out infinite alternate}
+.laptop-scroll img{display:block;width:100%;height:auto;animation:jezzscroll 75s ease-in-out infinite alternate}
 .laptop:hover .laptop-scroll img{animation-play-state:paused}
 @keyframes jezzscroll{
   0%,6%{transform:translateY(0)}
@@ -569,7 +569,7 @@ textarea{resize:vertical;line-height:1.5;min-height:0}
 }
 @supports (container-type:size){ .laptop-scherm{container-type:size} }
 @supports not (container-type:size){
-  @keyframes jezzscroll{0%,6%{transform:translateY(0)}94%,100%{transform:translateY(-83%)}}
+  @keyframes jezzscroll{0%,6%{transform:translateY(0)}94%,100%{transform:translateY(-95%)}}
 }
 .laptop-voet{
   width:112%;height:13px;border-radius:0 0 12px 12px;

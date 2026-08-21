@@ -816,7 +816,7 @@ def bouw_werk():
     </div>
     <div class="laptop" aria-hidden="true">
       <div class="laptop-scherm">
-        <div class="laptop-scroll"><img src="../img/werk/jezz-scroll.jpg" width="900" height="3250" alt="" loading="lazy"></div>
+        <div class="laptop-scroll"><img src="../img/werk/jezz-scroll.webp" width="1024" height="12864" alt="" loading="lazy"></div>
       </div>
       <div class="laptop-voet"></div>
     </div>
