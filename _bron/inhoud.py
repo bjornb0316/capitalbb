@@ -308,18 +308,21 @@ CASE2 = {
 CASE_JEZZ = {
     "naam": "Jezz-Media",
     "url": "https://jezz-media.nl",
-    "kop": "Een compleet platform voor makelaars en hypotheekadviseurs",
-    "probleem": ("Makelaars en hypotheekadviseurs kopen magazines, websites, CRM en "
-                 "vindbaarheid bij vier verschillende leveranciers die elkaar niet "
-                 "kennen. Jezz-Media wilde dat als één samenhangend aanbod brengen, "
-                 "en had daar een platform voor nodig dat die samenhang ook toont."),
-    "oplossing": ("Capital BB bouwde jezz-media.nl: een site waarin magazines, "
-                  "websites, CRM met AI en vindbaarheid als één geheel worden "
-                  "gepresenteerd, met een kennisbank, cases, veelgestelde vragen "
-                  "en een duidelijke gespreksroute."),
+    "kop": "De site achter een groeipartner voor financiële dienstverleners",
+    "probleem": ("Jezz-Media is een groeipartner voor makelaars, hypotheekadviseurs "
+                 "en andere financiële dienstverleners: magazines, websites, CRM met "
+                 "AI en vindbaarheid uit één hand. Dat verhaal vraagt om een site die "
+                 "die samenhang ook echt laat zien, in plaats van vier losse "
+                 "productpagina's."),
+    "oplossing": ("Capital BB bouwde jezz-media.nl: één doorlopend verhaal waarin de "
+                  "diensten in elkaar grijpen, met een kennisbank, cases, "
+                  "veelgestelde vragen en een duidelijke gespreksroute. De opzet is "
+                  "gebouwd om mee te groeien nu Jezz-Media naar nieuwe doelgroepen "
+                  "en magazinetitels uitbreidt."),
     "impact": [
         "Vier diensten die als één verhaal worden verteld in plaats van als losse producten",
         "Een kennisbank en cases die de site inhoudelijk laten groeien",
+        "Een structuur die nieuwe doelgroepen aankan zonder verbouwing",
         "Live te bekijken op jezz-media.nl",
     ],
 }

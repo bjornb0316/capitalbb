@@ -436,11 +436,22 @@ def bouw_home():
       <a class="btn btn-ghost" href="werk/">Meer over dit werk</a>
     </div>
     <div class="case-beeld" aria-hidden="true">
-      <div class="case-mini">
-        <div class="cm-nav"><span></span><i></i><i></i><i></i></div>
-        <div class="cm-kop">{CASE["kop"]}</div>
-        <div class="cm-band"></div>
-        <div class="cm-rij"><span></span><span></span><span></span></div>
+      <div class="venster-mini">
+        <div class="vm-bar"><span class="vm-stippen"><i></i><i></i><i></i></span><span class="vm-url">Designsysteem IJsseldal</span></div>
+        <div class="ijs">
+          <div class="ijs-nav"><b>Adviespraktijk</b><span>Hypotheekadvies</span><span>Werkwijze</span><span>Tarieven</span><em>Afspraak maken</em></div>
+          <div class="ijs-hero">
+            <div class="ijs-tekst">
+              <small>Onafhankelijk zelfstandig adviseur</small>
+              <strong>Het hele aanbod, niet &eacute;&eacute;n bank</strong>
+              <p>Een hypotheek kiezen is niet &eacute;&eacute;n beslissing maar tientallen kleine.</p>
+              <em>Plan een gesprek</em>
+            </div>
+            <div class="ijs-portret"></div>
+          </div>
+          <div class="ijs-band">Eerst rekenen, dan pas praten over banken</div>
+          <div class="ijs-rij"><span>Eerste woning</span><span>Oversluiten</span><span>Verbouwen</span></div>
+        </div>
       </div>
     </div>
   </div>
@@ -766,9 +777,50 @@ def bouw_scan():
 def bouw_werk():
     impact2 = "".join(f"<li>{p}</li>" for p in CASE2["impact"])
     impact_j = "".join(f"<li>{p}</li>" for p in CASE_JEZZ["impact"])
-    demo_tegels = "".join(
-        f'<div class="demo-tegel"><b>{wie}</b><span>{wat}</span></div>'
-        for wie, wat in DEMOS)
+    # Drie ontwerprichtingen uit de demoreeks, gerenderd met generieke
+    # teksten zodat geen enkel bedrijf herkenbaar is. Richting en gevoel,
+    # geen herhalende lijst.
+    demo_tegels = """
+    <div class="richting-raster" aria-hidden="true">
+      <figure class="richting">
+        <div class="venster-mini donker">
+          <div class="vm-bar"><span class="vm-stippen"><i></i><i></i><i></i></span><span class="vm-url">Demo &middot; barbershop</span></div>
+          <div class="rb">
+            <div class="rb-nav"><b>BARBIER</b><em>NU OPEN</em></div>
+            <strong>Vandaag nog een stoel</strong>
+            <p>Loop binnen of plan vooruit. Je ziet live hoe druk het is.</p>
+            <span class="rb-knop">Plan je knipbeurt</span>
+            <div class="rb-rij"><span>Knippen</span><span>Baard</span><span>Combi</span></div>
+          </div>
+        </div>
+        <figcaption>Donker en direct, met live openingsstatus en boekingskoppeling</figcaption>
+      </figure>
+      <figure class="richting">
+        <div class="venster-mini">
+          <div class="vm-bar"><span class="vm-stippen"><i></i><i></i><i></i></span><span class="vm-url">Demo &middot; nagelstudio</span></div>
+          <div class="rn">
+            <div class="rn-nav"><b>Studio</b><span>Behandelingen</span><span>Agenda</span></div>
+            <strong>Ruimte voor rust</strong>
+            <p>Kies je behandeling en je tijd. De agenda rekent zelf mee.</p>
+            <em>Boek online</em>
+            <div class="rn-vlak"></div>
+          </div>
+        </div>
+        <figcaption>Licht en zacht, met online agenda op het echte rooster</figcaption>
+      </figure>
+      <figure class="richting">
+        <div class="venster-mini warm">
+          <div class="vm-bar"><span class="vm-stippen"><i></i><i></i><i></i></span><span class="vm-url">Demo &middot; kapsalon</span></div>
+          <div class="rk">
+            <div class="rk-nav"><b>Salon</b><em>Bel of app</em></div>
+            <strong>Geknipt zonder wachten</strong>
+            <p>Echte prijzen, echte openingstijden, en een knop die direct werkt.</p>
+            <div class="rk-rij"><span></span><span></span></div>
+          </div>
+        </div>
+        <figcaption>Warm en nuchter, met de prijslijst en tijden van de zaak zelf</figcaption>
+      </figure>
+    </div>"""
     blokken = f"""<section class="sectie">
   <div class="wrap">
     <p class="eyebrow">Live te bekijken</p>
@@ -794,11 +846,22 @@ def bouw_werk():
       </div>
     </div>
     <div class="case-beeld" aria-hidden="true">
-      <div class="case-mini">
-        <div class="cm-nav"><span></span><i></i><i></i><i></i></div>
-        <div class="cm-kop">{CASE["kop"]}</div>
-        <div class="cm-band"></div>
-        <div class="cm-rij"><span></span><span></span><span></span></div>
+      <div class="venster-mini">
+        <div class="vm-bar"><span class="vm-stippen"><i></i><i></i><i></i></span><span class="vm-url">Designsysteem IJsseldal</span></div>
+        <div class="ijs">
+          <div class="ijs-nav"><b>Adviespraktijk</b><span>Hypotheekadvies</span><span>Werkwijze</span><span>Tarieven</span><em>Afspraak maken</em></div>
+          <div class="ijs-hero">
+            <div class="ijs-tekst">
+              <small>Onafhankelijk zelfstandig adviseur</small>
+              <strong>Het hele aanbod, niet &eacute;&eacute;n bank</strong>
+              <p>Een hypotheek kiezen is niet &eacute;&eacute;n beslissing maar tientallen kleine.</p>
+              <em>Plan een gesprek</em>
+            </div>
+            <div class="ijs-portret"></div>
+          </div>
+          <div class="ijs-band">Eerst rekenen, dan pas praten over banken</div>
+          <div class="ijs-rij"><span>Eerste woning</span><span>Oversluiten</span><span>Verbouwen</span></div>
+        </div>
       </div>
     </div>
   </div>
@@ -812,8 +875,8 @@ def bouw_werk():
       <div><h3>Oplossing</h3><p>{CASE2["oplossing"]}</p></div>
       <div><h3>Impact</h3><ul class="ticks">{impact2}</ul></div>
     </div>
-    <div class="demo-raster">{demo_tegels}</div>
-    <p class="case-noot">Zonder naam of merk, want deze demo's zijn ongevraagd gebouwd als kennismaking. De bedrijven bestaan echt; de koppelingen draaien op hun echte boekingssysteem.</p>
+    {demo_tegels}
+    <p class="case-noot">Elf demosites in totaal, voor kapsalons, barbershops, nagelstudio's en beautystudio's, gekoppeld aan onder meer Salonized, Knipklok, Altegio en Afspraakpro. Zonder naam of merk, want ze zijn ongevraagd gebouwd als kennismaking; de bedrijven bestaan echt en de koppelingen draaien op hun echte boekingssysteem.</p>
   </div>
 </section>
 <section class="sectie">
