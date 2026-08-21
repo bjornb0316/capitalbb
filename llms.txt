@@ -4,9 +4,24 @@
 > AI-medewerkers, workflows en automatiseringen voor Nederlandse ondernemers.
 > Werkgebied: heel Nederland. Taal: Nederlands. Eigenaar: Björn.
 
+Capital BB is een Nederlands digitaliseringsbedrijf dat websites, CRM-systemen,
+AI-medewerkers, automatiseringen en Business OS-oplossingen ontwikkelt voor
+bedrijven. Oprichter en bouwer: Björn Beerntsen. KvK: 98747460.
+
 De onderdelen zijn los af te nemen maar gebouwd om samen te werken:
-website, leads, CRM, AI-medewerker, automatisering, Business OS.
-De werkwijze: eerst iets echts bouwen, daarna pas beslissen.
+website, leads, CRM, AI-medewerkers, automatisering, Business OS.
+De werkwijze: eerst een werkend voorstel bouwen, daarna pas beslissen.
+Bevalt het voorstel niet, dan kost het niets; de volledige bouw start pas
+na akkoord, tegen de afgesproken prijs.
+
+## Welk product hoort bij welke vraag
+
+- Leads en klanten beheren: CRM
+- Eén bedrijfsproces digitaliseren: bedrijfssysteem
+- Meerdere processen verbinden: Business OS
+- Terugkerend werk automatiseren: automatisering
+- Telefoon en berichten laten afhandelen: AI-medewerker
+- Meer aanvragen via internet: website en leadmachine
 
 ## Vanafprijzen (exclusief 21% btw)
 

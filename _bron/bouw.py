@@ -18,7 +18,8 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from inhoud import (CONTACT, MERKNAAM, SLOGAN, KETEN, NAV, NAV_CTA,
                     VOET_DIENSTEN, VOET_PRAKTISCH, PRIJS_WEB, PRIJS_CRM,
                     PRIJS_SYS, PRIJS_OS, PRIJS_ZICHT, PRIJS_ONDERHOUD,
-                    ABON_VOORWAARDEN, SCAN_GROEPEN, NIET_DOEN, SPOREN, CASE)
+                    ABON_VOORWAARDEN, SCAN_GROEPEN, NIET_DOEN, SPOREN, CASE,
+                    PERSOON, KEUZEHULP, FAQ, CTA_PER_PAGINA, VERWANT, CASE2)
 
 WORTEL = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DOMEIN = "https://" + CONTACT["domein"]
@@ -154,19 +155,63 @@ def prijsblok(items, kolommen=3, cta=True):
     return "".join(uit)
 
 
-def cta_blok(pad, kop="Wij bouwen het eerst. U beslist daarna.",
-             tekst="Laat achter wat u doet en waar het wringt. U krijgt iets echts te zien, geen verkooppraatje."):
+def cta_blok(pad, kop="Wij bouwen eerst een voorstel. U beslist daarna.",
+             tekst="Laat achter wat u doet en waar het wringt. U krijgt iets echts te zien, geen verkooppraatje.",
+             knop="Plan een kennismaking"):
+    """Slotblok. De kop en de primaire knop volgen de intentie van de pagina
+    (CTA_PER_PAGINA); de secundaire actie is overal de scan."""
     diep = "../" if pad else ""
+    if pad in CTA_PER_PAGINA:
+        kop, tekst, knop = CTA_PER_PAGINA[pad]
     return f"""<section class="sectie cta-slot">
   <div class="wrap cta-inhoud">
     <h2 class="display">{kop}</h2>
     <p class="lede">{tekst}</p>
     <div class="cta-acties">
-      <a class="btn btn-gold" href="{diep}contact/">Plan een kennismaking</a>
+      <a class="btn btn-gold" href="{diep}contact/">{knop}</a>
       <a class="btn btn-ghost" href="{diep}scan/">Start met de scan</a>
     </div>
   </div>
 </section>"""
+
+
+def kruimelpad(pad, titel, spoor=None):
+    """Zichtbaar broodkruimelpad plus bijpassende BreadcrumbList."""
+    stappen = [("Home", DOMEIN + "/")]
+    if spoor and spoor in SPOREN:
+        stappen.append((SPOREN[spoor]["titel"], f"{DOMEIN}/{spoor}/"))
+    stappen.append((titel, f"{DOMEIN}/{pad}/"))
+    zichtbaar = '<nav class="kruimels" aria-label="Kruimelpad">' + " ".join(
+        (f'<a href="{u.replace(DOMEIN + "/", "../" if i < len(stappen) - 1 else "")}">{n}</a>'
+         f'<span aria-hidden="true">/</span>') if i < len(stappen) - 1
+        else f'<span aria-current="page">{n}</span>'
+        for i, (n, u) in enumerate(stappen)) + "</nav>"
+    # Home-link corrigeren: vanaf een subpagina is dat ../
+    zichtbaar = zichtbaar.replace('href="../">Home', 'href="../">Home')
+    import json as _json
+    ld = ('<script type="application/ld+json">'
+          + _json.dumps({"@context": "https://schema.org", "@type": "BreadcrumbList",
+                         "itemListElement": [
+                             {"@type": "ListItem", "position": i + 1, "name": n, "item": u}
+                             for i, (n, u) in enumerate(stappen)]},
+                        ensure_ascii=False)
+          + "</script>")
+    return zichtbaar, ld
+
+
+def verwant_blok(pad):
+    """Interne routes: waar deze dienst logisch aan grenst."""
+    if pad not in VERWANT:
+        return ""
+    links = ", ".join(
+        f'<a class="tekstlink" href="../{d}/">{t}</a>' for d, t in VERWANT[pad][:-1])
+    laatste = VERWANT[pad][-1]
+    if links:
+        links += f' of <a class="tekstlink" href="../{laatste[0]}/">{laatste[1]}</a>'
+    else:
+        links = f'<a class="tekstlink" href="../{laatste[0]}/">{laatste[1]}</a>'
+    return (f'<section class="sectie verwant"><div class="wrap">'
+            f'<p class="verwant-regel">Grenst hieraan: {links}.</p></div></section>')
 
 
 def dienst_ld(naam, beschrijving, prijs, eenheid_maand=False):
@@ -197,17 +242,21 @@ def schrijf(pad, html):
 
 def dienstpagina(pad, actief_spoor, titel, beschrijving, hero_kop, hero_tekst,
                  blokken, ld=""):
-    """Standaardopbouw van een dienstpagina."""
-    h = kop_html(pad, f"{titel} | {MERKNAAM}", beschrijving, ld)
+    """Standaardopbouw van een dienstpagina, met kruimelpad en verwante routes."""
+    spoor = actief_spoor if actief_spoor in SPOREN else None
+    kruimels, kruimel_ld = kruimelpad(pad, titel, spoor)
+    h = kop_html(pad, f"{titel} | {MERKNAAM}", beschrijving, ld + kruimel_ld + "\n")
     h += nav_html(pad, actief_spoor)
     h += f"""<main id="hoofd">
 <header class="pagina-kop">
   <div class="wrap">
+    {kruimels}
     <h1 class="display">{hero_kop}</h1>
     <p class="lede">{hero_tekst}</p>
   </div>
 </header>
 {blokken}
+{verwant_blok(pad)}
 {cta_blok(pad)}
 </main>
 """
@@ -233,7 +282,8 @@ def bouw_home():
   "inLanguage": "nl-NL",
   "telephone": "+31614664161",
   "email": "{CONTACT["email"]}",
-  "founder": {{ "@type": "Person", "name": "Björn" }},
+  "identifier": {{ "@type": "PropertyValue", "propertyID": "KVK", "value": "{CONTACT["kvk"]}" }},
+  "founder": {{ "@type": "Person", "name": "{PERSOON["naam"]}", "jobTitle": "{PERSOON["rol"]}" }},
   "areaServed": {{ "@type": "Country", "name": "Nederland" }},
   "knowsAbout": ["Websites en leadgeneratie", "CRM-systemen", "Bedrijfssystemen",
     "Business OS", "AI-medewerkers", "Workflowautomatisering",
@@ -241,6 +291,20 @@ def bouw_home():
 }}
 </script>
 """
+    # FAQ: zichtbaar als uitklapbare vragen, plus FAQPage-data die er
+    # letterlijk mee overeenkomt. Schema alleen waar de vragen echt staan.
+    import json as _json
+    faq_html = "".join(
+        f'<details class="faq-item"><summary>{v}</summary><p>{a}</p></details>'
+        for v, a in FAQ)
+    ld += ('<script type="application/ld+json">'
+           + _json.dumps({"@context": "https://schema.org", "@type": "FAQPage",
+                          "mainEntity": [
+                              {"@type": "Question", "name": v,
+                               "acceptedAnswer": {"@type": "Answer", "text": a}}
+                              for v, a in FAQ]}, ensure_ascii=False)
+           + "</script>\n")
+
     # Het stelsel: vijf onderdelen docken op een baan rond de kern (Business
     # OS), spaken verbinden ze, de buitenring sluit zich. De vorm echoot de
     # concentrische ringen van het CBB-merk. Alles in één SVG, dus niets kan
@@ -400,7 +464,21 @@ def bouw_home():
   <div class="wrap">
     <div class="sec-kop">
       <h2 class="display">Eerst bouwen, dan beslissen.</h2>
-      <p class="lede">De meeste bureaus vragen een kennismakingsgesprek voordat u iets ziet. Wij draaien het om: u ziet eerst iets echts, en beslist daarna. <a class="tekstlink" href="werkwijze/">Zo werkt dat</a>.</p>
+      <p class="lede">De meeste bureaus vragen een kennismakingsgesprek voordat u iets ziet. Wij draaien het om: u ziet eerst een werkend voorstel, en beslist daarna. <a class="tekstlink" href="werkwijze/">Zo werkt dat</a>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- DE PERSOON ACHTER CAPITAL BB -->
+<section class="sectie persoon-sectie">
+  <div class="wrap persoon-grid">
+    <div class="persoon-teken" aria-hidden="true">{MERKTEKEN}</div>
+    <div>
+      <p class="eyebrow">Wie zit hierachter</p>
+      <h2 class="display">U spreekt met de bouwer zelf.</h2>
+      <p class="lede">{PERSOON["tekst"]}</p>
+      <p class="persoon-visie">{PERSOON["visie"]}</p>
+      <p class="persoon-naam">{PERSOON["naam"]}<span>{PERSOON["rol"]}, {MERKNAAM} · KvK {CONTACT["kvk"]}</span></p>
     </div>
   </div>
 </section>
@@ -420,6 +498,14 @@ def bouw_home():
       <h2 class="display">Vanafprijzen, geen mistgordijn.</h2>
       <p class="lede">Websites vanaf &euro;795 eenmalig, CRM vanaf &euro;159 per maand, Business OS vanaf &euro;349 per maand. Alles exclusief btw, en wat u kiest bepaalt de prijs. <a class="tekstlink" href="prijzen/">Alle prijzen</a>.</p>
     </div>
+  </div>
+</section>
+
+<!-- VEELGESTELDE VRAGEN -->
+<section class="sectie faq-sectie">
+  <div class="wrap">
+    <h2 class="display">Veelgestelde vragen.</h2>
+    <div class="faq-lijst">{faq_html}</div>
   </div>
 </section>
 
@@ -639,8 +725,9 @@ def bouw_scan():
         <p class="hint">Daar krijgt u het resultaat op.</p>
       </div>
       <p class="fout" id="s-fout" role="alert" hidden></p>
+      <p class="succes" id="s-klaar" role="status" hidden>Uw aanvraag staat klaar in WhatsApp of uw mailprogramma. Verstuur hem daar, dan gaat de scan lopen. Komt er niets in beeld? Bel of app direct naar {CONTACT["telefoon"]}.</p>
       <button class="btn btn-gold" type="submit">Vraag de scan aan</button>
-      <p class="hint">Kosteloos, en u zit nergens aan vast.</p>
+      <p class="hint">Kosteloos, u zit nergens aan vast, en u hoeft niets technisch aan te leveren: het adres van uw site is genoeg.</p>
     </form>
   </div>
 </section>
@@ -676,14 +763,17 @@ def bouw_scan():
 # WERK / WERKWIJZE / PRIJZEN / CONTACT
 # ===========================================================================
 def bouw_werk():
-    punten = "".join(f"<li>{p}</li>" for p in CASE["punten"])
+    impact2 = "".join(f"<li>{p}</li>" for p in CASE2["impact"])
     blokken = f"""<section class="sectie">
   <div class="wrap case-grid">
     <div>
       <p class="eyebrow">{CASE["pakket"]}</p>
       <h2 class="display">{CASE["kop"]}</h2>
-      <p class="lede">Een complete site voor een {CASE["naam"].lower()} in {CASE["regio"]}: tien pagina's, een eigen designsysteem en een werkwijze waarin elke bewering op de site een bron met controledatum heeft.</p>
-      <ul class="ticks">{punten}</ul>
+      <div class="case-poi">
+        <div><h3>Probleem</h3><p>Een {CASE["naam"].lower()} in {CASE["regio"]} zonder eigen website: klanten vinden de adviseur alleen via het profiel van een landelijk netwerk, zonder eigen verhaal, eigen vindbaarheid of eigen aanvraagroute.</p></div>
+        <div><h3>Oplossing</h3><p>Een complete site van tien pagina's op een eigen designsysteem dat de blauwwitte huisstijl van de branche bewust vermijdt, met werkwijze, tarieven en veelgestelde vragen. Elke bewering op de site is nagetrokken tot de bron en met controledatum vastgelegd.</p></div>
+        <div><h3>Impact</h3><p>De adviseur heeft een eigen plek waar bezoekers rechtstreeks een gesprek kunnen aanvragen, met inhoud die klopt en gecontroleerd is op contrast, mobiel gedrag, laadgewicht en toegankelijkheid.</p></div>
+      </div>
     </div>
     <div class="case-beeld" aria-hidden="true">
       <div class="case-mini">
@@ -697,8 +787,19 @@ def bouw_werk():
 </section>
 <section class="sectie band">
   <div class="wrap">
+    <p class="eyebrow">Eigen werk als bewijs</p>
+    <h2 class="display">{CASE2["kop"]}</h2>
+    <div class="case-poi kolommen">
+      <div><h3>Probleem</h3><p>{CASE2["probleem"]}</p></div>
+      <div><h3>Oplossing</h3><p>{CASE2["oplossing"]}</p></div>
+      <div><h3>Impact</h3><ul class="ticks">{impact2}</ul></div>
+    </div>
+  </div>
+</section>
+<section class="sectie">
+  <div class="wrap">
     <h2 class="display">Waarom hier geen logowand staat.</h2>
-    <p class="lede">Wij tonen alleen werk waarvoor de eigenaar toestemming gaf, en namen alleen mét die toestemming. Liever één case die klopt dan tien logo's die niets bewijzen. Dit overzicht groeit met het werk mee.</p>
+    <p class="lede">Wij tonen alleen werk waarvoor de eigenaar toestemming gaf, en namen alleen mét die toestemming. Liever twee cases die kloppen dan tien logo's die niets bewijzen. Dit overzicht groeit met het werk mee.</p>
   </div>
 </section>"""
     return dienstpagina("werk", "werk", "Werk",
@@ -715,10 +816,10 @@ def bouw_werkwijze():
     <div class="stappen">
       <div class="stap"><span class="stapnr">1</span><h2>U laat zien waar het wringt</h2>
         <p>Via de scan, het contactformulier of een gesprek. Wat kost tijd, wat loopt mis, wat blijft liggen.</p></div>
-      <div class="stap"><span class="stapnr">2</span><h2>Wij bouwen eerst iets echts</h2>
-        <p>Geen offerte van zes kantjes, maar een werkend voorstel dat u kunt aanklikken en beoordelen.</p></div>
+      <div class="stap"><span class="stapnr">2</span><h2>Wij bouwen eerst een voorstel</h2>
+        <p>Geen offerte van zes kantjes, maar een werkend concept dat u kunt aanklikken en beoordelen. Een voorstel, nog niet het volledige systeem.</p></div>
       <div class="stap"><span class="stapnr">3</span><h2>U beslist met iets tastbaars</h2>
-        <p>Bevalt het, dan maken wij het af met uw eigen inhoud. Bevalt het niet, dan kost het u niets.</p></div>
+        <p>Bevalt het voorstel niet, dan kost het u niets. Bevalt het wel, dan starten de volledige bouw en inrichting na uw akkoord, tegen de afgesproken prijs.</p></div>
       <div class="stap"><span class="stapnr">4</span><h2>Het systeem groeit mee</h2>
         <p>Wat als website begint, kan doorgroeien naar CRM, AI-medewerker en automatisering. In dat tempo beslist u.</p></div>
     </div>
@@ -738,7 +839,17 @@ def bouw_werkwijze():
 
 
 def bouw_prijzen():
-    blokken = f"""<section class="sectie">
+    keuze = "".join(
+        f'<a class="keuze-rij" href="../{d}/"><span>{vraag}</span><b>{product}</b></a>'
+        for vraag, d, product in KEUZEHULP)
+    blokken = f"""<section class="sectie keuze-sectie">
+  <div class="wrap">
+    <h2 class="display">Eerst: wat zoekt u eigenlijk?</h2>
+    <p class="lede">Vijf producten lijken op elkaar tot je weet waar je voor komt. Kies de zin die op u slaat.</p>
+    <div class="keuzehulp">{keuze}</div>
+  </div>
+</section>
+<section class="sectie">
   <div class="wrap">
     <h2 class="display">Websites</h2>
     <p class="lede">Eenmalig, exclusief btw. Betaling in drie delen: 40% bij opdracht, 40% na ontwerpgoedkeuring, 20% voor livegang.</p>
@@ -835,7 +946,8 @@ def bouw_contact():
 <section class="sectie">
   <div class="wrap split split-boven">
     <div>
-      <p class="onderteken">Björn, {MERKNAAM}<br><span>Werkgebied heel Nederland</span></p>
+      <p class="onderteken">{PERSOON["naam"]}, {PERSOON["rol"].lower()} van {MERKNAAM}<br><span>Werkgebied heel Nederland · KvK {CONTACT["kvk"]}</span></p>
+      <p class="persoon-kort">{PERSOON["tekst"]}</p>
       <div class="contact-direct" id="contact-direct"></div>
     </div>
     <form class="contactform" id="contactform" novalidate>
@@ -849,6 +961,7 @@ def bouw_contact():
       <div class="veld"><label for="c-vraag">Wat speelt er?</label>
         <textarea id="c-vraag" rows="4"></textarea></div>
       <p class="fout" id="c-fout" role="alert" hidden></p>
+      <p class="succes" id="c-klaar" role="status" hidden>Uw bericht staat klaar in WhatsApp of uw mailprogramma. Verstuur hem daar, dan leest Björn hem vandaag nog. Komt er niets in beeld? Bel direct naar {CONTACT["telefoon"]}.</p>
       <button class="btn btn-gold" type="submit">Stuur het naar Björn</button>
     </form>
   </div>
@@ -885,9 +998,24 @@ def bouw_randbestanden(paginas):
 > AI-medewerkers, workflows en automatiseringen voor Nederlandse ondernemers.
 > Werkgebied: heel Nederland. Taal: Nederlands. Eigenaar: Björn.
 
+Capital BB is een Nederlands digitaliseringsbedrijf dat websites, CRM-systemen,
+AI-medewerkers, automatiseringen en Business OS-oplossingen ontwikkelt voor
+bedrijven. Oprichter en bouwer: {PERSOON["naam"]}. KvK: {CONTACT["kvk"]}.
+
 De onderdelen zijn los af te nemen maar gebouwd om samen te werken:
-website, leads, CRM, AI-medewerker, automatisering, Business OS.
-De werkwijze: eerst iets echts bouwen, daarna pas beslissen.
+website, leads, CRM, AI-medewerkers, automatisering, Business OS.
+De werkwijze: eerst een werkend voorstel bouwen, daarna pas beslissen.
+Bevalt het voorstel niet, dan kost het niets; de volledige bouw start pas
+na akkoord, tegen de afgesproken prijs.
+
+## Welk product hoort bij welke vraag
+
+- Leads en klanten beheren: CRM
+- Eén bedrijfsproces digitaliseren: bedrijfssysteem
+- Meerdere processen verbinden: Business OS
+- Terugkerend werk automatiseren: automatisering
+- Telefoon en berichten laten afhandelen: AI-medewerker
+- Meer aanvragen via internet: website en leadmachine
 
 ## Vanafprijzen (exclusief 21% btw)
 

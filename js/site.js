@@ -94,7 +94,7 @@
   /* ---------------- Formulieren ----------------
      Geen backend: het formulier opent WhatsApp of e-mail met de tekst er al
      in. Zonder ingevulde contactgegevens weigert het met een nette melding. */
-  function verstuur(vorm, velden, foutEl, onderwerp) {
+  function verstuur(vorm, velden, foutEl, onderwerp, klaarEl) {
     var waarden = {};
     for (var k in velden) {
       var el = document.getElementById(velden[k]);
@@ -130,6 +130,8 @@
         "?subject=" + encodeURIComponent(onderwerp) +
         "&body=" + encodeURIComponent(tekst);
     }
+    // Succesmelding: het bericht is voorbereid, de bezoeker verstuurt zelf.
+    if (klaarEl) klaarEl.hidden = false;
   }
 
   var scanform = document.getElementById("scanform");
@@ -147,7 +149,8 @@
       document.getElementById("s-url").value = url;
       verstuur(scanform,
         { website: "s-url", naam: "s-naam", bereikbaar: "s-bereik" },
-        fout, "Aanvraag Website Performance Scan");
+        fout, "Aanvraag Website Performance Scan",
+        document.getElementById("s-klaar"));
     });
   }
 
@@ -157,7 +160,8 @@
       e.preventDefault();
       verstuur(contactform,
         { bedrijf: "c-bedrijf", naam: "c-naam", bereikbaar: "c-bereik", vraag: "c-vraag" },
-        document.getElementById("c-fout"), "Aanvraag via de website");
+        document.getElementById("c-fout"), "Aanvraag via de website",
+        document.getElementById("c-klaar"));
     });
   }
 

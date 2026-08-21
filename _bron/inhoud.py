@@ -189,3 +189,111 @@ CASE = {
         "Gecontroleerd op contrast, mobiel gedrag, laadgewicht en toegankelijkheid",
     ],
 }
+
+
+# ---------------------------------------------------------------------------
+# DE PERSOON ACHTER CAPITAL BB. Alleen feiten; er is geen foto-asset, dus
+# geen foto tot Bjorn er een aanlevert.
+# ---------------------------------------------------------------------------
+PERSOON = {
+    "naam": "Björn Beerntsen",
+    "rol": "Oprichter en bouwer",
+    "tekst": ("Capital BB is het bedrijf van Björn Beerntsen. Wie belt, appt of het "
+              "formulier invult, spreekt met de persoon die ook daadwerkelijk bouwt. "
+              "Geen accountmanager ertussen, geen overdracht naar een team dat het "
+              "gesprek niet heeft gevoerd."),
+    "visie": ("Capital BB bestaat omdat de meeste bedrijven geen losse website, los "
+              "CRM of losse AI-tool nodig hebben, maar één systeem waarin die "
+              "onderdelen met elkaar praten. Dat systeem hoort te beginnen bij wat "
+              "het bedrijf nodig heeft, niet bij wat er toevallig te verkopen valt."),
+}
+
+# ---------------------------------------------------------------------------
+# KEUZEHULP. Welke vraag hoort bij welk product.
+# ---------------------------------------------------------------------------
+KEUZEHULP = [
+    ("Leads en klanten beheren", "crm", "CRM"),
+    ("Eén bedrijfsproces digitaliseren", "automatisering", "Bedrijfssysteem"),
+    ("Meerdere processen verbinden", "business-os", "Business OS"),
+    ("Terugkerend werk automatiseren", "automatisering", "Automatisering"),
+    ("Telefoon en berichten laten afhandelen", "ai-medewerkers", "AI-medewerker"),
+    ("Meer aanvragen via internet", "websites", "Website en leadmachine"),
+]
+
+# ---------------------------------------------------------------------------
+# FAQ voor de homepage. Antwoorden alleen uit projectfeiten.
+# ---------------------------------------------------------------------------
+FAQ = [
+    ("Wat kost een website bij Capital BB?",
+     "Vanaf 795 euro exclusief btw voor het Basis-pakket, tot maatwerk vanaf 4.945 euro. "
+     "Alle vanafprijzen staan open op de prijzenpagina; wat u kiest bepaalt de prijs."),
+    ("Moet ik technische kennis hebben?",
+     "Nee. U vertelt wat er in uw bedrijf wringt, in gewone taal. De techniek is ons werk, "
+     "en u krijgt uitleg zonder vakjargon."),
+    ("Wat betekent 'wij bouwen het eerst' precies?",
+     "U krijgt eerst een werkend voorstel te zien: een concept dat laat zien hoe uw site of "
+     "systeem eruit kan zien. Bevalt dat niet, dan kost het u niets. De volledige bouw en "
+     "inrichting starten pas na uw akkoord, tegen de afgesproken prijs."),
+    ("Werkt Capital BB in heel Nederland?",
+     "Ja. Gesprekken kunnen op afstand of op locatie; de systemen zelf draaien online."),
+    ("Kan ik klein beginnen?",
+     "Ja, en dat is zelfs de bedoeling. Een website is een gebruikelijk beginpunt; CRM, "
+     "AI-medewerkers en automatisering kunnen daarna aanhaken, in uw eigen tempo."),
+]
+
+# ---------------------------------------------------------------------------
+# CTA per pagina-intentie. (kop, tekst, primaire knoptekst, primaire link)
+# De secundaire actie is overal de scan.
+# ---------------------------------------------------------------------------
+CTA_PER_PAGINA = {
+    "websites":       ("Benieuwd wat uw website kan opleveren?",
+                       "Laat uw huidige site kosteloos beoordelen, of bespreek direct wat een nieuwe kan doen.",
+                       "Bespreek uw website"),
+    "vindbaarheid":   ("Weten waar u nu kansen laat liggen?",
+                       "De scan laat zien waar uw vindbaarheid staat, in Google én in AI-antwoorden.",
+                       "Bespreek uw vindbaarheid"),
+    "ai-medewerkers": ("Benieuwd wat een AI-medewerker bij u zou doen?",
+                       "Vertel hoe uw telefoon en berichten nu lopen, dan laten wij zien wat er over te nemen valt.",
+                       "Bespreek een toepassing"),
+    "crm":            ("Zien hoe uw klanten in één systeem passen?",
+                       "Vertel hoe u nu klanten en offertes bijhoudt, dan laten wij zien hoe dat in één omgeving past.",
+                       "Plan een demo"),
+    "automatisering": ("Welk handwerk mag als eerste weg?",
+                       "Noem het werk dat elke week terugkomt, dan laten wij zien wat er te automatiseren valt.",
+                       "Bespreek uw processen"),
+    "business-os":    ("Ontdekken wat één omgeving voor uw bedrijf betekent?",
+                       "Vertel welke systemen en lijstjes er nu naast elkaar leven, dan laten wij zien hoe dat samenkomt.",
+                       "Ontdek de mogelijkheden"),
+}
+
+# ---------------------------------------------------------------------------
+# Verwante pagina's per dienst, voor interne routes.
+# ---------------------------------------------------------------------------
+VERWANT = {
+    "websites":       [("vindbaarheid", "gevonden worden"), ("scan", "de kosteloze scan"), ("crm", "een CRM erachter")],
+    "vindbaarheid":   [("websites", "een website die converteert"), ("scan", "de kosteloze scan")],
+    "ai-medewerkers": [("crm", "een CRM waarin gesprekken landen"), ("automatisering", "automatisering eromheen")],
+    "crm":            [("ai-medewerkers", "AI-medewerkers"), ("business-os", "een volledig Business OS")],
+    "automatisering": [("crm", "een CRM"), ("business-os", "een Business OS"), ("ai-medewerkers", "AI-medewerkers")],
+    "business-os":    [("crm", "los beginnen met CRM"), ("automatisering", "losse automatisering")],
+}
+
+# ---------------------------------------------------------------------------
+# Tweede case: de eigen leadmachine. Feitelijk: gebouwde demosites met echte
+# boekingskoppelingen, als acquisitie voor Capital BB zelf.
+# ---------------------------------------------------------------------------
+CASE2 = {
+    "naam": "De eigen leadmachine",
+    "kop": "Elf demosites met live boekingssystemen",
+    "probleem": ("Kapsalons, nagelstudio's en barbershops zonder eigen website zijn niet te "
+                 "overtuigen met een offerte: die willen eerst iets zien."),
+    "oplossing": ("Voor elf van zulke bedrijven bouwde Capital BB ongevraagd een complete "
+                  "demonstratiewebsite, elk met een eigen ontwerp en waar mogelijk een werkende "
+                  "koppeling met het boekingssysteem dat de zaak al gebruikt, waaronder "
+                  "Salonized, Knipklok en Altegio."),
+    "impact": [
+        "Elke demo toont echte openingstijden, echte diensten en een echte boekingsflow",
+        "Geen gedeelde sjablonen: elk ontwerp is op de zaak zelf gemaakt",
+        "De aanpak is dezelfde die Capital BB voor klanten inzet: eerst bouwen, dan beslissen",
+    ],
+}
