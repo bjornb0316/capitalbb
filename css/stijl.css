@@ -542,38 +542,44 @@ textarea{resize:vertical;line-height:1.5;min-height:0}
 .richting{margin:0;display:grid;gap:12px}
 .richting figcaption{font-size:.83rem;color:var(--muted);line-height:1.55}
 
-.rb{background:#101011;color:#ECEAE6;padding:13px 14px;font-size:10px;display:grid;gap:7px}
-.rb-nav{display:flex;justify-content:space-between;align-items:center}
-.rb-nav b{letter-spacing:.2em;font-size:10px}
-.rb-nav em{font-style:normal;color:#59D08C;font-family:var(--mono);font-size:8px;letter-spacing:.1em}
-.rb strong{font-size:16px;letter-spacing:-.02em;line-height:1.1;margin-top:2px}
-.rb p{color:#9d9a94;font-size:9px;max-width:32ch}
-.rb-knop{background:var(--gold);color:var(--on-gold);font-weight:600;font-size:9px;
-         padding:5px 10px;border-radius:2px;justify-self:start}
-.rb-rij{display:flex;gap:6px;margin-top:2px}
-.rb-rij span{border:1px solid rgba(255,255,255,.16);border-radius:2px;padding:4px 8px;
-             font-size:8.5px;color:#B4B0A9}
 
-.rn{background:#FBF8F4;color:#2B2523;padding:13px 14px;font-size:10px;display:grid;gap:7px}
-.rn-nav{display:flex;gap:10px;align-items:baseline}
-.rn-nav b{font-size:11px;letter-spacing:.06em;margin-right:auto}
-.rn-nav span{color:#8a7f76;font-size:8.5px}
-.rn strong{font-weight:300;font-size:17px;letter-spacing:.02em;line-height:1.1}
-.rn p{color:#6d635a;font-size:9px;max-width:30ch}
-.rn em{font-style:normal;background:#2B2523;color:#FBF8F4;font-size:9px;font-weight:600;
-       padding:5px 11px;border-radius:999px;justify-self:start}
-.rn-vlak{height:30px;border-radius:3px;margin-top:2px;
-         background:linear-gradient(120deg,#F0E3DC,#E4CFC5 55%,#D9BFB2)}
+/* ---------------- Schermafbeeldingen in het venster ---------------- */
+.vm-schot{display:block;width:100%;height:auto}
 
-.rk{background:#F4EDE3;color:#3A2E24;padding:13px 14px;font-size:10px;display:grid;gap:7px}
-.rk-nav{display:flex;justify-content:space-between;align-items:center}
-.rk-nav b{font-size:11px}
-.rk-nav em{font-style:normal;background:#7A4A2B;color:#fff;font-size:8.5px;font-weight:600;
-           padding:4px 9px;border-radius:2px}
-.rk strong{font-size:16px;letter-spacing:-.015em;line-height:1.12}
-.rk p{color:#6d5c4d;font-size:9px;max-width:32ch}
-.rk-rij{display:grid;grid-template-columns:1.4fr 1fr;gap:6px;margin-top:2px}
-.rk-rij span{height:26px;border-radius:3px;background:#E7DCCB;border:1px solid #D9CBB4}
+/* ---------------- Laptop met scrollende site ----------------
+   Een paginahoge opname van de echte site schuift langzaam door het
+   scherm; bij zweven pauzeert hij, bij verminderde beweging staat hij stil. */
+.case-jezz{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.92fr);gap:56px;align-items:center}
+.laptop{display:grid;gap:0;justify-items:center}
+.laptop-scherm{
+  width:100%;aspect-ratio:16/10;overflow:hidden;position:relative;
+  background:#0E0E0F;border:10px solid #1B1B1D;border-bottom-width:14px;
+  border-radius:14px 14px 0 0;
+  box-shadow:0 34px 90px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.05);
+}
+.laptop-scherm::before{
+  content:"";position:absolute;left:50%;top:3px;width:5px;height:5px;border-radius:50%;
+  transform:translateX(-50%);background:#2E2E31;z-index:2;
+}
+.laptop-scroll img{display:block;width:100%;height:auto;animation:jezzscroll 30s ease-in-out infinite alternate}
+.laptop:hover .laptop-scroll img{animation-play-state:paused}
+@keyframes jezzscroll{
+  0%,6%{transform:translateY(0)}
+  94%,100%{transform:translateY(calc(-100% + 100cqh))}
+}
+@supports (container-type:size){ .laptop-scherm{container-type:size} }
+@supports not (container-type:size){
+  @keyframes jezzscroll{0%,6%{transform:translateY(0)}94%,100%{transform:translateY(-83%)}}
+}
+.laptop-voet{
+  width:112%;height:13px;border-radius:0 0 12px 12px;
+  background:linear-gradient(180deg,#232326,#151517);
+  box-shadow:0 14px 30px rgba(0,0,0,.4);position:relative;
+}
+.laptop-voet::before{
+  content:"";position:absolute;left:50%;top:0;width:14%;height:5px;
+  transform:translateX(-50%);border-radius:0 0 6px 6px;background:#0D0D0E;
+}
 
 /* ---------------- Demoraster en casenoten ---------------- */
 .demo-raster{
@@ -682,6 +688,7 @@ textarea{resize:vertical;line-height:1.5;min-height:0}
   .persoon-teken .merkteken{width:72px;height:72px}
   .case-poi.kolommen{grid-template-columns:1fr}
   .richting-raster{grid-template-columns:1fr}
+  .case-jezz{grid-template-columns:1fr;gap:36px}
   .scan-punten{grid-template-columns:1fr 1fr}
   .film{height:220vh}
 

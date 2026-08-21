@@ -780,58 +780,46 @@ def bouw_werk():
     # Drie ontwerprichtingen uit de demoreeks, gerenderd met generieke
     # teksten zodat geen enkel bedrijf herkenbaar is. Richting en gevoel,
     # geen herhalende lijst.
+    # Echte schermafbeeldingen van drie demosites, met namen en herleidbare
+    # gegevens onherkenbaar gemaakt. Gemaakt met scripts/schiet.mjs (headless
+    # Edge via het DevTools-protocol) en geanonimiseerd met Pillow.
     demo_tegels = """
-    <div class="richting-raster" aria-hidden="true">
+    <div class="richting-raster">
       <figure class="richting">
-        <div class="venster-mini donker">
-          <div class="vm-bar"><span class="vm-stippen"><i></i><i></i><i></i></span><span class="vm-url">Demo &middot; barbershop</span></div>
-          <div class="rb">
-            <div class="rb-nav"><b>BARBIER</b><em>NU OPEN</em></div>
-            <strong>Vandaag nog een stoel</strong>
-            <p>Loop binnen of plan vooruit. Je ziet live hoe druk het is.</p>
-            <span class="rb-knop">Plan je knipbeurt</span>
-            <div class="rb-rij"><span>Knippen</span><span>Baard</span><span>Combi</span></div>
-          </div>
-        </div>
-        <figcaption>Donker en direct, met live openingsstatus en boekingskoppeling</figcaption>
+        <div class="venster-mini"><div class="vm-bar" aria-hidden="true"><span class="vm-stippen"><i></i><i></i><i></i></span><span class="vm-url">Demo &middot; barbershop</span></div>
+        <img class="vm-schot" src="../img/werk/demo-barbershop.jpg" width="1100" height="689" loading="lazy" alt="Demosite voor een barbershop: donker interieur met een groot serif-woordmerk, onherkenbaar gemaakt, en knoppen om te reserveren of te appen."></div>
+        <figcaption>Barbershop: donker en filmisch, met reserveren via het eigen boekingssysteem</figcaption>
       </figure>
       <figure class="richting">
-        <div class="venster-mini">
-          <div class="vm-bar"><span class="vm-stippen"><i></i><i></i><i></i></span><span class="vm-url">Demo &middot; nagelstudio</span></div>
-          <div class="rn">
-            <div class="rn-nav"><b>Studio</b><span>Behandelingen</span><span>Agenda</span></div>
-            <strong>Ruimte voor rust</strong>
-            <p>Kies je behandeling en je tijd. De agenda rekent zelf mee.</p>
-            <em>Boek online</em>
-            <div class="rn-vlak"></div>
-          </div>
-        </div>
-        <figcaption>Licht en zacht, met online agenda op het echte rooster</figcaption>
+        <div class="venster-mini"><div class="vm-bar" aria-hidden="true"><span class="vm-stippen"><i></i><i></i><i></i></span><span class="vm-url">Demo &middot; kapsalon</span></div>
+        <img class="vm-schot" src="../img/werk/demo-kapsalon.jpg" width="1100" height="703" loading="lazy" alt="Demosite voor een kapsalon: zwart-wit interieurfoto met rode accenten, naam en contactgegevens onherkenbaar gemaakt."></div>
+        <figcaption>Kapsalon: rauw en direct, opgebouwd rond de eigen interieurfoto's</figcaption>
       </figure>
       <figure class="richting">
-        <div class="venster-mini warm">
-          <div class="vm-bar"><span class="vm-stippen"><i></i><i></i><i></i></span><span class="vm-url">Demo &middot; kapsalon</span></div>
-          <div class="rk">
-            <div class="rk-nav"><b>Salon</b><em>Bel of app</em></div>
-            <strong>Geknipt zonder wachten</strong>
-            <p>Echte prijzen, echte openingstijden, en een knop die direct werkt.</p>
-            <div class="rk-rij"><span></span><span></span></div>
-          </div>
-        </div>
-        <figcaption>Warm en nuchter, met de prijslijst en tijden van de zaak zelf</figcaption>
+        <div class="venster-mini"><div class="vm-bar" aria-hidden="true"><span class="vm-stippen"><i></i><i></i><i></i></span><span class="vm-url">Demo &middot; nagelstudio</span></div>
+        <img class="vm-schot" src="../img/werk/demo-nagelstudio.jpg" width="1100" height="689" loading="lazy" alt="Demosite voor een nagelstudio: lichte fotocollage van nagels met de kop Nagels, na werktijd en een knop om een moment te kiezen."></div>
+        <figcaption>Nagelstudio: licht en zacht, met de agenda van de studio zelf erachter</figcaption>
       </figure>
     </div>"""
     blokken = f"""<section class="sectie">
-  <div class="wrap">
-    <p class="eyebrow">Live te bekijken</p>
-    <h2 class="display">{CASE_JEZZ["kop"]}</h2>
-    <div class="case-poi kolommen">
-      <div><h3>Probleem</h3><p>{CASE_JEZZ["probleem"]}</p></div>
-      <div><h3>Oplossing</h3><p>{CASE_JEZZ["oplossing"]}</p></div>
-      <div><h3>Impact</h3><ul class="ticks">{impact_j}</ul></div>
+  <div class="wrap case-jezz">
+    <div>
+      <p class="eyebrow">Live te bekijken</p>
+      <h2 class="display">{CASE_JEZZ["kop"]}</h2>
+      <div class="case-poi">
+        <div><h3>Probleem</h3><p>{CASE_JEZZ["probleem"]}</p></div>
+        <div><h3>Oplossing</h3><p>{CASE_JEZZ["oplossing"]}</p></div>
+        <div><h3>Impact</h3><ul class="ticks">{impact_j}</ul></div>
+      </div>
+      <p class="case-link"><a class="btn btn-ghost" href="{CASE_JEZZ["url"]}" rel="noopener">Bekijk jezz-media.nl</a></p>
+      <p class="case-noot">{CASE_JEZZ["naam"]} is het makelaars- en hypotheekmerk van dezelfde oprichter; de site is door {MERKNAAM} gebouwd en draait live.</p>
     </div>
-    <p class="case-link"><a class="btn btn-ghost" href="{CASE_JEZZ["url"]}" rel="noopener">Bekijk jezz-media.nl</a>
-    <span class="case-noot">{CASE_JEZZ["naam"]} is het makelaars- en hypotheekmerk van dezelfde oprichter; het platform is door {MERKNAAM} gebouwd en draait live.</span></p>
+    <div class="laptop" aria-hidden="true">
+      <div class="laptop-scherm">
+        <div class="laptop-scroll"><img src="../img/werk/jezz-scroll.jpg" width="900" height="3250" alt="" loading="lazy"></div>
+      </div>
+      <div class="laptop-voet"></div>
+    </div>
   </div>
 </section>
 <section class="sectie band">
