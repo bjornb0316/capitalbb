@@ -551,6 +551,7 @@ textarea{resize:vertical;line-height:1.5;min-height:0}
    scherm; bij zweven pauzeert hij, bij verminderde beweging staat hij stil. */
 .case-jezz{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.92fr);gap:56px;align-items:center}
 .laptop{display:grid;gap:0;justify-items:center}
+.bureau .laptop{width:100%}
 .laptop-scherm{
   width:100%;aspect-ratio:16/10;overflow:hidden;position:relative;
   background:#0E0E0F;border:10px solid #1B1B1D;border-bottom-width:14px;
@@ -579,6 +580,50 @@ textarea{resize:vertical;line-height:1.5;min-height:0}
 .laptop-voet::before{
   content:"";position:absolute;left:50%;top:0;width:14%;height:5px;
   transform:translateX(-50%);border-radius:0 0 6px 6px;background:#0D0D0E;
+}
+
+/* ---------------- Bureauopstelling: beeldscherm, laptop, telefoon ----------------
+   Drie apparaten, asymmetrisch: het beeldscherm groot links, laptop en
+   telefoon gestapeld rechts. Elk scherm scrolt zijn eigen volledige pagina
+   met een eigen tempo en startpunt, zodat ze nooit synchroon lopen. */
+.bureau{
+  margin-top:44px;display:grid;gap:28px 40px;align-items:end;
+  grid-template-columns:minmax(0,1.25fr) minmax(0,.9fr);
+  grid-template-areas:"monitor laptop" "monitor telefoon";
+}
+.apparaat{margin:0;display:grid;justify-items:center;gap:0;min-width:0}
+.apparaat figcaption{margin-top:16px;font-size:.83rem;color:var(--muted);line-height:1.55;text-align:center;max-width:40ch}
+.apparaat.monitor{grid-area:monitor}
+.apparaat.laptop{grid-area:laptop}
+.apparaat.telefoon{grid-area:telefoon}
+
+.scrol{overflow:hidden;position:relative;container-type:size}
+.scrol img{display:block;width:100%;height:auto;
+  animation:zelfscroll var(--duur,60s) ease-in-out var(--start,0s) infinite alternate}
+.apparaat:hover .scrol img{animation-play-state:paused}
+@keyframes zelfscroll{
+  0%,5%{transform:translateY(0)}
+  95%,100%{transform:translateY(calc(-100% + 100cqh))}
+}
+
+.monitor-scherm{
+  width:100%;aspect-ratio:16/9;background:#0E0E0F;
+  border:11px solid #1B1B1D;border-radius:10px;
+  box-shadow:0 34px 90px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.05);
+}
+.monitor-hals{width:11%;height:44px;background:linear-gradient(180deg,#1E1E21,#141416)}
+.monitor-voet{width:40%;height:11px;border-radius:6px;background:linear-gradient(180deg,#232326,#151517);
+  box-shadow:0 12px 26px rgba(0,0,0,.4)}
+
+.telefoon{width:min(100%,230px);justify-self:center}
+.telefoon-scherm{
+  width:100%;aspect-ratio:9/19.5;background:#0E0E0F;
+  border:9px solid #1B1B1D;border-radius:34px;
+  box-shadow:0 30px 70px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.06);
+}
+.telefoon-scherm::before{
+  content:"";position:absolute;left:50%;top:8px;width:34%;height:18px;border-radius:10px;
+  transform:translateX(-50%);background:#1B1B1D;z-index:2;
 }
 
 /* ---------------- Demoraster en casenoten ---------------- */
@@ -689,6 +734,9 @@ textarea{resize:vertical;line-height:1.5;min-height:0}
   .case-poi.kolommen{grid-template-columns:1fr}
   .richting-raster{grid-template-columns:1fr}
   .case-jezz{grid-template-columns:1fr;gap:36px}
+  .bureau{grid-template-columns:1fr;grid-template-areas:"monitor" "laptop" "telefoon";gap:40px}
+  .telefoon{width:min(100%,250px)}
+  .laptop-voet{width:100%}
   .scan-punten{grid-template-columns:1fr 1fr}
   .film{height:220vh}
 

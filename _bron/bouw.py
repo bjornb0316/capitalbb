@@ -783,22 +783,24 @@ def bouw_werk():
     # Echte schermafbeeldingen van drie demosites, met namen en herleidbare
     # gegevens onherkenbaar gemaakt. Gemaakt met scripts/schiet.mjs (headless
     # Edge via het DevTools-protocol) en geanonimiseerd met Pillow.
+    # Drie demosites op drie apparaten: beeldscherm, laptop en telefoon, elk
+    # scrollend door de volledige (geanonimiseerde) pagina. Opgenomen met
+    # scripts/schiet-lang.mjs, namen en gegevens vóór de opname vervangen.
     demo_tegels = """
-    <div class="richting-raster">
-      <figure class="richting">
-        <div class="venster-mini"><div class="vm-bar" aria-hidden="true"><span class="vm-stippen"><i></i><i></i><i></i></span><span class="vm-url">Demo &middot; barbershop</span></div>
-        <img class="vm-schot" src="../img/werk/demo-barbershop.jpg" width="1100" height="689" loading="lazy" alt="Demosite voor een barbershop: donker interieur met een groot serif-woordmerk, onherkenbaar gemaakt, en knoppen om te reserveren of te appen."></div>
-        <figcaption>Barbershop: donker en filmisch, met reserveren via het eigen boekingssysteem</figcaption>
+    <div class="bureau">
+      <figure class="apparaat monitor">
+        <div class="monitor-scherm scrol" style="--duur:64s"><img src="../img/werk/demo-barbershop.webp" width="1280" height="6118" loading="lazy" alt="Demosite voor een barbershop op een beeldscherm: donker interieur, groot serif-woordmerk, reserveren en appen. Naam en gegevens zijn vervangen."></div>
+        <div class="monitor-hals"></div><div class="monitor-voet"></div>
+        <figcaption>Barbershop: donker en filmisch, reserveren via het eigen boekingssysteem</figcaption>
       </figure>
-      <figure class="richting">
-        <div class="venster-mini"><div class="vm-bar" aria-hidden="true"><span class="vm-stippen"><i></i><i></i><i></i></span><span class="vm-url">Demo &middot; kapsalon</span></div>
-        <img class="vm-schot" src="../img/werk/demo-kapsalon.jpg" width="1100" height="703" loading="lazy" alt="Demosite voor een kapsalon: zwart-wit interieurfoto met rode accenten, naam en contactgegevens onherkenbaar gemaakt."></div>
-        <figcaption>Kapsalon: rauw en direct, opgebouwd rond de eigen interieurfoto's</figcaption>
+      <figure class="apparaat laptop">
+        <div class="laptop-scherm scrol" style="--duur:78s;--start:-26s"><img src="../img/werk/demo-kapsalon.webp" width="1024" height="8560" loading="lazy" alt="Demosite voor een kapsalon op een laptop: zwart-wit interieurfoto met rode accenten. Naam en gegevens zijn vervangen."></div>
+        <div class="laptop-voet"></div>
+        <figcaption>Kapsalon: rauw en direct, rond de eigen interieurfoto&apos;s</figcaption>
       </figure>
-      <figure class="richting">
-        <div class="venster-mini"><div class="vm-bar" aria-hidden="true"><span class="vm-stippen"><i></i><i></i><i></i></span><span class="vm-url">Demo &middot; nagelstudio</span></div>
-        <img class="vm-schot" src="../img/werk/demo-nagelstudio.jpg" width="1100" height="689" loading="lazy" alt="Demosite voor een nagelstudio: lichte fotocollage van nagels met de kop Nagels, na werktijd en een knop om een moment te kiezen."></div>
-        <figcaption>Nagelstudio: licht en zacht, met de agenda van de studio zelf erachter</figcaption>
+      <figure class="apparaat telefoon">
+        <div class="telefoon-scherm scrol" style="--duur:58s;--start:-40s"><img src="../img/werk/demo-nagelstudio.webp" width="780" height="9366" loading="lazy" alt="Demosite voor een nagelstudio op een telefoon: lichte fotocollage van nagels met de kop Nagels, na werktijd. Gegevens zijn vervangen."></div>
+        <figcaption>Nagelstudio, mobiel: licht en zacht, met de agenda van de studio erachter</figcaption>
       </figure>
     </div>"""
     blokken = f"""<section class="sectie">
