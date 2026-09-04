@@ -48,6 +48,7 @@ zoekvragen. Daarnaast /scan, /werk, /werkwijze, /prijzen, /contact en /privacy.
 |---|---|
 | `bouw.py` | Bouwt alle pagina's, sitemap, robots.txt en llms.txt |
 | `groeiplan.md` | 90-dagenplan voor autoriteit buiten de site om |
+| `start-week-1-2.md` | Invulklare teksten: Bedrijfsprofiel, reviews, Search Console |
 | `controle.py` | 22 controles op de gebouwde site; exitcode 1 bij een fout |
 | `publiceer.py` | Zet `_site/` klaar met alleen publiceerbare bestanden |
 | `mobiel.mjs` | Echte viewporttest op 390, 768 en 1440 via Chrome DevTools |
