@@ -185,6 +185,23 @@
     }
   }
 
+  /* Klikken op WhatsApp, telefoon of mail tellen als conversie. Voor veel
+     bezoekers is dat de echte actie; wie belt vult geen formulier in. Eén
+     luisteraar op document, zodat ook knoppen meetellen die de JS pas later
+     aan de pagina toevoegt. */
+  document.addEventListener("click", function (e) {
+    var a = e.target && e.target.closest ? e.target.closest("a[href]") : null;
+    if (!a) return;
+    var href = a.getAttribute("href") || "";
+    if (href.indexOf("wa.me") > -1) {
+      doel("whatsapp_klik", { plek: a.className || "link", pagina: location.pathname });
+    } else if (href.indexOf("tel:") === 0) {
+      doel("telefoon_klik", { pagina: location.pathname });
+    } else if (href.indexOf("mailto:") === 0) {
+      doel("mail_klik", { pagina: location.pathname });
+    }
+  }, true);
+
   /* ---------------- Formulieren ----------------
      Twee routes, in deze volgorde:
 
@@ -226,6 +243,8 @@
       if (melding) klaarEl.textContent = melding;
       klaarEl.hidden = false;
     }
+    doel("formulier_overgedragen", { route: viaMail ? "mail" : "whatsapp",
+                                     pagina: location.pathname });
   }
 
   function verstuur(vorm, velden, foutEl, onderwerp, klaarEl) {
@@ -315,6 +334,7 @@
       // De juiste tekst staat al in de HTML: het scanformulier zegt iets
       // anders dan het contactformulier. Hier alleen tonen, niet overschrijven.
       if (klaarEl) klaarEl.hidden = false;
+      doel("formulier_verstuurd", { formulier: vorm.id, pagina: location.pathname });
       vorm.reset();
     }).catch(function () {
       // Niet verloren laten gaan: alsnog de handmatige route aanbieden.
