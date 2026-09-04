@@ -76,12 +76,15 @@ a{color:inherit}
   background:rgba(11,11,12,.8);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
   border-bottom:1px solid var(--line);
 }
-.merk{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--gold);flex:0 0 auto}
+/* Tapdoelen op de WCAG 2.2-norm van 24 bij 24 pixels: navigatie, kruimelpad,
+   voettekst en het merkteken zaten daar met 21 tot 23 pixels net onder. */
+.merk{min-height:44px;display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--gold);flex:0 0 auto}
 .merkteken{width:30px;height:30px;flex:0 0 auto}
 .merk-cbb{font-family:"Times New Roman",Georgia,serif;font-size:30px;fill:currentColor;letter-spacing:.5px}
 .merk-woord{font-family:var(--sans);font-size:.92rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--text)}
 .nav-links{display:flex;gap:22px;margin-left:auto}
-.nav-links a{color:var(--text-2);text-decoration:none;font-size:.9rem;transition:color .2s var(--ease)}
+.nav-links a{color:var(--text-2);text-decoration:none;font-size:.9rem;transition:color .2s var(--ease);
+  display:inline-flex;align-items:center;min-height:26px}
 .nav-links a:hover{color:var(--gold-hi)}
 .nav-links a[aria-current=page]{color:var(--gold-hi)}
 .nav-knop{display:none}
@@ -277,6 +280,9 @@ a{color:inherit}
 
 /* ---------------- Dienstkaarten op spoorpagina's ---------------- */
 .dienstkaarten{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+/* Vier diensten onder één spoor: twee bij twee leest rustiger dan vier
+   smalle kolommen naast elkaar. */
+.dienstkaarten.vier{grid-template-columns:repeat(2,1fr)}
 .dienstkaart{
   border:1px solid var(--line-2);border-radius:var(--r2);background:var(--ink-2);
   padding:30px;text-decoration:none;display:flex;flex-direction:column;gap:12px;
@@ -442,7 +448,7 @@ textarea{resize:vertical;line-height:1.5;min-height:0}
   display:flex;align-items:center;gap:8px;flex-wrap:wrap;
   font-size:.82rem;color:var(--muted);margin-bottom:20px;
 }
-.kruimels a{color:var(--text-2);text-decoration:none}
+.kruimels a{color:var(--text-2);text-decoration:none;display:inline-flex;align-items:center;min-height:26px}
 .kruimels a:hover{color:var(--gold-hi)}
 .kruimels [aria-current]{color:var(--gold-hi)}
 
@@ -662,9 +668,10 @@ textarea{resize:vertical;line-height:1.5;min-height:0}
   font-family:var(--mono);font-size:.68rem;letter-spacing:.17em;text-transform:uppercase;
   color:var(--muted);font-weight:400;margin-bottom:6px;
 }
-.voet-kolom a{color:var(--text-2);text-decoration:none;font-size:.88rem}
+.voet-kolom a{color:var(--text-2);text-decoration:none;font-size:.88rem;
+  display:flex;align-items:center;min-height:26px}
 .voet-kolom a:hover{color:var(--gold-hi)}
-.voet-kolom span{color:var(--muted);font-size:.88rem}
+.voet-kolom span{color:var(--muted);font-size:.88rem;display:flex;align-items:center;min-height:26px}
 .voet-todo{
   border:1px dashed var(--gold-lo);border-radius:var(--r);padding:13px 15px;
   font-family:var(--mono);font-size:.74rem;color:var(--gold);line-height:1.6;
@@ -690,15 +697,180 @@ textarea{resize:vertical;line-height:1.5;min-height:0}
 /* ---------------- Vaste actiebalk op mobiel ---------------- */
 .actiebalk{display:none}
 
+
+/* =========================================================================
+   Inhoudsblokken op de dienst- en landingspagina's.
+   Citeerbaar antwoordblok, wat wij bouwen, traject, vergelijking, branches.
+   ========================================================================= */
+
+/* Het antwoordblok: de vraag als kop, het antwoord er direct onder in een
+   alinea die ook los van de pagina klopt. Dat is hoe AI-systemen citeren en
+   hoe een haastige bezoeker leest. */
+.antwoord-sectie{border-top:1px solid var(--line)}
+.antwoord-sectie .wrap{max-width:78ch}
+.antwoord{
+  margin-top:22px;font-size:clamp(1.02rem,1.5vw,1.18rem);line-height:1.72;
+  color:var(--text);border-left:2px solid var(--gold);padding-left:clamp(18px,2.4vw,28px);
+}
+.antwoord-extra{margin-top:16px;color:var(--text-2);font-size:.95rem;line-height:1.7;padding-left:clamp(18px,2.4vw,28px)}
+
+/* Twee tekstkolommen naast elkaar: voor wie / het probleem eronder. */
+.split-tekst{display:grid;grid-template-columns:1fr 1fr;gap:clamp(36px,5vw,72px);align-items:start}
+.split-tekst .ticks{margin-top:22px}
+.split-tekst .lede{margin-top:22px}
+
+/* Wat Capital BB bouwt: vier blokken met een gouden nummerloze streep. */
+.bouwt-lijst{margin-top:clamp(32px,4vw,52px);display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line)}
+.bouwt-item{background:var(--ink);padding:clamp(26px,3vw,38px)}
+.band .bouwt-item{background:#0D0D0E}
+.bouwt-item h3{font-size:1.06rem;letter-spacing:-.02em}
+.bouwt-item h3::before{
+  content:"";display:block;width:26px;height:2px;background:var(--gold);margin-bottom:16px;
+}
+.bouwt-item p{margin-top:12px;color:var(--text-2);font-size:.94rem;line-height:1.7}
+
+/* Lange opsomming in twee kolommen, zodat hij niet als een muur leest. */
+.kolomlijst{columns:2;column-gap:36px}
+.kolomlijst li{break-inside:avoid}
+
+/* Traject: genummerde stappen, compacter dan de grote .stappen op /werkwijze/. */
+.stapjes{margin-top:clamp(30px,4vw,46px);display:grid;gap:1px;background:var(--line);max-width:92ch}
+.stapje{background:var(--ink);display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:start;padding:22px clamp(14px,2vw,26px)}
+.band .stapje{background:#0D0D0E}
+.stapje-nr{
+  font-family:var(--mono);font-size:.78rem;color:var(--gold);
+  border:1px solid var(--line-2);border-radius:50%;
+  width:34px;height:34px;display:grid;place-items:center;
+}
+.stapje b{display:block;font-weight:600;font-size:1rem;letter-spacing:-.015em}
+.stapje span{display:block;margin-top:7px;color:var(--text-2);font-size:.93rem;line-height:1.68}
+
+/* Vergelijkingstabel. Op smalle schermen scrollt hij in zijn eigen bak in
+   plaats van de hele pagina breed te maken. */
+.tabelrol{margin-top:clamp(28px,3.5vw,44px);overflow-x:auto;-webkit-overflow-scrolling:touch}
+.vergelijk{width:100%;min-width:520px;border-collapse:collapse;text-align:left}
+.vergelijk th,.vergelijk td{padding:18px 22px;border-bottom:1px solid var(--line);vertical-align:top}
+.vergelijk thead th{
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--gold);font-weight:400;border-bottom:1px solid var(--line-2);
+}
+.vergelijk tbody th{width:34%;font-weight:600;font-size:.97rem;color:var(--text);letter-spacing:-.015em}
+.vergelijk tbody td{color:var(--text-2);font-size:.93rem;line-height:1.68}
+.vergelijk tbody tr:last-child th,.vergelijk tbody tr:last-child td{border-bottom:none}
+.vergelijk tbody tr:last-child th{color:var(--gold-hi)}
+
+/* Branchevoorbeelden. */
+.branches{margin-top:clamp(30px,4vw,46px);display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line)}
+.branche{background:var(--ink);padding:clamp(22px,2.6vw,30px)}
+.band .branche{background:#0D0D0E}
+.branche h3{font-size:.97rem;letter-spacing:-.015em}
+.branche p{margin-top:10px;color:var(--text-2);font-size:.9rem;line-height:1.66}
+
+/* Losse regel met vervolgroutes onder een sectie. */
+.route-regel{margin-top:26px;color:var(--text-2);font-size:.95rem;line-height:1.8}
+
+/* Landingspagina's: kort lijstje met wie het wel en niet is. */
+.past{margin-top:clamp(30px,4vw,46px);display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line)}
+.past-kolom{background:var(--ink);padding:clamp(24px,3vw,34px)}
+.band .past-kolom{background:#0D0D0E}
+.past-kolom h3{font-size:1.02rem}
+.past-kolom ul{margin-top:18px;display:grid;gap:11px}
+.past-kolom li{color:var(--text-2);font-size:.93rem;line-height:1.6;padding-left:24px;position:relative}
+.past-wel li::before{content:"";position:absolute;left:0;top:.52em;width:11px;height:6px;border-left:1.6px solid var(--gold);border-bottom:1.6px solid var(--gold);transform:rotate(-45deg)}
+.past-niet li::before{content:"";position:absolute;left:1px;top:.72em;width:11px;height:1.6px;background:var(--muted)}
+
+
+/* WhatsApp als alternatieve route onder de CTA's. Bewust een pil in plaats
+   van een derde .btn: het is een andere manier om contact te leggen, geen
+   derde call to action die met de twee erboven concurreert. */
+.cta-direct{margin-top:22px;color:var(--text-2);font-size:.93rem;display:flex;flex-wrap:wrap;align-items:center;gap:8px;justify-content:center}
+.cta-inhoud .cta-direct{justify-content:center}
+.form-direct{justify-content:flex-start;margin-top:20px}
+.wa-knop{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:8px 14px;min-height:38px;
+  border:1px solid var(--line-2);border-radius:999px;
+  color:var(--text);text-decoration:none;font-size:.9rem;
+  transition:border-color .25s var(--ease),color .25s var(--ease),background .25s var(--ease);
+}
+.wa-knop svg{width:18px;height:18px;flex:none;color:var(--gold)}
+.wa-knop:hover{border-color:var(--gold);color:var(--gold-hi);background:rgba(201,160,99,.07)}
+.wa-knop:hover svg{color:var(--gold-hi)}
+
+/* Honeypot: buiten beeld, maar niet display:none. Sommige bots slaan
+   verborgen velden over; deze vullen ze wel in. */
+.vh-veld{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none}
+
+
+/* Cookiebanner. Onderin, niet als scherm-vullende muur: de site blijft
+   leesbaar terwijl de vraag openstaat. Weigeren en accepteren staan naast
+   elkaar en zijn even groot; dat is niet alleen netjes, het is wettelijk
+   vereist. Zolang de balk openstaat wijkt de mobiele actiebalk. */
+.cookiebalk{
+  position:fixed;left:0;right:0;bottom:0;z-index:60;
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;
+  gap:16px 24px;padding:18px clamp(20px,4vw,40px) calc(18px + env(safe-area-inset-bottom));
+  background:rgba(13,13,14,.97);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-top:1px solid var(--line-2);
+}
+.cookiebalk-tekst{max-width:74ch;color:var(--text-2);font-size:.9rem;line-height:1.6}
+.cookiebalk-knoppen{display:flex;gap:10px;flex:none}
+.cookiebalk-knoppen .btn{min-height:42px;flex:1 0 auto}
+body.cookie-open .actiebalk,body.cookie-open .wa-bubbel{display:none}
+@media (max-width:820px){
+  .cookiebalk{flex-direction:column;align-items:stretch;gap:14px}
+  .cookiebalk-knoppen .btn{flex:1}
+}
+
+
+/* Statusvlag bij een case. Het verschil tussen betaald klantwerk en een
+   ongevraagd gebouwde demo moet je kunnen zien zonder de kleine letters te
+   lezen; anders suggereert de pagina meer dan er is. */
+.casevlag{
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;
+  margin-top:18px;padding:12px 16px;border-radius:var(--r);
+  border:1px solid var(--line-2);background:var(--ink-2);
+  font-size:.86rem;line-height:1.55;
+}
+.casevlag b{font-weight:600;letter-spacing:-.01em;white-space:nowrap}
+.casevlag span{color:var(--muted);flex:1 1 20ch}
+.casevlag.vlag-klantcase{border-left:3px solid var(--gold)}
+.casevlag.vlag-klantcase b{color:var(--gold-hi)}
+.casevlag.vlag-eigen-merk{border-left:3px solid var(--text-2)}
+.casevlag.vlag-eigen-merk b{color:var(--text)}
+.casevlag.vlag-demo{border-left:3px solid var(--muted)}
+.casevlag.vlag-demo b{color:var(--text-2)}
+
+.legenda{margin-top:26px;display:grid;gap:1px;background:var(--line);max-width:92ch}
+.legenda div{background:#0D0D0E;padding:16px 20px}
+.legenda b{display:block;font-size:.95rem}
+.legenda span{display:block;margin-top:5px;color:var(--text-2);font-size:.9rem;line-height:1.6}
+
+
+/* De pagina over Bjorn. Zolang er geen echte foto is, staat er het merkteken
+   in plaats van een gegenereerd portret: een verzonnen gezicht bij een echt
+   persoon hoort hier niet. */
+.wie-grid{display:grid;grid-template-columns:minmax(0,300px) 1fr;gap:clamp(32px,5vw,64px);align-items:start}
+.wie-portret{margin:0;border:1px solid var(--line-2);border-radius:var(--r2);overflow:hidden;background:var(--ink-2)}
+.wie-portret img{width:100%;height:auto;display:block}
+.wie-portret.leeg{display:grid;place-items:center;aspect-ratio:4/5;color:var(--gold)}
+.wie-portret.leeg .merkteken{width:96px;height:96px;opacity:.5}
+.wie-blokken{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line)}
+.wie-blok{background:#0D0D0E;padding:clamp(24px,3vw,34px)}
+.wie-blok h2{font-size:1.06rem;letter-spacing:-.02em}
+.wie-blok h2::before{content:"";display:block;width:26px;height:2px;background:var(--gold);margin-bottom:16px}
+.wie-blok p{margin-top:12px;color:var(--text-2);font-size:.94rem;line-height:1.7}
+
 /* =========================================================================
    Responsive
    ========================================================================= */
 @media (max-width:1080px){
   .split,.case-grid,.scan-grid,.scan-twee{grid-template-columns:1fr;gap:44px}
+  .branches{grid-template-columns:1fr 1fr}
   .scan-rapport{position:static}
   .prijsrij.kolommen-4{grid-template-columns:repeat(2,1fr)}
   .sporen{grid-template-columns:1fr}
-  .dienstkaarten{grid-template-columns:1fr}
+  .dienstkaarten,.dienstkaarten.vier{grid-template-columns:1fr}
 }
 @media (max-width:820px){
   .wrap{padding:0 20px}
@@ -725,7 +897,32 @@ textarea{resize:vertical;line-height:1.5;min-height:0}
   }
   .nav-menu a:last-child{border-bottom:none;color:var(--gold-hi)}
 
+  /* Knoppen mogen op een telefoon afbreken. Met white-space:nowrap duwde een
+     lang label de hele pagina breder dan het scherm; dat gebeurde op
+     /online-marketing/ en zou bij elk nieuw lang label terugkomen. */
+  /* Keuzerij: vraag en antwoord onder elkaar. Naast elkaar met een
+     nowrap-label duwde de langste productnaam de pagina open. */
+  .keuze-rij{flex-direction:column;align-items:flex-start;gap:6px;padding:16px 20px}
+  .keuze-rij b{white-space:normal}
+
+  /* Kleine labels waren op een telefoon net te klein om prettig te lezen. */
+  .eyebrow,.prijstag,.vergelijk thead th{font-size:.75rem}
+
+  .btn{white-space:normal;text-align:center;max-width:100%}
+  .cta-acties{width:100%}
+  .cta-acties .btn{flex:1 1 100%}
+
   .prijsrij.kolommen-3,.prijsrij.kolommen-4{grid-template-columns:1fr}
+  .split-tekst,.bouwt-lijst,.branches,.past,.wie-blokken{grid-template-columns:1fr}
+  .wie-grid{grid-template-columns:1fr}
+  .wie-portret{max-width:260px}
+  .kolomlijst{columns:1}
+  .vergelijk{min-width:0}
+  .vergelijk th,.vergelijk td{display:block;padding:0}
+  .vergelijk thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+  .vergelijk tbody tr{display:block;padding:20px 0;border-bottom:1px solid var(--line)}
+  .vergelijk tbody th{width:auto;margin-bottom:8px}
+  .vergelijk tbody tr:last-child{border-bottom:none}
   .stappen,.creed-lijst{grid-template-columns:1fr}
   .stap,.stap:nth-child(even),.creed-item,.creed-item:nth-child(even){padding:24px 0;border-left:none}
   .voet-grid{grid-template-columns:1fr 1fr}

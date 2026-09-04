@@ -1,6 +1,7 @@
 # Capital BB
 # Alles mag gelezen worden, ook door AI-crawlers. Dat is het hele punt:
 # wie gevonden wil worden in AI-antwoorden moet zich laten lezen.
+# Alleen de bouwbron blijft dicht; daar staat niets wat een bezoeker helpt.
 
 User-agent: *
 Allow: /

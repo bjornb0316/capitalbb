@@ -91,10 +91,149 @@
     }
   }
 
+  /* ---------------- Meten en toestemming ----------------
+     Google Analytics plaatst cookies, dus mag het pas laden nadat de bezoeker
+     daar ja op heeft gezegd. Niet ervoor, en niet "tenzij hij nee zegt".
+
+     De regels die hier zijn ingebouwd:
+     - er wordt niets geladen en niets opgeslagen zolang er geen keuze is
+     - weigeren staat even prominent als accepteren, en kost één klik
+     - de keuze wordt lokaal bewaard, niet in een cookie van een derde
+     - de keuze is later te wijzigen via de link in de voettekst
+     - zonder meet-ID gebeurt er helemaal niets en is er geen banner */
+  var META = window.CBB_META || { ga4: "" };
+  var KEUZE = "cbb-meten";
+
+  function keuzeLezen() {
+    try { return localStorage.getItem(KEUZE); } catch (e) { return null; }
+  }
+  function keuzeSchrijven(v) {
+    try { localStorage.setItem(KEUZE, v); } catch (e) { /* privémodus: dan per bezoek vragen */ }
+  }
+
+  function analyticsLaden() {
+    if (!META.ga4 || window.__cbbGeladen) return;
+    window.__cbbGeladen = true;
+    var sc = document.createElement("script");
+    sc.async = true;
+    sc.src = "https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(META.ga4);
+    document.head.appendChild(sc);
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { window.dataLayer.push(arguments); }
+    window.gtag = gtag;
+    gtag("js", new Date());
+    gtag("consent", "default", {
+      ad_storage: "denied", ad_user_data: "denied", ad_personalization: "denied",
+      analytics_storage: "granted"
+    });
+    gtag("config", META.ga4, { anonymize_ip: true });
+  }
+
+  /* Doelen meesturen, zodat zichtbaar wordt wat een bezoek oplevert en niet
+     alleen hoeveel bezoeken er waren. Doet niets zonder toestemming. */
+  function doel(naam, extra) {
+    if (typeof window.gtag === "function") window.gtag("event", naam, extra || {});
+  }
+  window.CBBdoel = doel;
+
+  function bannerTonen() {
+    if (!META.ga4 || document.getElementById("cookiebalk")) return;
+    var b = document.createElement("div");
+    b.className = "cookiebalk";
+    b.id = "cookiebalk";
+    b.setAttribute("role", "dialog");
+    b.setAttribute("aria-modal", "false");
+    b.setAttribute("aria-label", "Cookievoorkeur");
+    var diep = document.querySelector('link[rel="stylesheet"]').getAttribute("href").indexOf("../") === 0 ? "../" : "";
+    b.innerHTML =
+      '<p class="cookiebalk-tekst">Wij gebruiken statistieken om te zien welke pagina’s ' +
+      'worden gelezen. Daar horen cookies bij, dus vragen wij het eerst. Zonder toestemming ' +
+      'wordt er niets geladen en werkt de site gewoon. ' +
+      '<a class="tekstlink" href="' + diep + 'privacy/">Lees wat er wordt gemeten</a>.</p>' +
+      '<div class="cookiebalk-knoppen">' +
+      '<button class="btn btn-ghost btn-sm" type="button" id="cookie-nee">Weigeren</button>' +
+      '<button class="btn btn-gold btn-sm" type="button" id="cookie-ja">Accepteren</button>' +
+      "</div>";
+    document.body.appendChild(b);
+    document.body.classList.add("cookie-open");
+    document.getElementById("cookie-ja").addEventListener("click", function () {
+      keuzeSchrijven("ja"); sluiten(); analyticsLaden();
+    });
+    document.getElementById("cookie-nee").addEventListener("click", function () {
+      keuzeSchrijven("nee"); sluiten();
+    });
+    function sluiten() {
+      b.remove();
+      document.body.classList.remove("cookie-open");
+    }
+  }
+
+  if (META.ga4) {
+    var gekozen = keuzeLezen();
+    if (gekozen === "ja") analyticsLaden();
+    else if (gekozen !== "nee") bannerTonen();
+
+    // Voettekstlink om de keuze te herzien.
+    var herzien = document.getElementById("cookie-herzien");
+    if (herzien) {
+      herzien.hidden = false;
+      herzien.addEventListener("click", function (e) {
+        e.preventDefault();
+        try { localStorage.removeItem(KEUZE); } catch (er) {}
+        bannerTonen();
+      });
+    }
+  }
+
   /* ---------------- Formulieren ----------------
-     Geen backend: het formulier opent WhatsApp of e-mail met de tekst er al
-     in. Zonder ingevulde contactgegevens weigert het met een nette melding. */
+     Twee routes, in deze volgorde:
+
+     1. Is er een verzendsleutel ingesteld (FORMULIER in _bron/inhoud.py), dan
+        gaat de inzending als e-mail de deur uit via Web3Forms. De bezoeker
+        hoeft niets meer te doen.
+     2. Is die er niet, of mislukt de verzending, dan valt hij terug op het
+        oude gedrag: WhatsApp of het mailprogramma openen met alles er al in.
+
+     Die terugval is het punt. Een formulier dat stilletjes faalt kost een
+     klant; hier houdt de bezoeker altijd een werkende route over. */
+  var FORM = window.CBB_FORMULIER || { dienst: "", sleutel: "", ontvanger: "" };
+
+  function bericht(onderwerp, waarden) {
+    var regels = [onderwerp, ""];
+    for (var k in waarden) {
+      if (waarden[k]) regels.push(k.charAt(0).toUpperCase() + k.slice(1) + ": " + waarden[k]);
+    }
+    return regels.join("\n");
+  }
+
+  /* Terugval: de bezoeker verstuurt zelf, via zijn eigen mailprogramma of via
+     WhatsApp. Welke van de twee staat in FORMULIER["terugval"] in
+     _bron/inhoud.py en is standaard e-mail, want daar horen inzendingen te
+     landen. WhatsApp blijft wel als losse knop op de pagina staan voor wie
+     dat zelf liever heeft. */
+  function zelfVersturen(onderwerp, waarden, klaarEl, melding) {
+    var tekst = bericht(onderwerp, waarden);
+    var viaMail = FORM.terugval !== "whatsapp" ? !!CONTACT.email : !CONTACT.whatsapp;
+    if (viaMail) {
+      window.location.href = "mailto:" + CONTACT.email +
+        "?subject=" + encodeURIComponent(onderwerp) +
+        "&body=" + encodeURIComponent(tekst);
+    } else if (CONTACT.whatsapp) {
+      window.open("https://wa.me/" + CONTACT.whatsapp + "?text=" + encodeURIComponent(tekst),
+                  "_blank", "noopener");
+    }
+    if (klaarEl) {
+      if (melding) klaarEl.textContent = melding;
+      klaarEl.hidden = false;
+    }
+  }
+
   function verstuur(vorm, velden, foutEl, onderwerp, klaarEl) {
+    /* Dubbel verzenden voorkomen. De knop wordt verderop uitgezet, maar met
+       Enter of een snelle dubbelklik kan submit twee keer afgaan voordat dat
+       gebeurt. Dan zou dezelfde aanvraag twee keer in de mailbox landen. */
+    if (vorm.dataset.bezig === "ja") return;
+
     var waarden = {};
     for (var k in velden) {
       var el = document.getElementById(velden[k]);
@@ -108,30 +247,84 @@
       foutEl.hidden = false;
       return;
     }
-    if (!CONTACT.whatsapp && !CONTACT.email) {
-      foutEl.textContent = "Deze site is nog niet gekoppeld aan een telefoonnummer of " +
-        "e-mailadres. Vul CONTACT in _bron/inhoud.py in en bouw opnieuw.";
+    if (!FORM.sleutel && !CONTACT.whatsapp && !CONTACT.email) {
+      foutEl.textContent = "Deze site is nog niet gekoppeld aan een verzendroute. " +
+        "Vul CONTACT of FORMULIER in _bron/inhoud.py in en bouw opnieuw.";
       foutEl.hidden = false;
       return;
     }
     foutEl.hidden = true;
 
-    var regels = [onderwerp, ""];
-    for (var k2 in waarden) {
-      if (waarden[k2]) regels.push(k2.charAt(0).toUpperCase() + k2.slice(1) + ": " + waarden[k2]);
+    /* Honeypot: is het verborgen veld ingevuld, dan was het een bot. We doen
+       alsof het gelukt is en versturen niets. */
+    var val = vorm.querySelector('input[name="botcheck"]');
+    if (val && val.value) {
+      if (klaarEl) klaarEl.hidden = false;
+      return;
     }
-    var tekst = regels.join("\n");
 
-    if (CONTACT.whatsapp) {
-      window.open("https://wa.me/" + CONTACT.whatsapp + "?text=" + encodeURIComponent(tekst),
-                  "_blank", "noopener");
-    } else {
-      window.location.href = "mailto:" + CONTACT.email +
-        "?subject=" + encodeURIComponent(onderwerp) +
-        "&body=" + encodeURIComponent(tekst);
+    if (!FORM.sleutel) {
+      zelfVersturen(onderwerp, waarden, klaarEl);
+      return;
     }
-    // Succesmelding: het bericht is voorbereid, de bezoeker verstuurt zelf.
-    if (klaarEl) klaarEl.hidden = false;
+
+    var knop = vorm.querySelector('button[type="submit"]');
+    var knoptekst = knop ? knop.textContent : "";
+    vorm.dataset.bezig = "ja";
+    if (knop) { knop.disabled = true; knop.textContent = "Bezig met versturen…"; }
+
+    var lading = {
+      access_key: FORM.sleutel,
+      subject: onderwerp + " — " + (waarden.bedrijf || waarden.website || waarden.naam || ""),
+      from_name: waarden.naam || "Website",
+      botcheck: "",
+      // Los meegestuurd, zodat de mail leesbare regels heeft in plaats van
+      // alleen een JSON-dump.
+      bericht: bericht(onderwerp, waarden),
+      pagina: location.href
+    };
+    for (var v in waarden) lading[v] = waarden[v];
+    if (FORM.ontvanger) lading.to = FORM.ontvanger;
+    // Antwoorden kan alleen als de bezoeker een e-mailadres achterliet.
+    if (waarden.bereikbaar && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(waarden.bereikbaar)) {
+      lading.replyto = waarden.bereikbaar;
+    }
+
+    /* Tijdslimiet. In de praktijk duurt het versturen enkele seconden, maar
+       een bezoeker mag nooit eindeloos naar een uitgeschakelde knop kijken
+       als de verzenddienst niet antwoordt. Na 15 seconden breken we af en
+       valt hij terug op de mailroute, zodat de aanvraag alsnog aankomt. */
+    var afbreken = null;
+    var opties = {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify(lading)
+    };
+    if (typeof AbortController === "function") {
+      afbreken = new AbortController();
+      opties.signal = afbreken.signal;
+      setTimeout(function () { afbreken.abort(); }, 15000);
+    }
+
+    fetch("https://api.web3forms.com/submit", opties).then(function (r) {
+      return r.json().catch(function () { return { success: r.ok }; });
+    }).then(function (d) {
+      if (!d || !d.success) throw new Error(d && d.message ? d.message : "verzenden mislukt");
+      vorm.dataset.bezig = "";
+      if (knop) { knop.disabled = false; knop.textContent = knoptekst; }
+      // De juiste tekst staat al in de HTML: het scanformulier zegt iets
+      // anders dan het contactformulier. Hier alleen tonen, niet overschrijven.
+      if (klaarEl) klaarEl.hidden = false;
+      vorm.reset();
+    }).catch(function () {
+      // Niet verloren laten gaan: alsnog de handmatige route aanbieden.
+      vorm.dataset.bezig = "";
+      if (knop) { knop.disabled = false; knop.textContent = knoptekst; }
+      var route = (FORM.terugval !== "whatsapp" && CONTACT.email) ? "uw mailprogramma" : "WhatsApp";
+      zelfVersturen(onderwerp, waarden, klaarEl,
+        "Automatisch versturen lukte even niet. Uw bericht staat nu klaar in " + route +
+        "; verstuur hem daar, dan komt hij alsnog aan.");
+    });
   }
 
   var scanform = document.getElementById("scanform");
@@ -156,6 +349,17 @@
 
   var contactform = document.getElementById("contactform");
   if (contactform) {
+    /* Intentie meegeven vanaf een dienst-CTA: /contact/?over=crm vult het
+       vraagveld alvast. De tekst komt uit een vaste lijst die de bouw hier
+       neerzet, nooit uit de URL zelf, en de bezoeker ziet en verstuurt hem
+       zelf. De bezorging van het formulier verandert niet. */
+    var lijst = window.CBB_INTENTIES || {};
+    var over = (location.search.match(/[?&]over=([a-z-]{1,32})(?:&|$)/) || [])[1];
+    var vraagveld = document.getElementById("c-vraag");
+    if (over && vraagveld && !vraagveld.value && lijst[over]) {
+      vraagveld.value = lijst[over];
+    }
+
     contactform.addEventListener("submit", function (e) {
       e.preventDefault();
       verstuur(contactform,

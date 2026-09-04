@@ -1,0 +1,11 @@
+# Python-bytecode van de generator. Bouwartefact, hoort niet op GitHub Pages.
+__pycache__/
+*.pyc
+
+# Publicatiemap: wordt bij elke deployment opnieuw gemaakt door
+# _bron/publiceer.py. Hoort niet in de repository.
+_site/
+
+# Restanten van lokale browsertests (_bron/mobiel.mjs).
+.chrometest/
+cbb-chrome-*/

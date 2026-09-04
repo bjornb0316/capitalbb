@@ -1,0 +1,95 @@
+name: Bouw en publiceer capitalbb.nl
+
+# Publiceert uitsluitend de gegenereerde website naar GitHub Pages.
+#
+# Waarom deze workflow bestaat: Pages publiceerde de hele repository vanaf de
+# root van main, waardoor /_bron/inhoud.py publiek opvraagbaar was. Nu bouwt
+# deze Action de site, controleert hij hem, zet hij alleen de publiceerbare
+# bestanden in _site/ en zet hij die map online. De bouwbron blijft in de
+# repository maar komt niet meer op de website.
+#
+# EENMALIG INSTELLEN DOOR BJÖRN:
+#   GitHub > repository > Settings > Pages > Build and deployment
+#   Source: van "Deploy from a branch" naar "GitHub Actions"
+# Zolang dat op "Deploy from a branch" staat, blijft de oude situatie bestaan
+# en wordt _bron nog steeds gepubliceerd.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Eén deployment tegelijk; een nieuwe push wacht netjes op de vorige.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  bouwen:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repository ophalen
+        uses: actions/checkout@v4
+
+      - name: Python klaarzetten
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Site bouwen uit _bron
+        run: python _bron/bouw.py
+
+      - name: Controleren of de bouw klopt
+        # Faalt de controle, dan stopt de deployment. Liever de oude site
+        # online dan een nieuwe met kapotte structured data of dode links.
+        run: python _bron/controle.py
+
+      - name: Waarschuwen als de gebouwde HTML afwijkt van wat er in git staat
+        # Niet fataal: de deployment gebruikt sowieso de versie die hier net
+        # is gebouwd. Wel een signaal dat er met de hand in een index.html is
+        # gewerkt, of dat iemand vergat opnieuw te bouwen voor het committen.
+        run: |
+          if ! git diff --quiet; then
+            echo "::warning::De gebouwde HTML wijkt af van de gecommitte versie."
+            echo "Draai lokaal 'python _bron/bouw.py' en commit het resultaat."
+            git diff --stat
+          fi
+
+      - name: Publicatiemap klaarzetten
+        # Kopieert alleen de toegestane bestanden naar _site/ en faalt als er
+        # iets interns tussen zit.
+        run: python _bron/publiceer.py
+
+      - name: Bewijzen dat er geen bronbestanden in de publicatie zitten
+        run: |
+          echo "Inhoud van _site op het hoogste niveau:"
+          ls -a _site
+          if [ -e _site/_bron ] || [ -n "$(find _site -name '*.py' -print -quit)" ]; then
+            echo "::error::Er staan bronbestanden in de publicatie."
+            exit 1
+          fi
+          echo "Geen _bron en geen .py-bestanden in _site."
+
+      - name: Pages configureren
+        uses: actions/configure-pages@v5
+
+      - name: Publicatiemap uploaden
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  publiceren:
+    needs: bouwen
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Naar GitHub Pages zetten
+        id: deployment
+        uses: actions/deploy-pages@v4
