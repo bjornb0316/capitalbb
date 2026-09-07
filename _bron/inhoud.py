@@ -82,7 +82,7 @@ METEN = {
 # nergens anders voor. Zolang hij leeg is gebeurt er niets.
 # ---------------------------------------------------------------------------
 INDEXNOW = {
-    "sleutel": "",
+    "sleutel": "7e5ab4fb476a4c774ab2db1ca098504e",
 }
 
 MERKNAAM = "Capital BB"
