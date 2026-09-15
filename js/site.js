@@ -252,6 +252,9 @@
        Enter of een snelle dubbelklik kan submit twee keer afgaan voordat dat
        gebeurt. Dan zou dezelfde aanvraag twee keer in de mailbox landen. */
     if (vorm.dataset.bezig === "ja") return;
+    if (klaarEl) klaarEl.hidden = true;
+    var oudVervolg = document.getElementById("scan-vervolg");
+    if (vorm.id === "scanform" && oudVervolg) oudVervolg.hidden = true;
 
     var waarden = {};
     for (var k in velden) {
@@ -259,7 +262,7 @@
       waarden[k] = el ? el.value.trim() : "";
     }
     var leeg = Object.keys(velden).filter(function (k) {
-      return k !== "vraag" && !waarden[k];
+      return k !== "vraag" && k !== "doel" && !waarden[k];
     });
     if (leeg.length) {
       foutEl.textContent = "Vul eerst alle velden in.";
@@ -326,15 +329,21 @@
     }
 
     fetch("https://api.web3forms.com/submit", opties).then(function (r) {
-      return r.json().catch(function () { return { success: r.ok }; });
+      if (!r.ok) throw new Error("Verzenden niet bevestigd");
+      return r.json();
     }).then(function (d) {
-      if (!d || !d.success) throw new Error(d && d.message ? d.message : "verzenden mislukt");
+      if (!d || d.success !== true) throw new Error(d && d.message ? d.message : "verzenden mislukt");
       vorm.dataset.bezig = "";
       if (knop) { knop.disabled = false; knop.textContent = knoptekst; }
       // De juiste tekst staat al in de HTML: het scanformulier zegt iets
       // anders dan het contactformulier. Hier alleen tonen, niet overschrijven.
       if (klaarEl) klaarEl.hidden = false;
       doel("formulier_verstuurd", { formulier: vorm.id, pagina: location.pathname });
+      doel("generate_lead", { form_id: vorm.id, lead_source: "website", pagina: location.pathname });
+      if (vorm.id === "scanform") {
+        var vervolg = document.getElementById("scan-vervolg");
+        if (vervolg) { vervolg.hidden = false; vervolg.focus(); }
+      }
       vorm.reset();
     }).catch(function () {
       // Niet verloren laten gaan: alsnog de handmatige route aanbieden.
@@ -351,17 +360,29 @@
   if (scanform) {
     scanform.addEventListener("submit", function (e) {
       e.preventDefault();
-      var url = document.getElementById("s-url").value.trim()
-        .replace(/^https?:\/\//i, "").replace(/\/.*$/, "").toLowerCase();
+      var invoer = document.getElementById("s-url").value.trim();
+      var url = "";
+      try {
+        var parsed = new URL(/^https?:\/\//i.test(invoer) ? invoer : "https://" + invoer);
+        if ((parsed.protocol === "https:" || parsed.protocol === "http:") && !parsed.username && !parsed.password && /^(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z]{2,63}$/i.test(parsed.hostname)) url = parsed.hostname.toLowerCase();
+      } catch (error) {}
       var fout = document.getElementById("s-fout");
-      if (url.length < 4 || url.indexOf(".") === -1) {
+      if (!url) {
         fout.textContent = "Vul eerst het adres van uw website in.";
         fout.hidden = false;
         return;
       }
+      var bereik = document.getElementById("s-bereik");
+      var contact = bereik.value.trim();
+      var emailGoed = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact);
+      var telefoonGoed = /^\+?[\d\s().-]+$/.test(contact) && contact.replace(/\D/g, "").length >= 8 && contact.replace(/\D/g, "").length <= 15;
+      if (!emailGoed && !telefoonGoed) {
+        fout.textContent = "Vul een geldig e-mailadres of telefoonnummer in, zodat we u kunnen bereiken.";
+        fout.hidden = false; bereik.focus(); return;
+      }
       document.getElementById("s-url").value = url;
       verstuur(scanform,
-        { website: "s-url", naam: "s-naam", bereikbaar: "s-bereik" },
+        { website: "s-url", naam: "s-naam", bereikbaar: "s-bereik", doel: "s-doel" },
         fout, "Aanvraag Website Performance Scan",
         document.getElementById("s-klaar"));
     });
@@ -398,4 +419,80 @@
     if (CONTACT.email) h += '<a href="mailto:' + CONTACT.email + '">' + CONTACT.email + "</a>";
     direct.innerHTML = h;
   }
+})();
+
+
+/* Native scroll storytelling; all chapters remain readable without JavaScript. */
+(function () {
+  'use strict';
+  var hero = document.querySelector('.cinema');
+  var journey = document.querySelector('.journey');
+  if (!hero || !journey) return;
+  var reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  var chapters = Array.from(journey.querySelectorAll('.journey-chapter'));
+  var scenes = Array.from(journey.querySelectorAll('.journey-scene'));
+  var counter = journey.querySelector('.journey-current');
+  var scheduled = false;
+  var active = -1;
+  journey.classList.add('is-scrolly');
+  function paint() {
+    scheduled = false;
+    if (reduced.matches || innerWidth <= 700) {
+      hero.style.removeProperty('--camera-scale');
+      hero.style.removeProperty('--camera-y');
+    } else {
+      var distance = Math.min(1, Math.max(0, -hero.getBoundingClientRect().top / hero.offsetHeight));
+      hero.style.setProperty('--camera-scale', String(1 + distance * .12));
+      hero.style.setProperty('--camera-y', distance * 70 + 'px');
+    }
+    var line = innerHeight * (innerWidth <= 700 ? .62 : .52);
+    var index = 0;
+    chapters.forEach(function (chapter, i) {
+      if (chapter.getBoundingClientRect().top <= line) index = i;
+    });
+    if (index !== active) {
+      active = index;
+      scenes.forEach(function (scene, i) { scene.classList.toggle('is-active', i === index); });
+      chapters.forEach(function (chapter, i) { chapter.classList.toggle('is-active', i === index); });
+      counter.textContent = String(index + 1).padStart(2, '0');
+    }
+    var first = chapters[0].getBoundingClientRect().top;
+    var last = chapters[chapters.length - 1].getBoundingClientRect().top;
+    var progress = Math.min(1, Math.max(0, (line - first) / Math.max(1, last - first)));
+    journey.style.setProperty('--journey-progress', String(progress));
+  }
+  function schedule() { if (!scheduled) { scheduled = true; requestAnimationFrame(paint); } }
+  addEventListener('scroll', schedule, { passive: true });
+  addEventListener('resize', schedule, { passive: true });
+  reduced.addEventListener('change', schedule);
+  paint();
+})();
+
+/* Reveal once on entry; content stays visible without JS or with reduced motion. */
+(function () {
+  if (!document.body.classList.contains('home') || !('IntersectionObserver' in window)) return;
+  var reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  if (reduced.matches) return;
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-revealed');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0, rootMargin: '0px 0px -30px 0px' });
+  document.querySelectorAll('.home .spoor, .home .case-grid > *, .home .scan-grid > *, .home .faq-sectie .wrap > *, .home .cta-slot .cta-inhoud').forEach(function (element) {
+    element.classList.add('reveal-ready');
+    observer.observe(element);
+  });
+})();
+
+/* Service content enters once; native details remain independently accessible. */
+(function () {
+  var page = document.querySelector('.dienst-editorial');
+  if (!page || !('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) { if (entry.isIntersecting) { entry.target.classList.add('is-revealed'); observer.unobserve(entry.target); } });
+  }, { rootMargin: '0px 0px -20px 0px' });
+  page.querySelectorAll('.dienst-concept, .marketing-verhaal > *, .proces-baan li, .bouwt-item, .stapje, .dienstkaart').forEach(function (element) { element.classList.add('reveal-ready'); observer.observe(element); });
 })();

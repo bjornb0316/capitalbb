@@ -30,11 +30,11 @@ DIEP = {
 
 "online-marketing": {
  "vraag": "Wat houdt online marketing bij Capital BB in?",
- "definitie": ("Online marketing bij Capital BB is het aanjagen van vraag: advertenties in "
+ "definitie": ("Online marketing bij Capital BB verbindt zichtbaarheid met klantopvolging: advertenties in "
    "Google en op social media, beheer van de eigen kanalen, contentproductie en "
    "e-mailmarketing. Het verschil met een los marketingbureau is dat het hier op één keten "
    "zit: de campagne brengt bezoekers, de website zet ze om in aanvragen, het CRM bewaakt de "
-   "opvolging en de automatisering doet de rest. Prijs op aanvraag; het advertentiebudget "
+   "opvolging en aftersales houdt het klantcontact na de verkoop op gang. Prijs op aanvraag; het advertentiebudget "
    "staat daar los van en gaat rechtstreeks naar Google of Meta."),
  "voor_wie": [
    "Bedrijven met een site die werkt, maar te weinig mensen die hem vinden",
@@ -58,6 +58,12 @@ DIEP = {
    ("Content die het werk doet",
     "Beeld, video en teksten die voor uw kanalen worden gemaakt, niet uit een beeldbank "
     "geplukt. Wat op de site staat en wat in een advertentie staat, vertelt hetzelfde verhaal."),
+   ("Opvolgsystemen voor leads en offertes",
+    "Een aanvraag krijgt een eigenaar en een volgende stap. Herinneringen, contactmomenten en "
+    "offerte-opvolging worden gekoppeld aan uw CRM, zodat duidelijk is wie wanneer contact opneemt."),
+   ("Aftersales die doorloopt na de verkoop",
+    "Een bedankbericht, een check na levering, een feedbackvraag of een herinnering voor onderhoud. "
+    "We richten contactmomenten in die passen bij uw dienst en het moment van de klant."),
    ("E-mail die uw bestaande klanten terughaalt",
     "Nieuwsbrieven en geautomatiseerde opvolging vanuit het CRM. Meestal het goedkoopste "
     "kanaal dat er is, en meestal het kanaal dat stilligt."),
@@ -70,6 +76,9 @@ DIEP = {
    "Social media: planning, plaatsing en community-beheer",
    "Contentproductie: beeld, video, teksten en creatives",
    "E-mailmarketing en geautomatiseerde mailflows",
+   "Lead- en offerteopvolging met CRM-taken en herinneringen",
+   "Aftersales: servicecontact, feedbackvragen en onderhoudsherinneringen",
+   "Klantbehoud: relevante vervolgcontacten en herhaalaankopen",
    "Campagnes rond een actie, seizoen of opening",
    "Meting: welke campagne welke aanvraag opleverde",
  ],
@@ -186,7 +195,7 @@ DIEP = {
     "het ontwerp, 20% voor livegang."),
    ("Controle en livegang", "Mobiel gedrag, contrast, laadgewicht, toegankelijkheid, links "
     "en formulieren worden nagelopen voordat de site live gaat."),
-   ("Onderhoud of doorbouwen", "Daarna kunt u kiezen voor onderhoud vanaf €39 per maand, "
+   ("Onderhoud of doorbouwen", "Daarna kunt u kiezen voor onderhoud vanaf €59 per maand, "
     "of doorgroeien naar CRM, automatisering of een AI-medewerker."),
  ],
  "koppelingen": [
@@ -789,8 +798,8 @@ FAQ_DIENST = {
   "De Website Performance Scan is bedoeld om precies dat vast te stellen: wat werkt, wat kan "
   "blijven, en wat vervangen moet worden. Als opnieuw bouwen niet nodig is, zeggen wij dat."),
  ("Is onderhoud verplicht?",
-  "Nee. Onderhoud is een keuze, vanaf €39 per maand voor hosting, monitoring, beveiliging, "
-  "back-ups en updates, €79 met kleine wijzigingen erbij en €149 met maandelijkse "
+  "Nee. Hosting en techniek kost €25 per maand voor hosting, monitoring, beveiliging, "
+  "back-ups en updates. Onderhoud kost €59 per maand met kleine wijzigingen erbij. Actieve groei kost €149 per maand met maandelijkse "
   "verbetering en voorrang. Zonder onderhoud blijft de site van u; het bijhouden ervan wordt "
   "dan uw eigen verantwoordelijkheid."),
 ],

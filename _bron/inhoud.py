@@ -167,9 +167,9 @@ PRIJS_ZICHT = [
     ("Actieve zichtbaarheid", "499", "per maand", "Doorlopende content, landingspagina's, autoriteit en GEO-monitoring."),
 ]
 PRIJS_ONDERHOUD = [
-    ("Hosting en techniek", "39", "per maand", "Hosting, monitoring, beveiliging, back-ups en updates."),
-    ("Beheer", "79", "per maand", "Alles uit Hosting en techniek, plus kleine wijzigingen.", True),
-    ("Actieve groei", "149", "per maand", "Alles uit Beheer, plus maandelijkse verbetering en prioriteit."),
+    ("Hosting en techniek", "25", "per maand", "Hosting, monitoring, beveiliging, back-ups en updates."),
+    ("Onderhoud", "59", "per maand", "Alles uit Hosting en techniek, plus kleine wijzigingen.", True),
+    ("Actieve groei", "149", "per maand", "Alles uit Onderhoud, plus maandelijkse verbetering en prioriteit."),
 ]
 ABON_VOORWAARDEN = ("Systemen hebben een minimale looptijd van 24 maanden en zijn daarna maandelijks "
                     "opzegbaar. Bij jaarlijkse betaling geldt 8% korting. U blijft altijd eigenaar van uw "
@@ -230,7 +230,7 @@ SPOREN = {
         "links": [
             ("websites", "Website en leadmachine", "Een site die bezoekers omzet in aanvragen en afspraken."),
             ("vindbaarheid", "Gevonden worden", "In Google, en in de AI-assistenten waar klanten hun vraag stellen."),
-            ("online-marketing", "Vraag aanjagen", "Advertenties, social media en e-mail die bezoekers naar u toe brengen."),
+            ("online-marketing", "Marketing & social media", "Campagnes, content en e-mail die uw bedrijf zichtbaar maken en aanvragen opleveren."),
             ("ai-medewerkers", "Niets meer mislopen", "De telefoon wordt opgenomen, ook als u niet kunt."),
         ],
     },
@@ -238,8 +238,9 @@ SPOREN = {
         "titel": "Ik wil slimmer werken",
         "sub": "Overzicht over klanten en opdrachten, minder handwerk, één omgeving.",
         "links": [
-            ("crm", "Overzicht over klanten", "Elke klant, offerte en opvolgtaak op één plek."),
+            ("crm", "Leads en offertes opvolgen", "Elke aanvraag, offerte en volgende actie op één plek."),
             ("automatisering", "Minder handwerk", "Wat u elke week opnieuw typt, één keer inrichten."),
+            ("online-marketing", "Aftersales & klantbehoud", "Servicecontact, feedback en opvolging na de verkoop."),
             ("business-os", "Alles in één omgeving", "Het hele bedrijf vanuit één systeem aansturen."),
         ],
     },

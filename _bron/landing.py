@@ -161,7 +161,7 @@ LANDING = {
    "vijf pagina's, mobiel als uitgangspunt, met een contactformulier en de technische "
    "SEO-basis. Wilt u meer maatwerk in het ontwerp, dan begint Premium bij \u20ac1.595. De "
    "koppeling met uw boekingssysteem komt daarbovenop: een eenvoudige koppeling vanaf \u20ac295, "
-   "een standaard API-koppeling vanaf \u20ac650. Onderhoud is daarna optioneel vanaf \u20ac39 per "
+   "een standaard API-koppeling vanaf \u20ac650. Onderhoud is daarna optioneel vanaf \u20ac59 per "
    "maand; zonder onderhoud blijft de site gewoon van u."),
  "faq": [
    ("Kan mijn bestaande boekingssysteem gekoppeld worden?",
@@ -188,7 +188,7 @@ LANDING = {
     "uw klantenkring."),
    ("Wat kost een website voor een kapsalon?",
     "Vanaf \u20ac795 eenmalig exclusief btw voor het Basis-pakket, plus vanaf \u20ac295 voor de "
-    "koppeling met uw boekingssysteem. Onderhoud is optioneel vanaf \u20ac39 per maand."),
+    "koppeling met uw boekingssysteem. Onderhoud is optioneel vanaf \u20ac59 per maand."),
    ("Word ik hiermee bovenaan gevonden in mijn plaats?",
     "Dat belooft niemand eerlijk, en wij ook niet. Wat wél helpt en wat wij bouwen: een site "
     "die technisch klopt, kloppende bedrijfsgegevens, en een Google Bedrijfsprofiel dat is "
@@ -379,7 +379,7 @@ LANDING = {
               "maatwerkdesign tot vijftien pagina's, en vanaf €4.945 zodra er eigen "
               "functionaliteit of koppelingen bij komen. Wat de prijs bepaalt is het aantal "
               "pagina's, de mate van maatwerk in het ontwerp en het aantal koppelingen met "
-              "systemen die u al gebruikt. Onderhoud is daarna een keuze, vanaf €39 per maand, "
+              "systemen die u al gebruikt. Onderhoud is daarna een keuze, vanaf €59 per maand, "
               "geen voorwaarde."),
  "wel": [
    "U wilt vooraf weten wat het kost, in plaats van na drie gesprekken",
@@ -455,7 +455,7 @@ LANDING = {
  "prijs": ("De prijzen op een rij",
    "Basis €795, Premium €1.595, Signature €2.995 en maatwerk vanaf €4.945, allemaal eenmalig "
    "en exclusief btw. Betaling in drie delen: 40% bij opdracht, 40% na goedkeuring van het "
-   "ontwerp en 20% voor livegang. Onderhoud daarna vanaf €39 per maand, en dat is een keuze."),
+   "ontwerp en 20% voor livegang. Onderhoud daarna vanaf €59 per maand, en dat is een keuze."),
  "faq": [
    ("Wat kost het om een website te laten maken?",
     "Bij Capital BB eenmalig vanaf €795 exclusief btw voor het Basis-pakket tot vijf "
@@ -473,8 +473,8 @@ LANDING = {
     "beeld. U leest alles na voordat het live gaat, en wij zetten geen claims op uw site die "
     "u niet kunt waarmaken."),
    ("Is onderhoud verplicht?",
-    "Nee. Onderhoud is een keuze, vanaf €39 per maand voor hosting, monitoring, beveiliging, "
-    "back-ups en updates. Zonder onderhoud blijft de site gewoon van u."),
+    "Nee. Hosting en techniek kost €25 per maand voor hosting, monitoring, beveiliging, "
+    "back-ups en updates. Onderhoud met kleine wijzigingen kost €59 per maand. Zonder onderhoud blijft de site gewoon van u."),
    ("Wat als mijn huidige site eigenlijk goed genoeg is?",
     "Dan zeggen wij dat. De Website Performance Scan is bedoeld om vast te stellen wat werkt, "
     "wat weg kan en of opnieuw bouwen überhaupt nodig is. Verbeteren is vaak goedkoper dan "
@@ -566,7 +566,7 @@ LANDING = {
    "Het Basis-pakket kost eenmalig vanaf €795 exclusief btw: tot vijf pagina's, responsive, "
    "een contactformulier, een technische SEO-basis en één correctieronde. Betaling in drie "
    "delen: 40% bij opdracht, 40% na goedkeuring van het ontwerp en 20% voor livegang. "
-   "Onderhoud is daarna optioneel vanaf €39 per maand; u zit nergens aan vast."),
+   "Onderhoud is daarna optioneel vanaf €59 per maand; u zit nergens aan vast."),
  "faq": [
    ("Wat kost een website voor een startende ondernemer?",
     "Vanaf €795 eenmalig exclusief btw voor het Basis-pakket: tot vijf pagina's, responsive, "

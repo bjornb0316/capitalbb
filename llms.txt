@@ -15,8 +15,9 @@ landen, de AI-medewerker die opneemt als de ondernemer niet kan, en de
 automatiseringen die het terugkerende werk overnemen. De onderdelen zijn los af
 te nemen maar gebouwd om samen te werken.
 
-Capital BB is geen webbureau, geen marketingbureau en geen wederverkoper van
-bestaande pakketten. Er is één vaste identiteit op de site:
+Capital BB combineert marketing en social media met websites, CRM, AI en
+opvolgsystemen. Ook na de verkoop: servicecontact, feedback en klantbehoud.
+Er is één vaste identiteit op de site:
 https://capitalbb.nl/#organization.
 
 - Naam: Capital BB
@@ -78,7 +79,7 @@ Volledig overzicht: https://capitalbb.nl/prijzen/
 - Bedrijfssystemen: vanaf 219 euro per maand plus inrichting vanaf 695 euro
 - Business OS: vanaf 349 euro per maand plus inrichting vanaf 1.195 euro
 - AI-medewerker en AI-telefonie: inrichting vanaf 750 euro, exclusief verbruik
-- Onderhoud: 39, 79 of 149 euro per maand
+- Hosting en techniek: 25 euro per maand; Onderhoud: 59 euro per maand; Actieve groei: 149 euro per maand
 - Vindbaarheid (SEO en GEO): 149, 299 of 499 euro per maand
 - Koppelingen: eenvoudig vanaf 295, standaard API vanaf 650, complex vanaf 1.250 euro
 - Datamigratie vanaf 295 euro, extra dashboard vanaf 395 euro

@@ -171,7 +171,7 @@ def kop_html(pad, titel, beschrijving, extra_head="", robots="index, follow"):
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{diep}css/stijl.css?v={V_CSS}">
 {extra_head}</head>
-<body>
+<body class="{'home' if not pad else 'inner-page'}">
 <a class="skip" href="#hoofd">Naar de inhoud</a>
 """
 
@@ -180,7 +180,7 @@ def nav_html(pad, actief=""):
     diep = "../" if pad else ""
     links = "".join(
         f'<a href="{diep}{slug}/"{" aria-current=" + chr(34) + "page" + chr(34) if slug == actief else ""}>{naam}</a>'
-        for slug, naam in NAV
+        for slug, naam in ([("websites", "Websites"), ("online-marketing", "Marketing & social"), ("slimmer-werken", "Slimmer werken"), ("werk", "Werk"), ("contact", "Contact")] if not pad else NAV)
     )
     return f"""<nav class="nav" aria-label="Hoofdnavigatie">
   <a class="merk" href="{diep if pad else '#top'}">{MERKTEKEN}<span class="merk-woord">{MERKNAAM}</span><span class="vh">, naar de homepage</span></a>
@@ -799,6 +799,28 @@ def faq_blok(vragen, kop="Veelgestelde vragen."):
 </section>"""
 
 
+# The three main entry pages share the approved homepage visual language.
+DIENST_BEELD = {
+    "websites": ("werk/demo-kapsalon.webp", 1024, 8560, "Websiteconcept voor een kapsalon", "Een eigen uitstraling. Tot in de details.", "Bespreek uw website", "websites"),
+    "online-marketing": ("journey-marketing.png", 1024, 688, "Illustratieve contentshoot met camera en smartphone", "Content. Campagne. Contact.", "Bespreek uw marketing", "online-marketing"),
+    "slimmer-werken": ("workspace-crm.png", 1024, 688, "Illustratief CRM op een laptop naast een telefoon", "Meer overzicht. Minder losse eindjes.", "Breng uw processen in kaart", "business-os"),
+}
+
+
+def dienst_opening(pad, kruimels, kop, tekst):
+    img, w, h, alt, caption, knop, intentie = DIENST_BEELD[pad]
+    beeldlabel = "Kapsalon · Websiteconcept" if pad == "websites" else "Illustratieve scène"
+    return f'''<header class="dienst-opening"><div class="wrap">{kruimels}<div class="dienst-hero-grid"><div class="dienst-hero-copy"><h1 class="display">{kop}</h1><p class="lede">{tekst}</p><div class="cta-acties"><a class="btn btn-gold" href="../contact/?over={intentie}">{knop}</a><a class="dienst-verder" href="#in-praktijk">Bekijk hoe het werkt <span aria-hidden="true">↓</span></a></div></div><figure class="dienst-hero-media"><img src="../img/{img}" width="{w}" height="{h}" alt="{alt}" fetchpriority="high"><figcaption>{caption}<span>{beeldlabel}</span></figcaption></figure></div></div></header>'''
+
+
+def dienst_praktijk(pad):
+    if pad == "websites":
+        return '''<section class="sectie dienst-praktijk" id="in-praktijk"><div class="wrap"><div class="praktijk-kop"><div><p class="eyebrow">Van idee naar ervaring</p><h2 class="display">Uw bedrijf heeft karakter.<br>Uw website ook.</h2></div><p class="lede">Geen vaste mal voor elk bedrijf. Deze websiteconcepten laten zien hoe sfeer, inhoud en een duidelijke vervolgstap samenkomen.</p></div><div class="dienst-concepten"><a class="dienst-concept" href="../werk/"><div class="concept-venster"><img src="../img/werk/demo-barbershop.webp" width="1280" height="6118" alt="Barbershop websiteconcept" loading="lazy"></div><span><b>Karakter dat blijft hangen.</b><small>Barbershop · Websiteconcept</small><i aria-hidden="true">↗</i></span></a><a class="dienst-concept" href="../werk/"><div class="concept-venster"><img src="../img/werk/demo-nagelstudio.webp" width="780" height="9366" alt="Nagelstudio websiteconcept" loading="lazy"></div><span><b>Verzorgd tot in de details.</b><small>Nagelstudio · Websiteconcept</small><i aria-hidden="true">↗</i></span></a></div><p class="voetnoot">Ontwerpvoorbeelden, geen klantresultaten. <a class="tekstlink" href="../werk/">Bekijk de toelichting bij ons werk</a>.</p></div></section>'''
+    if pad == "online-marketing":
+        return '''<section class="sectie dienst-praktijk" id="in-praktijk"><div class="wrap"><div class="praktijk-kop"><div><p class="eyebrow">Van aandacht naar actie</p><h2 class="display">Een goede campagne<br>stopt niet bij de klik.</h2></div><p class="lede">De boodschap in uw content, de pagina waarop iemand landt en de opvolging van een aanvraag moeten op elkaar aansluiten.</p></div><div class="marketing-verhaal"><figure><img src="../img/aftersales-flow.svg" width="1024" height="688" alt="Illustratief overzicht van servicecontact en feedback na oplevering" loading="lazy"><figcaption>Van bereik naar persoonlijk contact. Illustratieve scène.</figcaption></figure><div class="marketing-stappen"><details open><summary><span>01</span>Een verhaal dat aandacht verdient</summary><p>Content en social media laten zien wat u doet, voor wie en waarom dat relevant is. De campagne sluit aan op een concreet aanbod.</p></details><details><summary><span>02</span>Een pagina die de belofte waarmaakt</summary><p>De bezoeker komt op een passende landingspagina met uitleg, bewijs en een heldere aanvraagmogelijkheid.</p></details><details><summary><span>03</span>Een aanvraag die aandacht krijgt</summary><p>De aanvraag gaat naar de juiste plek. Een bevestiging en opvolgtaak zorgen dat iemand weet wat de volgende stap is.</p></details><details><summary><span>04</span>Contact dat na de verkoop doorgaat</summary><p>Service, feedback en relevante vervolgcommunicatie houden de klantrelatie actief. We stemmen af welke contactmomenten bij uw bedrijf passen.</p></details></div></div></div></section>'''
+    return '''<section class="sectie dienst-praktijk" id="in-praktijk"><div class="wrap"><div class="praktijk-kop"><div><p class="eyebrow">Zo kan het samenwerken</p><h2 class="display">Eén aanvraag.<br>Iedere stap in beeld.</h2></div><p class="lede">Een voorbeeld van een verbonden werkproces. U ziet wie aan zet is, wat er moet gebeuren en waar een menselijke beslissing nodig blijft.</p></div><ol class="proces-baan"><li><span class="proces-nr">01 / Binnenkomst</span><h3>Nieuwe aanvraag</h3><p>Het formulier brengt de klantgegevens en de vraag bij elkaar.</p><span class="proces-label">Website → CRM</span></li><li><span class="proces-nr">02 / Opvolging</span><h3>Een duidelijke taak</h3><p>De juiste medewerker krijgt een taak en een afgesproken opvolgmoment.</p><span class="proces-label">CRM → Actie</span></li><li><span class="proces-nr">03 / Beslissing</span><h3>Persoonlijk voorstel</h3><p>U beoordeelt de vraag en bepaalt welke offerte of volgende stap past.</p><span class="proces-label">Mens → Voorstel</span></li><li><span class="proces-nr">04 / Relatie</span><h3>Ook na de verkoop</h3><p>Oplevering, service en feedback krijgen een plek in hetzelfde overzicht.</p><span class="proces-label">Klant → Service</span></li></ol><p class="voetnoot">Illustratief proces. We richten de stappen, verantwoordelijkheden en koppelingen in op uw bedrijf.</p></div></section>'''
+
+
 def dienstpagina(pad, actief_spoor, titel, beschrijving, hero_kop, hero_tekst,
                  blokken, dienst=None, faq=None, paginatitel=None, over=None,
                  kruimel=None, ouder=None, robots="index, follow", extra_ld=None):
@@ -816,14 +838,18 @@ def dienstpagina(pad, actief_spoor, titel, beschrijving, hero_kop, hero_tekst,
                    extra=extra_ld)
     h = kop_html(pad, paginatitel or f"{titel} | {MERKNAAM}", beschrijving, ld, robots)
     h += nav_html(pad, actief_spoor)
-    h += f"""<main id="hoofd">
-<header class="pagina-kop">
+    opening = dienst_opening(pad, kruimels, hero_kop, hero_tekst) if pad in DIENST_BEELD else f'''<header class="pagina-kop">
   <div class="wrap">
     {kruimels}
     <h1 class="display">{hero_kop}</h1>
     <p class="lede">{hero_tekst}</p>
   </div>
-</header>
+</header>'''
+    praktijk = dienst_praktijk(pad) if pad in DIENST_BEELD else ""
+    klasse = f' class="dienst-editorial dienst-{pad}"' if pad in DIENST_BEELD else ""
+    h += f"""<main id="hoofd"{klasse}>
+{opening}
+{praktijk}
 {blokken}
 {faq_blok(faq)}
 {verwant_blok(pad)}
@@ -850,60 +876,6 @@ def bouw_home():
         f'<details class="faq-item"><summary>{v}</summary><p>{a}</p></details>'
         for v, a in FAQ)
 
-    # Het stelsel: vijf onderdelen docken op een baan rond de kern (Business
-    # OS), spaken verbinden ze, de buitenring sluit zich. De vorm echoot de
-    # concentrische ringen van het CBB-merk. Alles in één SVG, dus niets kan
-    # ooit buiten beeld vallen.
-    import math
-    HOEKEN = [-90, -18, 54, 126, 198]          # posities op de baan
-    R_BAAN, R_KNOOP, R_KERN = 330, 84, 110
-    knopen, spaken = "", ""
-    for i, (hoek, naam) in enumerate(zip(HOEKEN, KETEN[:5])):
-        rad = math.radians(hoek)
-        x = 500 + R_BAAN * math.cos(rad)
-        y = 500 + R_BAAN * math.sin(rad)
-        dx = (x - 500) * 0.42
-        dy = (y - 500) * 0.42
-        # Label onder de knoop, behalve bovenaan: daar erboven, anders botst
-        # hij met de kern.
-        ly = y - R_KNOOP - 30 if hoek == -90 else y + R_KNOOP + 44
-        knopen += (
-            f'<g class="knoop k{i+1}" style="--dx:{dx:.0f}px;--dy:{dy:.0f}px">'
-            f'<circle cx="{x:.0f}" cy="{y:.0f}" r="{R_KNOOP}" class="ring-buiten"/>'
-            f'<circle cx="{x:.0f}" cy="{y:.0f}" r="{R_KNOOP - 18}" class="ring-binnen"/>'
-            f'<circle cx="{x:.0f}" cy="{y:.0f}" r="7" class="kern-stip"/>'
-            f'<text x="{x:.0f}" y="{ly:.0f}" class="knoop-label">{naam.upper()}</text></g>'
-        )
-        x1 = 500 + (R_KERN) * math.cos(rad);  y1 = 500 + (R_KERN) * math.sin(rad)
-        x2 = 500 + (R_BAAN - R_KNOOP) * math.cos(rad)
-        y2 = 500 + (R_BAAN - R_KNOOP) * math.sin(rad)
-        spaken += (f'<line class="spaak s{i+1}" x1="{x1:.0f}" y1="{y1:.0f}" '
-                   f'x2="{x2:.0f}" y2="{y2:.0f}"/>')
-    # De blauwdruk: dezelfde geometrie, vaag en gestippeld, altijd zichtbaar.
-    # Zo is het scherm bij binnenkomst al gevuld met het plan; het scrollen
-    # bouwt het plan vol.
-    blauwdruk = f'<circle class="bd" cx="500" cy="500" r="{R_BAAN}"/>'
-    for hoek in HOEKEN:
-        rad = math.radians(hoek)
-        bx = 500 + R_BAAN * math.cos(rad)
-        by = 500 + R_BAAN * math.sin(rad)
-        blauwdruk += (f'<circle class="bd" cx="{bx:.0f}" cy="{by:.0f}" r="{R_KNOOP}"/>'
-                      f'<circle class="bd-stip" cx="{bx:.0f}" cy="{by:.0f}" r="5"/>')
-    blauwdruk += f'<circle class="bd" cx="500" cy="500" r="{R_KERN}"/>'
-
-    stelsel = f"""<svg class="stelsel" viewBox="0 0 1000 1000" aria-hidden="true" focusable="false">
-        <g class="blauwdruk">{blauwdruk}</g>
-        <circle class="baan" cx="500" cy="500" r="{R_BAAN}"/>
-        {spaken}
-        {knopen}
-        <g class="kern">
-          <circle cx="500" cy="500" r="{R_KERN}" class="ring-buiten"/>
-          <circle cx="500" cy="500" r="{R_KERN - 16}" class="ring-binnen"/>
-          <text x="500" y="509" class="kern-label">{KETEN[5].upper()}</text>
-        </g>
-      </svg>"""
-    ketting = " ".join(KETEN)
-
     sporen = ""
     for slug, sp in SPOREN.items():
         subs = "".join(
@@ -928,40 +900,34 @@ def bouw_home():
     h += nav_html("")
     h += f"""<main id="hoofd">
 
-<!-- FILMISCHE HERO. Zes onderdelen komen tijdens het scrollen uit de diepte
-     en verbinden zich tot één systeem. Scrollgestuurd waar de browser dat
-     kan (CSS scroll-driven animations); anders speelt de opbouw vanzelf. -->
-<section class="film" id="top">
-  <div class="film-plak">
-    <div class="film-licht" aria-hidden="true"></div>
-
-    <div class="film-stage" aria-hidden="true">
-      <div class="montage" id="montage">
-        {stelsel}
-      </div>
-    </div>
-
-    <div class="film-copy">
-      <div class="wrap">
-        <div class="merk-regel">{MERKTEKEN}<span>{MERKNAAM}</span></div>
-        <h1 class="display">Uw bedrijf draait straks<br>op één systeem.</h1>
-        <p class="lede">Website, CRM, AI-medewerkers en automatisering, gebouwd als één geheel. Niet als losse abonnementen die elkaar niet kennen.</p>
-        <div class="cta-acties">
-          <a class="btn btn-gold" href="scan/">Start de Website Performance Scan</a>
-          <a class="btn btn-ghost" href="werk/">Bekijk het werk</a>
-        </div>
-      </div>
+<!-- Realistische Higgsfield-werkplek, tekst en bediening blijven echte HTML. -->
+<section class="cinema" id="top" aria-label="Alles verbonden">
+  <div class="cinema-media" aria-hidden="true"><img src="img/workspace-hero.png" width="1344" height="752" alt="" fetchpriority="high"></div>
+  <div class="wrap cinema-copy">
+    <h1>Uw bedrijf.<br>Alles verbonden.</h1>
+    <p class="lede">Marketing, websites en opvolging. Alles verbonden.</p>
+    <div class="cta-acties">
+      <a class="btn btn-gold" href="#samenwerking">Ontdek wat mogelijk is</a>
+      <a class="btn cinema-link" href="werk/">Bekijk ons werk <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
     </div>
   </div>
-  <p class="vh">De onderdelen {ketting} verbinden zich tot één systeem.</p>
+  <div class="system-rail wrap" aria-label="De onderdelen van uw systeem"><span>Marketing &amp; social</span><span>Websites</span><span>Opvolging</span><span>Aftersales</span></div>
 </section>
-
+<section class="journey sectie" id="samenwerking" aria-labelledby="journey-heading">
+  <div class="wrap">
+    <header class="journey-heading"><p class="eyebrow">Eén verbonden klantreis</p><h2 class="display" id="journey-heading">Van eerste indruk.<br>Naar vaste klant.</h2><p class="lede">Meer dan losse oplossingen. Ontdek hoe elke stap de volgende sterker maakt.</p><p class="journey-scroll-hint">Scroll door de klantreis <span aria-hidden="true">↓</span></p></header>
+    <div class="journey-grid">
+      <div class="journey-visual" aria-hidden="true"><div class="journey-screen"><div class="journey-scene is-active" data-scene="0"><img src="img/journey-marketing.png" width="1024" height="688" alt="Illustratieve contentshoot met camera, smartphone en product" loading="lazy"><span class="journey-scene-label">Marketing &amp; social</span></div><div class="journey-scene" data-scene="1"><img src="img/workspace-hero.png" width="1344" height="752" alt="Illustratieve werkplek met een website op een groot beeldscherm" loading="lazy"><span class="journey-scene-label">Website &amp; aanvraag</span></div><div class="journey-scene" data-scene="2"><img src="img/workspace-crm.png" width="1024" height="688" alt="Illustratie van een laptop met CRM en een telefoon" loading="lazy"><span class="journey-scene-label">Leadopvolging</span></div><div class="journey-scene" data-scene="3"><img src="img/aftersales-flow.svg" width="1024" height="688" alt="Illustratieve opvolgroute met bedankbericht, servicecontact en feedbackvraag" loading="lazy"><span class="journey-scene-label">Aftersales</span></div><div class="journey-meter"><span class="journey-current">01</span><span class="journey-track"><i></i></span><span>04</span></div></div><p class="journey-caption">Een beeld van wat mogelijk is. Illustratieve scènes.</p></div>
+      <div class="journey-chapters"><article class="journey-chapter" id="klantreis-1" data-chapter="0"><p class="journey-label"><span>01</span> Marketing &amp; social</p><h3>Word gezien.<br>Blijf hangen.</h3><p class="journey-body">Content, social media en campagnes brengen uw bedrijf onder de aandacht. Een herkenbaar verhaal dat de juiste mensen nieuwsgierig maakt.</p><p class="journey-tags">Content · Social media · Campagnes</p><div class="journey-fallback"><img src="img/journey-marketing.png" width="1024" height="688" alt="Illustratieve contentshoot met camera, smartphone en product" loading="lazy"></div></article><article class="journey-chapter" id="klantreis-2" data-chapter="1"><p class="journey-label"><span>02</span> Website &amp; aanvraag</p><h3>Van nieuwsgierig.<br>Naar geïnteresseerd.</h3><p class="journey-body">Uw website geeft het verhaal een plek. Met overtuigende pagina’s en een duidelijke volgende stap: een aanvraag, afspraak of aankoop.</p><p class="journey-tags">Websites · Landingspagina’s · Aanvragen</p><div class="journey-fallback"><img src="img/workspace-hero.png" width="1344" height="752" alt="Illustratieve werkplek met een website op een groot beeldscherm" loading="lazy"></div></article><article class="journey-chapter" id="klantreis-3" data-chapter="2"><p class="journey-label"><span>03</span> Leadopvolging</p><h3>Een goede lead.<br>Verdient aandacht.</h3><p class="journey-body">Het CRM bewaart de aanvraag. Opvolgtaken, offerteherinneringen en AI-ondersteuning helpen om op het juiste moment contact te houden.</p><p class="journey-tags">CRM · Offertes · Automatisering</p><div class="journey-fallback"><img src="img/workspace-crm.png" width="1024" height="688" alt="Illustratie van een laptop met CRM en een telefoon" loading="lazy"></div></article><article class="journey-chapter" id="klantreis-4" data-chapter="3"><p class="journey-label"><span>04</span> Aftersales</p><h3>Verkocht.<br>En dan begint het.</h3><p class="journey-body">Een bedankbericht. Even checken of alles goed gaat. Service, feedback en relevante herinneringen houden het contact persoonlijk, ook na de verkoop.</p><p class="journey-tags">Service · Feedback · Klantrelaties</p><div class="journey-fallback"><img src="img/aftersales-flow.svg" width="1024" height="688" alt="Illustratieve opvolgroute met bedankbericht, servicecontact en feedbackvraag" loading="lazy"></div></article></div>
+    </div>
+  </div>
+</section>
 <!-- WAT WIJ BOUWEN -->
 <section class="sectie">
   <div class="wrap">
     <div class="sec-kop">
       <h2 class="display">Geen webbureau.<br>Een digitaliseringspartner.</h2>
-      <p class="lede">Een website is bij ons het beginpunt van een keten: bezoekers worden leads, leads landen in het CRM, de AI-medewerker neemt op als u niet kunt, en de workflows doen het terugkerende werk. Elk onderdeel is los af te nemen, maar ze zijn gebouwd om samen te werken.</p>
+      <p class="lede">Van marketing en social media tot websites, CRM en AI: wij verbinden de hele klantreis. Aanvragen en offertes krijgen opvolging. Na de verkoop blijven service, feedback en klantcontact op de agenda. Elk onderdeel is los af te nemen, maar de kracht zit in de samenwerking.</p>
     </div>
   </div>
 </section>
@@ -979,30 +945,15 @@ def bouw_home():
   <div class="wrap case-grid">
     <div>
       <p class="eyebrow">Gebouwd werk</p>
-      <h2 class="display">{CASE["kop"]}</h2>
-      <p class="lede">Een complete site voor een {CASE["naam"].lower()} in {CASE["regio"]}, gebouwd op het eigen {CASE["pakket"]}.</p>
-      <ul class="ticks">{case_punten}</ul>
+      <h2 class="display">Gebouwd om<br>te werken.</h2>
+      <p class="lede">Van een overtuigende website tot een compleet bedrijfssysteem. Bekijk het gebouwde werk en de concepten, met de keuzes achter elk ontwerp.</p>
       <a class="btn btn-ghost" href="werk/">Bekijk dit werk en de andere cases</a>
     </div>
-    <div class="case-beeld" aria-hidden="true">
-      <div class="venster-mini">
-        <div class="vm-bar"><span class="vm-stippen"><i></i><i></i><i></i></span><span class="vm-url">Designsysteem IJsseldal</span></div>
-        <div class="ijs">
-          <div class="ijs-nav"><b>Adviespraktijk</b><span>Hypotheekadvies</span><span>Werkwijze</span><span>Tarieven</span><em>Afspraak maken</em></div>
-          <div class="ijs-hero">
-            <div class="ijs-tekst">
-              <small>Onafhankelijk zelfstandig adviseur</small>
-              <strong>Het hele aanbod, niet &eacute;&eacute;n bank</strong>
-              <p>Een hypotheek kiezen is niet &eacute;&eacute;n beslissing maar tientallen kleine.</p>
-              <em>Plan een gesprek</em>
-            </div>
-            <div class="ijs-portret"></div>
-          </div>
-          <div class="ijs-band">Eerst rekenen, dan pas praten over banken</div>
-          <div class="ijs-rij"><span>Eerste woning</span><span>Oversluiten</span><span>Verbouwen</span></div>
-        </div>
-      </div>
-    </div>
+    <a class="case-beeld project-preview" href="werk/" aria-label="Bekijk ons werk en de concepten">
+      <div class="project-browser" aria-hidden="true"><i></i><i></i><i></i><b>Barbershop · Websiteconcept</b></div>
+      <div class="project-window"><img src="img/werk/demo-barbershop.webp" width="1280" height="6118" alt="Websiteconcept voor een barbershop" loading="lazy"></div>
+      <span>Websiteconcept · Bekijk het werk <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></span>
+    </a>
   </div>
 </section>
 
@@ -1010,7 +961,7 @@ def bouw_home():
 <section class="sectie scan-teaser">
   <div class="wrap scan-grid">
     <div>
-      <h2 class="display">Website Performance Scan</h2>
+      <h2 class="display">Eerst inzicht.<br>Dan vooruit.</h2>
       <p class="lede">Laat uw website analyseren op conversie, techniek, vindbaarheid en groeikansen. Zeventien controlepunten, beoordeeld door een mens, binnen één werkdag.</p>
       <a class="btn btn-gold" href="scan/">Start de scan</a>
     </div>
@@ -1066,7 +1017,7 @@ def bouw_home():
 <section class="sectie">
   <div class="wrap">
     <h2 class="display">Waar ondernemers meestal mee binnenkomen.</h2>
-    <p class="lede">Vijf vragen die het vaakst gesteld worden, elk met een eigen pagina waarop hij helemaal wordt beantwoord: kosten, doorlooptijd, de afweging en wat het u oplevert.</p>
+    <p class="lede">Veelgestelde ondernemersvragen, elk met een eigen pagina waarop hij helemaal wordt beantwoord: kosten, doorlooptijd, de afweging en wat het u oplevert.</p>
     <div class="keuzehulp">{koopvragen}</div>
   </div>
 </section>
@@ -1169,7 +1120,7 @@ def bouw_marketing():
                         "contentproductie en e-mailmarketing, gekoppeld aan de website en het "
                         "CRM waar de aanvraag landt.",
                         "Campagnes die ergens<br>op uitkomen.",
-                        "Adverteren, social media, content en e-mail, gekoppeld aan de pagina waar de bezoeker landt en het systeem dat de aanvraag opvolgt.",
+                        "Marketing, social media en content trekken de aandacht. Opvolgsystemen begeleiden aanvragen en offertes. Aftersales houdt het contact na de verkoop warm.",
                         diep_secties("online-marketing", prijsdeel),
                         dienst="online-marketing", faq=FAQ_DIENST["online-marketing"],
                         kruimel="Online marketing",
@@ -1397,19 +1348,27 @@ def bouw_scan():
                  pagina_ld("scan", "Website Performance Scan", beschrijving,
                            stappen=stappen, faq=FAQ_SCAN))
     h += nav_html("scan")
-    h += f"""<main id="hoofd">
+    h += f"""<main id="hoofd" class="scan-route">
 <header class="pagina-kop">
   <div class="wrap">
     {kruimels}
     <p class="eyebrow">Kosteloos, binnen één werkdag</p>
-    <h1 class="display">Website Performance Scan</h1>
+    <h1 class="display">Waar laat uw website<br>aanvragen liggen?</h1>
     <p class="lede">Laat uw website analyseren op conversie, techniek, vindbaarheid en groeikansen. {totaal} controlepunten, beoordeeld door een mens die er werkelijk doorheen gaat.</p>
+    <div class="cta-acties"><a class="btn btn-gold" href="#scanform">Vraag mijn kosteloze scan aan</a><a class="tekstlink" href="#voorbeeldrapport">Bekijk een voorbeeld</a></div>
   </div>
 </header>
 
-<section class="sectie">
-  <div class="wrap">
-    <form class="scanform" id="scanform" novalidate>
+<section class="sectie scan-aanvraag" id="aanvragen">
+  <div class="wrap scan-aanvraag-grid">
+    <div class="scan-aanbod">
+      <h2 class="display">Geen gokwerk.<br>Een helder verbeterplan.</h2>
+      <p class="lede">U krijgt inzicht in wat goed werkt, waar bezoekers vastlopen en welke verbeteringen als eerste aandacht verdienen.</p>
+      <ol class="scan-vervolg"><li><b>U deelt uw website</b><span>Vertel eventueel wat u ermee wilt bereiken.</span></li><li><b>Björn beoordeelt de website</b><span>17 controlepunten, met een menselijke beoordeling.</span></li><li><b>U krijgt het resultaat</b><span>Binnen één werkdag. Daarna beslist u zelf of u iets wilt laten verbeteren.</span></li></ol>
+      <a class="tekstlink" href="#voorbeeldrapport">Bekijk hoe een bevinding eruitziet ↓</a>
+    </div>
+    <div><form class="scanform" id="scanform" novalidate>
+      <h2>Vraag uw kosteloze scan aan</h2><p class="hint">Drie gegevens. Geen verplichting.</p>
       <div class="veld">
         <label for="s-url">Adres van uw website</label>
         <input id="s-url" type="text" inputmode="url" autocomplete="url" placeholder="uwbedrijf.nl" required>
@@ -1420,19 +1379,22 @@ def bouw_scan():
       </div>
       <div class="veld">
         <label for="s-bereik">Telefoon of e-mail</label>
-        <input id="s-bereik" type="text" autocomplete="tel" required>
-        <p class="hint">Daar krijgt u het resultaat op.</p>
+        <input id="s-bereik" type="text" required aria-describedby="s-bereik-hint">
+        <p class="hint" id="s-bereik-hint">Vul uw e-mailadres of telefoonnummer in. Zo nemen we contact op over de scan.</p>
       </div>
+      <div class="veld"><label for="s-doel">Wat wilt u verbeteren? <span class="hint">(optioneel)</span></label><select id="s-doel"><option value="">Kies uw belangrijkste doel</option><option>Meer aanvragen via mijn website</option><option>Beter gevonden worden</option><option>Leads en offertes beter opvolgen</option><option>Meer terugkerende klanten</option><option>Ik wil weten waar ik moet beginnen</option></select></div>
       {honeypot()}
       <p class="fout" id="s-fout" role="alert" hidden></p>
       <p class="succes" id="s-klaar" role="status" hidden>{SUCCES_SCAN}</p>
       <button class="btn btn-gold" type="submit">Vraag de scan aan</button>
-      <p class="hint">Kosteloos, u zit nergens aan vast, en u hoeft niets technisch aan te leveren: het adres van uw site is genoeg. {VERZENDNOOT}</p>
+      <p class="hint">Kosteloos, u zit nergens aan vast, en u hoeft niets technisch aan te leveren: uw websiteadres en contactgegevens zijn genoeg. {VERZENDNOOT}</p>
     </form>
-    <p class="cta-direct form-direct"><span>Liever appen dan typen?</span> {wa_knop("de Website Performance Scan", "App het adres van uw site")} <span>of bel <a class="tekstlink" href="tel:{CONTACT["telefoon"].replace(" ", "")}">{CONTACT["telefoon"]}</a></span></p>
+    <div class="scan-ontvangen" id="scan-vervolg" hidden tabindex="-1"><h2>Dit is de volgende stap.</h2><p>Björn bekijkt uw website en neemt binnen één werkdag contact op over de uitkomst. Een kennismaking of offerte volgt alleen als u verder wilt.</p><a class="tekstlink" href="../werk/">Bekijk ondertussen ons werk →</a></div>
+    <p class="cta-direct form-direct"><span>Liever appen dan typen?</span> {wa_knop("de Website Performance Scan", "App het adres van uw site")} <span>of bel <a class="tekstlink" href="tel:{CONTACT["telefoon"].replace(" ", "")}">{CONTACT["telefoon"]}</a></span></p></div>
   </div>
 </section>
 
+<section class="sectie scan-voorbeeld" id="voorbeeldrapport"><div class="wrap scan-twee"><div><p class="eyebrow">Voorbeeld, geen echte klantanalyse</p><h2 class="display">Van bevinding.<br>Naar volgende stap.</h2><p class="lede">Een bruikbaar rapport vertelt niet alleen wat er misgaat, maar ook wat u eraan kunt doen.</p><a class="btn btn-gold" href="#aanvragen">Laat mijn website bekijken</a></div><article class="voorbeeld-bevinding"><p class="eyebrow">Conversie / Voorbeeldbevinding</p><h3>De volgende stap is lastig te vinden.</h3><dl><dt>Observatie</dt><dd>Op de mobiele dienstenpagina staat de aanvraagknop pas na een lange lap tekst.</dd><dt>Waarom dit aandacht verdient</dt><dd>Een geïnteresseerde bezoeker moet zoeken naar een manier om contact op te nemen.</dd><dt>Eerste verbetering</dt><dd>Zet een duidelijke aanvraagknop bij het aanbod en controleer daarna of meer bezoekers een aanvraag afronden.</dd></dl><p class="hint">Illustratief voorbeeld. Uw rapport is gebaseerd op uw eigen website; resultaten worden niet vooraf beloofd.</p></article></div></section>
 <section class="sectie band">
   <div class="wrap scan-twee">
     <div>
@@ -1449,7 +1411,7 @@ def bouw_scan():
         <div><b>Verbeterkansen</b><span>Realistisch ingeschat, zonder beloofde percentages.</span></div>
         <div><b>Wat wij niet konden testen</b><span>Ook dat staat erin, want anders is het geen oordeel.</span></div>
       </div>
-      <p class="eerlijk">Er wordt niets gemeten terwijl u hier wacht. Een pagina in uw browser mag andere websites niet uitlezen; de scan draait bij ons, en er kijkt een mens naar voordat u iets krijgt.</p>
+      <p class="eerlijk">Er wordt niets gemeten terwijl u hier wacht. Björn beoordeelt uw website na de aanvraag. U krijgt de uitkomst persoonlijk terug.</p>
     </aside>
   </div>
 </section>
@@ -1754,7 +1716,7 @@ def bouw_privacy():
     if MAILT_DIRECT:
         verwerkt = ("<p>Alleen wat u zelf invult in het contact- of scanformulier: uw naam, "
                     "bedrijfsnaam, telefoonnummer of e-mailadres, het adres van uw website en "
-                    "uw vraag. Daarnaast wordt meegestuurd vanaf welke pagina u het formulier "
+                    "uw vraag en eventueel uw gekozen verbeterdoel. Daarnaast wordt meegestuurd vanaf welke pagina u het formulier "
                     "verstuurde, zodat duidelijk is waar uw vraag over gaat.</p>")
         daarna = ("<p>Het formulier verstuurt uw gegevens via de verzenddienst "
                   "<a class=\"tekstlink\" href=\"https://web3forms.com/privacy\" rel=\"noopener\">Web3Forms</a> "
@@ -1970,8 +1932,9 @@ landen, de AI-medewerker die opneemt als de ondernemer niet kan, en de
 automatiseringen die het terugkerende werk overnemen. De onderdelen zijn los af
 te nemen maar gebouwd om samen te werken.
 
-Capital BB is geen webbureau, geen marketingbureau en geen wederverkoper van
-bestaande pakketten. Er is één vaste identiteit op de site:
+Capital BB combineert marketing en social media met websites, CRM, AI en
+opvolgsystemen. Ook na de verkoop: servicecontact, feedback en klantbehoud.
+Er is één vaste identiteit op de site:
 {DOMEIN}/#organization.
 
 - Naam: {MERKNAAM}
@@ -2027,7 +1990,7 @@ Volledig overzicht: {DOMEIN}/prijzen/
 - Bedrijfssystemen: vanaf 219 euro per maand plus inrichting vanaf 695 euro
 - Business OS: vanaf 349 euro per maand plus inrichting vanaf 1.195 euro
 - AI-medewerker en AI-telefonie: inrichting vanaf 750 euro, exclusief verbruik
-- Onderhoud: 39, 79 of 149 euro per maand
+- Hosting en techniek: 25 euro per maand; Onderhoud: 59 euro per maand; Actieve groei: 149 euro per maand
 - Vindbaarheid (SEO en GEO): 149, 299 of 499 euro per maand
 - Koppelingen: eenvoudig vanaf 295, standaard API vanaf 650, complex vanaf 1.250 euro
 - Datamigratie vanaf 295 euro, extra dashboard vanaf 395 euro
