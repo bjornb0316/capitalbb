@@ -130,6 +130,12 @@ def _stempel(pad):
 V_CSS = _stempel("css/stijl.css")
 V_JS = _stempel("js/site.js")
 
+
+def meet_aan():
+    """Draait er iets dat cookies plaatst? Bepaalt of de banner, de
+    herzien-link en de cookieparagraaf in de privacyverklaring verschijnen."""
+    return bool(METEN.get("ga4") or METEN.get("meta_pixel"))
+
 MERKTEKEN = (
     '<svg class="merkteken" viewBox="0 0 100 100" aria-hidden="true" focusable="false">'
     '<circle cx="50" cy="50" r="47" fill="none" stroke="currentColor" stroke-width="1.6"/>'
@@ -208,12 +214,12 @@ def voet_html(pad):
     formulier = ("window.CBB_FORMULIER=" + _json.dumps(FORMULIER, ensure_ascii=False) + ";"
                  if pad in ("contact", "scan") else "")
     meten = ("window.CBB_META=" + _json.dumps(METEN, ensure_ascii=False) + ";"
-             if METEN.get("ga4") else "")
+             if meet_aan() else "")
     # Toestemming intrekken moet net zo makkelijk zijn als geven. De link staat
     # er alleen als er iets te herzien valt, en wordt door de JS zichtbaar
     # gemaakt zodra er statistieken draaien.
     herzien = ('<a href="#" id="cookie-herzien" hidden>Cookievoorkeur wijzigen</a>'
-               if METEN.get("ga4") else "")
+               if meet_aan() else "")
     diensten = "".join(f'<a href="{diep}{s}/">{n}</a>' for s, n in VOET_DIENSTEN)
     praktisch = "".join(f'<a href="{diep}{s}/">{n}</a>' for s, n in VOET_PRAKTISCH)
     if CONTACT["telefoon"] or CONTACT["email"]:
@@ -1743,18 +1749,35 @@ def bouw_privacy():
                   "het contact waar u zelf om vroeg.</p>")
         bewaren = ""
 
-    if METEN.get("ga4"):
+    if meet_aan():
+        namen = []
+        if METEN.get("ga4"):
+            namen.append("Google Analytics")
+        if METEN.get("meta_pixel"):
+            namen.append("de Meta-pixel van Facebook en Instagram")
+        welke = " en ".join(namen)
         cookietekst = (
             "<h2>Cookies en meetsystemen</h2>"
-            "<p>Deze site gebruikt Google Analytics om te zien welke pagina's worden gelezen "
-            "en via welke route bezoekers binnenkomen. Daar horen cookies bij. Daarom wordt "
+            f"<p>Deze site gebruikt {welke}. Daar horen cookies bij. Daarom wordt "
             "er eerst om toestemming gevraagd: <b>zolang u niets kiest of weigert, wordt "
-            "Google Analytics niet geladen en wordt er niets gemeten</b>. De site werkt "
-            "verder gewoon.</p>"
-            "<p>Wat er bij toestemming wordt gemeten: welke pagina's u bekijkt, hoe lang, "
-            "via welke website of zoekmachine u binnenkwam, en of u een formulier heeft "
-            "verstuurd. Uw IP-adres wordt daarbij ingekort. Er worden geen advertentie- of "
-            "profileringsfuncties gebruikt.</p>"
+            "er niets geladen en niets gemeten</b>. De site werkt verder gewoon.</p>")
+        if METEN.get("ga4"):
+            cookietekst += (
+                "<h3>Google Analytics</h3>"
+                "<p>Hiermee zien wij welke pagina's worden gelezen, hoe lang, via welke "
+                "website of zoekmachine u binnenkwam, en of u een formulier heeft verstuurd. "
+                "Uw IP-adres wordt daarbij ingekort. Er worden geen advertentie- of "
+                "profileringsfuncties gebruikt.</p>")
+        if METEN.get("meta_pixel"):
+            cookietekst += (
+                "<h3>De Meta-pixel</h3>"
+                "<p>Capital BB adverteert op Facebook en Instagram. De pixel geeft aan Meta "
+                "door welke pagina's u hier bekijkt en of u een formulier heeft verstuurd, "
+                "zodat wij weten welke advertentie werkt. Meta mag die gegevens ook gebruiken "
+                "om u later een advertentie van ons te tonen en om vergelijkbare doelgroepen "
+                "samen te stellen. Dat gaat dus verder dan statistiek, en daarom vragen wij "
+                "het vooraf. Wij sturen geen namen, e-mailadressen of telefoonnummers mee.</p>")
+        cookietekst += (
             "<p>Uw keuze wordt lokaal in uw eigen browser bewaard, niet in een cookie van "
             "ons. U kunt hem op elk moment wijzigen via <b>Cookievoorkeur wijzigen</b> "
             "onderaan elke pagina.</p>")
@@ -1778,8 +1801,13 @@ def bouw_privacy():
     <p>U kunt altijd vragen welke gegevens van u bewaard zijn, en om correctie of verwijdering. Eén bericht naar <a class="tekstlink" href="mailto:{CONTACT["email"]}">{CONTACT["email"]}</a> is genoeg.</p>
   </div>
 </section>"""
+    omschrijving = ("Hoe Capital BB omgaat met uw gegevens: welke cookies er pas na uw "
+                    "toestemming laden, wat er wordt gemeten en hoe u die keuze wijzigt."
+                    if meet_aan() else
+                    "Hoe Capital BB omgaat met uw gegevens: geen cookies, geen trackers, "
+                    "geen opslag op een server.")
     return dienstpagina("privacy", "", "Privacyverklaring",
-                        "Hoe Capital BB omgaat met uw gegevens: geen cookies, geen trackers, geen opslag op een server.",
+                        omschrijving,
                         "Privacyverklaring",
                         "Kort, want deze site verzamelt vrijwel niets.",
                         blokken,

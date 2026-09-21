@@ -58,15 +58,28 @@ FORMULIER = {
 # Zolang dit leeg is, wordt er niets geladen en verschijnt er geen
 # cookiebanner. De privacyverklaring past zich daar automatisch op aan.
 #
-# LET OP: Google Analytics plaatst cookies. Daarom geldt met een ingevuld ID:
+# "meta_pixel" is het pixel-ID van Meta (Facebook en Instagram), vijftien of
+# zestien cijfers. Aanmaken op https://business.facebook.com: Gegevensbronnen >
+# Datasets > Maken. Nodig zodra er advertenties draaien: zonder pixel weet Meta
+# niet wie een aanvraag deed en kan het daar niet op sturen.
+#
+# Zolang beide leeg zijn, wordt er niets geladen en verschijnt er geen
+# cookiebanner. De privacyverklaring past zich daar automatisch op aan.
+#
+# LET OP: beide plaatsen cookies. Daarom geldt met een ingevuld ID:
 #   - er verschijnt een cookiebanner
-#   - Analytics laadt pas NA toestemming, nooit ervoor
+#   - ze laden pas NA toestemming, nooit ervoor
 #   - weigeren is net zo makkelijk als accepteren
 #   - de keuze is later te wijzigen via de link in de voettekst
 # Dat is geen extra service maar wat de wet vereist. Zet het dus niet uit.
+#
+# De Meta-pixel meet meer dan Analytics: hij bouwt een profiel voor
+# advertenties. Dat staat dus ook zo in de privacyverklaring, en het staat in
+# de cookiebanner voordat er iets laadt.
 # ---------------------------------------------------------------------------
 METEN = {
     "ga4": "G-ENESN5G33J",
+    "meta_pixel": "1141063571607591",
 }
 
 # ---------------------------------------------------------------------------

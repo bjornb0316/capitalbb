@@ -92,8 +92,9 @@
   }
 
   /* ---------------- Meten en toestemming ----------------
-     Google Analytics plaatst cookies, dus mag het pas laden nadat de bezoeker
-     daar ja op heeft gezegd. Niet ervoor, en niet "tenzij hij nee zegt".
+     Google Analytics en de Meta-pixel plaatsen cookies, dus mogen ze pas
+     laden nadat de bezoeker daar ja op heeft gezegd. Niet ervoor, en niet
+     "tenzij hij nee zegt".
 
      De regels die hier zijn ingebouwd:
      - er wordt niets geladen en niets opgeslagen zolang er geen keuze is
@@ -101,8 +102,9 @@
      - de keuze wordt lokaal bewaard, niet in een cookie van een derde
      - de keuze is later te wijzigen via de link in de voettekst
      - zonder meet-ID gebeurt er helemaal niets en is er geen banner */
-  var META = window.CBB_META || { ga4: "" };
+  var META = window.CBB_META || { ga4: "", meta_pixel: "" };
   var KEUZE = "cbb-meten";
+  var METEN_AAN = !!(META.ga4 || META.meta_pixel);
 
   function keuzeLezen() {
     try { return localStorage.getItem(KEUZE); } catch (e) { return null; }
@@ -129,15 +131,57 @@
     gtag("config", META.ga4, { anonymize_ip: true });
   }
 
+  /* De Meta-pixel. Zonder advanced matching: er gaat geen naam, e-mailadres
+     of telefoonnummer naar Meta, alleen welke pagina bekeken is en welk doel
+     is gehaald. Dat is genoeg om advertenties op te sturen. */
+  function pixelLaden() {
+    if (!META.meta_pixel || window.__cbbPixel) return;
+    window.__cbbPixel = true;
+    /* De standaard-aanroep van Meta, alleen leesbaar opgeschreven: een wachtrij
+       die de events vasthoudt tot het script van Meta binnen is. */
+    var f = window.fbq = function () {
+      if (f.callMethod) f.callMethod.apply(f, arguments);
+      else f.queue.push(arguments);
+    };
+    if (!window._fbq) window._fbq = f;
+    f.push = f; f.loaded = true; f.version = "2.0"; f.queue = [];
+    var sc = document.createElement("script");
+    sc.async = true;
+    sc.src = "https://connect.facebook.net/en_US/fbevents.js";
+    document.head.appendChild(sc);
+    f("init", META.meta_pixel);
+    f("track", "PageView");
+  }
+
+  function metenLaden() {
+    analyticsLaden();
+    pixelLaden();
+  }
+
+  /* Welk doel bij Meta welk standaardevent is. Alleen wat Meta kent, want op
+     een eigen naam kan een campagne niet optimaliseren. Wat hier niet in staat
+     gaat wel naar Analytics en niet naar Meta. */
+  var META_EVENT = {
+    formulier_verstuurd: "Lead",
+    formulier_overgedragen: "Contact",
+    whatsapp_klik: "Contact",
+    telefoon_klik: "Contact",
+    mail_klik: "Contact"
+  };
+
   /* Doelen meesturen, zodat zichtbaar wordt wat een bezoek oplevert en niet
      alleen hoeveel bezoeken er waren. Doet niets zonder toestemming. */
   function doel(naam, extra) {
     if (typeof window.gtag === "function") window.gtag("event", naam, extra || {});
+    if (typeof window.fbq === "function" && META_EVENT[naam]) {
+      window.fbq("track", META_EVENT[naam], { content_name: naam,
+                                              content_category: location.pathname });
+    }
   }
   window.CBBdoel = doel;
 
   function bannerTonen() {
-    if (!META.ga4 || document.getElementById("cookiebalk")) return;
+    if (!METEN_AAN || document.getElementById("cookiebalk")) return;
     var b = document.createElement("div");
     b.className = "cookiebalk";
     b.id = "cookiebalk";
@@ -145,9 +189,15 @@
     b.setAttribute("aria-modal", "false");
     b.setAttribute("aria-label", "Cookievoorkeur");
     var diep = document.querySelector('link[rel="stylesheet"]').getAttribute("href").indexOf("../") === 0 ? "../" : "";
+    /* Wat er draait, staat er ook. Adverteren noemen wij apart, want dat gaat
+       verder dan tellen hoe vaak een pagina is gelezen. */
+    var waarvoor = META.meta_pixel
+      ? 'Wij gebruiken statistieken om te zien welke pagina’s worden gelezen, en de ' +
+        'Meta-pixel om te zien welke advertentie op Facebook of Instagram werkt. '
+      : 'Wij gebruiken statistieken om te zien welke pagina’s worden gelezen. ';
     b.innerHTML =
-      '<p class="cookiebalk-tekst">Wij gebruiken statistieken om te zien welke pagina’s ' +
-      'worden gelezen. Daar horen cookies bij, dus vragen wij het eerst. Zonder toestemming ' +
+      '<p class="cookiebalk-tekst">' + waarvoor +
+      'Daar horen cookies bij, dus vragen wij het eerst. Zonder toestemming ' +
       'wordt er niets geladen en werkt de site gewoon. ' +
       '<a class="tekstlink" href="' + diep + 'privacy/">Lees wat er wordt gemeten</a>.</p>' +
       '<div class="cookiebalk-knoppen">' +
@@ -157,7 +207,7 @@
     document.body.appendChild(b);
     document.body.classList.add("cookie-open");
     document.getElementById("cookie-ja").addEventListener("click", function () {
-      keuzeSchrijven("ja"); sluiten(); analyticsLaden();
+      keuzeSchrijven("ja"); sluiten(); metenLaden();
     });
     document.getElementById("cookie-nee").addEventListener("click", function () {
       keuzeSchrijven("nee"); sluiten();
@@ -168,9 +218,9 @@
     }
   }
 
-  if (META.ga4) {
+  if (METEN_AAN) {
     var gekozen = keuzeLezen();
-    if (gekozen === "ja") analyticsLaden();
+    if (gekozen === "ja") metenLaden();
     else if (gekozen !== "nee") bannerTonen();
 
     // Voettekstlink om de keuze te herzien.

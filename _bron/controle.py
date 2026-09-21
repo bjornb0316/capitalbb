@@ -421,7 +421,7 @@ for p, gegevens in ZOEKINTENTIE.items():
 
 # --- 14d: geen trackingcode zonder geldige configuratie ---------------------
 for p, h in HTML.items():
-    if "googletagmanager" in h or "gtag/js" in h:
+    if "googletagmanager" in h or "gtag/js" in h or "connect.facebook.net" in h:
         fout(p, "laadt een trackingscript rechtstreeks in de HTML; dat hoort "
                 "pas na toestemming door de JS te gebeuren")
 if METEN.get("ga4"):
@@ -434,6 +434,17 @@ if METEN.get("ga4"):
 else:
     if "Google Analytics" in tekst(HTML.get("privacy", "")):
         fout("privacy", "noemt analytics terwijl er geen meet-ID is ingesteld")
+
+if METEN.get("meta_pixel"):
+    if not re.match(r"^\d{15,16}$", str(METEN["meta_pixel"])):
+        fout("meten", f"meta_pixel is geen pixel-ID van 15 of 16 cijfers: {METEN['meta_pixel']}")
+    if "cookiebalk" not in lees(os.path.join(WORTEL, "js", "site.js")):
+        fout("meten", "pixel-ID ingesteld maar er is geen cookiebanner in de JS")
+    if "Meta-pixel" not in tekst(HTML.get("privacy", "")):
+        fout("privacy", "pixel-ID ingesteld maar de privacyverklaring noemt de pixel niet")
+else:
+    if "Meta-pixel" in tekst(HTML.get("privacy", "")):
+        fout("privacy", "noemt de Meta-pixel terwijl er geen pixel-ID is ingesteld")
 
 # --- 14e: cases, demo's en resultaatclaims ----------------------------------
 # De belangrijkste eerlijkheidscontrole op deze site. Een demo die als
