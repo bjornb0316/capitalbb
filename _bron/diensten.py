@@ -191,8 +191,8 @@ DIEP = {
    ("Voorstel bouwen", "U krijgt een werkend concept te zien: aanklikbaar, in uw eigen "
     "kleuren, met uw eigen teksten. Bevalt het niet, dan kost het niets."),
    ("Bouwen na akkoord", "Na uw akkoord wordt de volledige site gebouwd, tegen de "
-    "afgesproken prijs. Betaling in drie delen: 40% bij opdracht, 40% na goedkeuring van "
-    "het ontwerp, 20% voor livegang."),
+    "afgesproken prijs. Betaling: 50% bij akkoord en 50% vóór livegang. "
+    "De bouw start na ontvangst van de aanbetaling; livegang volgt na ontvangst van het restant."),
    ("Controle en livegang", "Mobiel gedrag, contrast, laadgewicht, toegankelijkheid, links "
     "en formulieren worden nagelopen voordat de site live gaat."),
    ("Onderhoud of doorbouwen", "Daarna kunt u kiezen voor onderhoud vanaf €59 per maand, "

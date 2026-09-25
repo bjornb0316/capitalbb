@@ -1085,7 +1085,7 @@ def bouw_websites():
     <h2 class="display">Vier niveaus, één lat.</h2>
     <p class="lede">Elke site, ook de kleinste, wordt gecontroleerd op mobiel gedrag, contrast, laadgewicht en vindbaarheid voordat hij live gaat. Alle bedragen eenmalig en exclusief btw.</p>
     {prijsblok(PRIJS_WEB, 4, over="websites", knop="Bespreek uw website", tweede="Of laat uw huidige site beoordelen")}
-    <p class="voetnoot">Betaling in drie delen: 40% bij opdracht, 40% na goedkeuring van het ontwerp en 20% voor livegang.</p>
+    <p class="voetnoot">Betaling in twee delen: 50% bij akkoord en 50% vóór livegang. De bouw start na ontvangst van de aanbetaling; livegang volgt na ontvangst van de resterende 50%.</p>
   </div>
 </section>
 <section class="sectie band">
@@ -1620,7 +1620,7 @@ def bouw_prijzen():
   <div class="wrap">
     <h2 class="display" id="websites">Websites</h2>
     <p class="route-regel"><a class="tekstlink" href="../websites/">Bekijk websites en leadmachines</a></p>
-    <p class="lede">Eenmalig, exclusief btw. Betaling in drie delen: 40% bij opdracht, 40% na ontwerpgoedkeuring, 20% voor livegang.</p>
+    <p class="lede">Eenmalig, exclusief btw. Betaling in twee delen: 50% bij akkoord en 50% vóór livegang. De bouw start na ontvangst van de aanbetaling.</p>
     {prijsblok(PRIJS_WEB, 4, cta=False)}
   </div>
 </section>
@@ -2013,7 +2013,7 @@ Business OS.
 Volledig overzicht: {DOMEIN}/prijzen/
 
 - Websites: Basis 795, Premium 1.595, Signature 2.995, maatwerk vanaf 4.945 euro eenmalig
-- Websites, betaling: 40% bij opdracht, 40% na ontwerpgoedkeuring, 20% voor livegang
+- Websites, betaling: 50% bij akkoord, 50% vóór livegang; bouw start na ontvangst van de aanbetaling
 - CRM: vanaf 159 euro per maand plus eenmalige inrichting vanaf 395 euro
 - Bedrijfssystemen: vanaf 219 euro per maand plus inrichting vanaf 695 euro
 - Business OS: vanaf 349 euro per maand plus inrichting vanaf 1.195 euro

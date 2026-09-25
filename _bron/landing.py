@@ -454,8 +454,8 @@ LANDING = {
  ]),
  "prijs": ("De prijzen op een rij",
    "Basis €795, Premium €1.595, Signature €2.995 en maatwerk vanaf €4.945, allemaal eenmalig "
-   "en exclusief btw. Betaling in drie delen: 40% bij opdracht, 40% na goedkeuring van het "
-   "ontwerp en 20% voor livegang. Onderhoud daarna vanaf €59 per maand, en dat is een keuze."),
+   "en exclusief btw. Betaling: 50% bij akkoord en 50% vóór livegang. "
+   "De bouw start na ontvangst van de aanbetaling. Onderhoud daarna vanaf €59 per maand, en dat is een keuze."),
  "faq": [
    ("Wat kost het om een website te laten maken?",
     "Bij Capital BB eenmalig vanaf €795 exclusief btw voor het Basis-pakket tot vijf "
@@ -557,21 +557,21 @@ LANDING = {
      "U vertelt wat u doet en voor wie; wij maken de structuur",
      "U krijgt eerst een werkend voorstel te zien, geen offerte",
      "Bevalt het niet, dan kost het u niets",
-     "Na akkoord wordt gebouwd tegen de afgesproken prijs, in drie termijnen",
+     "Na akkoord en ontvangst van de aanbetaling van 50% start de bouw; de overige 50% betaalt u vóór livegang",
      "Groeien kan later: extra pagina's, een CRM, koppelingen, een AI-medewerker",
     ]),
  ],
  "tabel": None,
  "prijs": ("Wat het kost om te beginnen",
    "Het Basis-pakket kost eenmalig vanaf €795 exclusief btw: tot vijf pagina's, responsive, "
-   "een contactformulier, een technische SEO-basis en één correctieronde. Betaling in drie "
-   "delen: 40% bij opdracht, 40% na goedkeuring van het ontwerp en 20% voor livegang. "
+   "een contactformulier, een technische SEO-basis en één correctieronde. Betaling in twee "
+   "delen: 50% bij akkoord en 50% vóór livegang. De bouw start na ontvangst van de aanbetaling. "
    "Onderhoud is daarna optioneel vanaf €59 per maand; u zit nergens aan vast."),
  "faq": [
    ("Wat kost een website voor een startende ondernemer?",
     "Vanaf €795 eenmalig exclusief btw voor het Basis-pakket: tot vijf pagina's, responsive, "
-    "contactformulier, technische SEO-basis en één correctieronde. Betaling gaat in drie "
-    "delen."),
+    "contactformulier, technische SEO-basis en één correctieronde. Betaling gaat in twee "
+    "delen: 50% bij akkoord en 50% vóór livegang. De bouw start na ontvangst van de aanbetaling."),
    ("Kan ik klein beginnen en later uitbreiden?",
     "Ja, en dat is zelfs de bedoeling. Er kunnen later pagina's bij, en de site kan gekoppeld "
     "worden aan een CRM, een agenda of een AI-medewerker zonder dat hij opnieuw gebouwd moet "
