@@ -38,6 +38,7 @@ CONTACT = {
 # naar de mailbox. De privacyverklaring past zich daar automatisch op aan.
 # ---------------------------------------------------------------------------
 FORMULIER = {
+    "portaal": "https://accomplished-chickadee-20.eu-west-1.convex.site/v1/capitalbb-website",
     "dienst": "web3forms",
     "sleutel": "204feaf1-f5db-4820-ad75-664004003919",
     # Waar de mail heen gaat. Leeg = het adres dat aan de sleutel hangt.

@@ -609,7 +609,12 @@ def _landing_regel(slug):
 # ---------------------------------------------------------------------------
 MAILT_DIRECT = bool(FORMULIER.get("sleutel"))
 
-if MAILT_DIRECT:
+if FORMULIER.get("portaal"):
+    SUCCES_SCAN = "Ontvangen. Uw scanaanvraag staat bij Capital BB klaar voor opvolging. U krijgt binnen één werkdag antwoord."
+    SUCCES_CONTACT = "Ontvangen. Uw aanvraag staat bij Capital BB klaar voor opvolging. U krijgt binnen één werkdag antwoord."
+    VERZENDNOOT = ('Het formulier verstuurt uw gegevens naar het Capital BB-klantenportaal en per e-mail. Zie de '
+                  '<a class="tekstlink" href="../privacy/">privacyverklaring</a>.')
+elif MAILT_DIRECT:
     SUCCES_SCAN = ("Verstuurd. Uw aanvraag staat in de mailbox van Björn; u hoort binnen "
                    "één werkdag wat er uit de scan komt.")
     SUCCES_CONTACT = ("Verstuurd. Uw bericht staat in de mailbox van Björn; u krijgt binnen "
@@ -1748,6 +1753,17 @@ def bouw_privacy():
                   "verkocht en niet gedeeld met derden, en niet gebruikt voor andere doelen dan "
                   "het contact waar u zelf om vroeg.</p>")
         bewaren = ""
+
+    if FORMULIER.get("portaal"):
+        daarna = ('<p>Uw aanvraag wordt opgeslagen in het Capital BB-klantenportaal bij Convex, in de EU-regio eu-west-1. '
+                  'Capital BB gebruikt uw gegevens om uw aanvraag te beantwoorden en de opvolging bij te houden. '
+                  'Daarnaast sturen we een kopie via Web3Forms naar het e-mailpostvak van Capital BB. '
+                  'Als de e-mailverzending niet lukt, blijft uw ontvangen aanvraag beschikbaar in het portaal.</p>'
+                  '<p>Uw gegevens worden niet verkocht of voor advertenties gebruikt. Voor opslag en verzending gebruiken we '
+                  'Convex en Web3Forms. U kunt ook rechtstreeks bellen of mailen.</p>')
+        bewaren = ('<h2>Hoe lang uw bericht bewaard blijft</h2><p>Uw aanvraag blijft in het portaal en mailpostvak staan '
+                   'zolang dat nodig is voor beantwoording en opvolging, en daarna voor zover de administratie dat vereist. '
+                   'U kunt contact opnemen om inzage, correctie of verwijdering te vragen.</p>')
 
     if meet_aan():
         namen = []

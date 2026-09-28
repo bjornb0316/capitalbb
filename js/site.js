@@ -378,24 +378,50 @@
       setTimeout(function () { afbreken.abort(); }, 15000);
     }
 
-    fetch("https://api.web3forms.com/submit", opties).then(function (r) {
-      if (!r.ok) throw new Error("Verzenden niet bevestigd");
-      return r.json();
-    }).then(function (d) {
-      if (!d || d.success !== true) throw new Error(d && d.message ? d.message : "verzenden mislukt");
+    var portaalOntvangen = false;
+    var portaal = Promise.resolve();
+    if (FORM.portaal) {
+      var inhoud = JSON.stringify(waarden);
+      if (vorm.dataset.aanvraagInhoud !== inhoud) {
+        vorm.dataset.aanvraagId = crypto.randomUUID();
+        vorm.dataset.aanvraagInhoud = inhoud;
+      }
+      var portaalStop = new AbortController();
+      var portaalTimer = setTimeout(function () { portaalStop.abort(); }, 12000);
+      portaal = fetch(FORM.portaal, {
+        method: "POST", headers: {"Content-Type":"application/json"}, signal: portaalStop.signal,
+        body: JSON.stringify({requestId:vorm.dataset.aanvraagId,form:vorm.id,
+          name:waarden.naam,reach:waarden.bereikbaar,company:waarden.bedrijf||"",
+          website:waarden.website||"",message:[waarden.vraag,waarden.doel].filter(Boolean).join("\n"),botcheck:""})
+      }).then(function (r) { if (!r.ok) throw new Error("Opslag niet bevestigd"); return r.json(); })
+        .then(function (d) { if (d.success !== true) throw new Error("Opslag niet bevestigd"); portaalOntvangen = true; })
+        .finally(function () { clearTimeout(portaalTimer); });
+    }
+    function afgerond() {
       vorm.dataset.bezig = "";
       if (knop) { knop.disabled = false; knop.textContent = knoptekst; }
-      // De juiste tekst staat al in de HTML: het scanformulier zegt iets
-      // anders dan het contactformulier. Hier alleen tonen, niet overschrijven.
-      if (klaarEl) klaarEl.hidden = false;
-      doel("formulier_verstuurd", { formulier: vorm.id, pagina: location.pathname });
-      doel("generate_lead", { form_id: vorm.id, lead_source: "website", pagina: location.pathname });
+      if (klaarEl) {
+        if (portaalOntvangen) klaarEl.textContent = "Ontvangen. Uw aanvraag staat bij Capital BB klaar voor opvolging. U krijgt binnen één werkdag antwoord.";
+        klaarEl.hidden = false;
+      }
+      doel("formulier_verstuurd", {formulier:vorm.id,pagina:location.pathname});
+      doel("generate_lead", {form_id:vorm.id,lead_source:"website",pagina:location.pathname});
       if (vorm.id === "scanform") {
         var vervolg = document.getElementById("scan-vervolg");
         if (vervolg) { vervolg.hidden = false; vervolg.focus(); }
       }
       vorm.reset();
+      delete vorm.dataset.aanvraagInhoud;
+      delete vorm.dataset.aanvraagId;
+    }
+    portaal.then(function () { return fetch("https://api.web3forms.com/submit", opties); }).then(function (r) {
+      if (!r.ok) throw new Error("Verzenden niet bevestigd");
+      return r.json();
+    }).then(function (d) {
+      if (!d || d.success !== true) throw new Error(d && d.message ? d.message : "verzenden mislukt");
+      afgerond();
     }).catch(function () {
+      if (portaalOntvangen) { afgerond(); return; }
       // Niet verloren laten gaan: alsnog de handmatige route aanbieden.
       vorm.dataset.bezig = "";
       if (knop) { knop.disabled = false; knop.textContent = knoptekst; }
