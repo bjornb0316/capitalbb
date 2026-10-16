@@ -964,7 +964,7 @@ def bouw_home():
     </div>
     <a class="case-beeld project-preview film-teaser" href="werk/#filmische-demos" aria-label="Bekijk vier filmische hero-concepten">
       <div class="project-browser" aria-hidden="true"><i></i><i></i><i></i><b>Wonen & advies · Concept</b></div>
-      <div class="film-teaser-beeld"><img src="img/werk/film/wonen.webp" width="1280" height="720" alt="Filmisch woonconcept: een verlichte villa in de avond" loading="lazy"><strong>Een eerste indruk.<br>Die blijft.</strong><span class="film-teaser-play" aria-hidden="true">▶</span></div>
+      <div class="film-teaser-beeld"><img src="img/werk/interactive-wonen.webp" width="1440" height="900" alt="Interactieve websiteconcept met de kop Wat wil jij mogelijk maken, navigatie en keuzeknoppen" loading="lazy"></div>
       <span>Vier filmische hero’s · Bekijk de concepten <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></span>
     </a>
   </div>
@@ -1441,23 +1441,20 @@ def bouw_scan():
 # ===========================================================================
 def filmische_demos():
     demos = [
-        ("wonen", "01 / Wonen & advies", "Ruimte voor een volgende stap.",
-         "Een avondlijke villa, warme interieurs en een vloeiende beweging van buiten naar binnen."),
-        ("advies", "02 / Wonen & advies", "Een ander huis. Een ander gevoel.",
-         "Een tweede richting: een landelijke woning en een rustige toenadering tot de voordeur."),
-        ("installatie", "03 / Installatietechniek", "Van techniek naar comfort.",
-         "Van de buitenunit naar de woonkamer. Een filmische overgang die het resultaat voelbaar maakt."),
-        ("automotive", "04 / Automotive", "De avond. De volgende rit.",
-         "Een bewegende blik over auto's in de avond, met ruimte voor een krachtig verhaal."),
+        ("wonen", "01 / Wonen & advies", "../demos/advies/variant-3/"),
+        ("advies", "02 / Wonen & advies", "../demos/advies/variant-2/"),
+        ("installatie", "03 / Installatietechniek", "../demos/installatie/"),
+        ("automotive", "04 / Automotive", "../demos/automotive/"),
     ]
-    kaarten = "".join(f'''<article class="film-demo">
-      <div class="film-demo-media"><video controls playsinline preload="none" poster="../img/werk/film/{sleutel}.webp" width="1280" height="720" aria-label="Speel filmisch concept: {label.split(' / ')[1]}"><source src="../img/werk/film/{sleutel}.mp4" type="video/mp4">Uw browser ondersteunt deze film niet.</video></div>
-      <div class="film-demo-tekst"><p class="eyebrow">{label} <span>Concept</span></p><h3>{kop}</h3><p>{tekst}</p></div>
-    </article>''' for sleutel, label, kop, tekst in demos)
+    tabs = "".join(f'<button type="button" role="tab" id="demo-tab-{sleutel}" aria-controls="demo-paneel" aria-selected="{"true" if i == 0 else "false"}" tabindex="{0 if i == 0 else -1}" data-demo-url="{url}" data-demo-label="{label}">{label}</button>' for i, (sleutel, label, url) in enumerate(demos))
+    links = "".join(f'<a href="{url}">{label} →</a> ' for sleutel, label, url in demos)
     return f'''<section class="sectie film-demos" id="filmische-demos" aria-labelledby="film-demos-kop">
-  <div class="wrap"><div class="film-demos-kop"><div><p class="eyebrow">Filmische websiteconcepten</p><h2 class="display" id="film-demos-kop">Een website.<br>Een hele beleving.</h2></div><div><p class="lede">Beweging, licht en een verhaal dat u meeneemt. Vier hero-concepten laten zien hoe een eerste indruk kan voelen.</p><p class="film-demo-noot">Vrij te bekijken ontwerpvoorbeelden, gebouwd zonder opdracht. Anoniem gepresenteerd; geen klantcases.</p></div></div>
-  <div class="film-demos-grid">{kaarten}</div>
-  <p class="voetnoot">Druk op afspelen om een film te bekijken. Via de tijdlijn bepaalt u zelf het tempo; volledig scherm is ook mogelijk. De fragmenten hebben geen geluid.</p>
+  <div class="wrap"><div class="film-demos-kop"><div><p class="eyebrow">Filmische websiteconcepten</p><h2 class="display" id="film-demos-kop">Een website.<br>Een hele beleving.</h2></div><div><p class="lede">Bekijk het zoals het werkt. Scroll door de hero, maak een keuze en ontdek de pagina’s en aanvraagroutes.</p><p class="film-demo-noot">Vier eigen ontwerpvoorbeelden, gebouwd als concept. Geen klantopdrachten.</p></div></div>
+  <div class="demo-kiezer" role="tablist" aria-label="Kies een websiteconcept">{tabs}</div>
+  <div class="demo-werkbalk"><span id="demo-actief">01 / Wonen & advies</span><a id="demo-open" class="tekstlink" href="../demos/advies/variant-3/" target="_blank" rel="noopener">Open volledige demo ↗</a></div>
+  <div class="demo-paneel" id="demo-paneel" role="tabpanel" aria-labelledby="demo-tab-wonen"><iframe id="demo-frame" src="../demos/advies/variant-3/" title="Interactieve websiteconcept: Wonen en advies" loading="lazy" allow="fullscreen" allowfullscreen></iframe></div>
+  <p class="voetnoot">Scroll en klik in de demo, of open hem op volledig formaat. Formulieren zijn demonstraties en versturen niets.</p>
+  <noscript><p>Open een volledige demo: {links}</p></noscript>
   <a class="tekstlink" href="../contact/?over=websites">Ook een website met een eigen verhaal? →</a></div>
 </section>'''
 

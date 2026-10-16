@@ -1,0 +1,268 @@
+/* Interne startpagina */
+.ix {
+  --font-body: var(--font-sans-v1), system-ui, sans-serif;
+  font-family: var(--font-body);
+  --ink: #18252c;
+  min-height: 100vh;
+  background: #efece6;
+  padding-bottom: 6rem;
+}
+.ix__banner {
+  background: #fff3cf;
+  color: #4a3410;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-align: center;
+  padding: 0.7rem 1rem;
+  border-bottom: 1px dashed #d39b2a;
+}
+.ix__head,
+.ix__cards,
+.ix__section {
+  width: min(1200px, 100% - 2 * var(--gutter));
+  margin-inline: auto;
+}
+.ix__head {
+  padding: clamp(3rem, 2rem + 4vw, 6rem) 0 2.5rem;
+}
+.ix__kicker {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #5a676d;
+}
+.ix__head h1 {
+  font-family: var(--font-serif), Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(2.6rem, 1.6rem + 4vw, 5.2rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  margin-top: 0.75rem;
+}
+.ix__lead {
+  margin-top: 1.25rem;
+  max-width: 58ch;
+  font-size: var(--fs-lead);
+  color: #45535a;
+}
+.ix__cards {
+  display: grid;
+  gap: 1.5rem;
+}
+@media (min-width: 900px) {
+  .ix__cards {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.ix-card {
+  background: #fff;
+  border-radius: 0;
+  overflow: hidden;
+  border: 1px solid rgba(22, 25, 27, 0.14);
+  display: flex;
+  flex-direction: column;
+}
+.ix-card__preview {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+.ix-card__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transition: transform 600ms var(--ease);
+}
+.ix-card__preview:hover .ix-card__img {
+  transform: scale(1.03);
+}
+.ix-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(14, 30, 40, 0.75), rgba(14, 30, 40, 0) 60%);
+  display: flex;
+  align-items: center;
+  padding: 2rem;
+}
+.ix-card__motto {
+  font-family: var(--font-serif), Georgia, serif;
+  color: #fff;
+  font-size: clamp(2rem, 1.2rem + 2.5vw, 3.2rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.ix-card--v2 .ix-card__preview {
+  background: #f3f3f0;
+}
+.ix-card__model {
+  position: absolute;
+  inset: 4% 8% 0;
+}
+.ix-card__body {
+  padding: 1.75rem 1.75rem 2rem;
+  display: grid;
+  gap: 0.6rem;
+  flex: 1;
+  align-content: start;
+}
+.ix-card__n {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8a552e;
+}
+.ix-card--v2 .ix-card__n {
+  color: #3e6b2b;
+}
+.ix-card h2 {
+  font-family: var(--font-serif), Georgia, serif;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  font-size: clamp(1.7rem, 1.3rem + 1.2vw, 2.4rem);
+  line-height: 1.1;
+}
+.ix-card p {
+  color: #45535a;
+}
+.ix-card__price {
+  font-weight: 700;
+  color: #18252c !important;
+  margin-top: 0.4rem;
+}
+.ix-card__actions {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1.25rem;
+}
+.ix-btn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0 1.4rem;
+  border-radius: 0;
+  background: #16191b;
+  color: #fff;
+  font-weight: 500;
+  text-decoration: none;
+}
+.ix-card--v2 .ix-btn {
+  background: #111a1c;
+  border-radius: 0;
+}
+.ix-link {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  font-weight: 600;
+}
+.ix__section {
+  margin-top: 4rem;
+}
+.ix__section h2 {
+  font-family: var(--font-serif), Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(1.7rem, 1.3rem + 1.4vw, 2.4rem);
+  margin-bottom: 1.25rem;
+}
+.ix__table-wrap {
+  overflow-x: auto;
+  border-radius: 0;
+  background: #fff;
+}
+.ix__table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+  font-size: 0.975rem;
+}
+.ix__table th,
+.ix__table td {
+  text-align: left;
+  vertical-align: top;
+  padding: 0.9rem 1.1rem;
+  border-bottom: 1px solid #ebe6dd;
+}
+.ix__table thead th {
+  font-size: 0.875rem;
+  color: #5a676d;
+}
+.ix__table tbody th {
+  font-weight: 600;
+  width: 26%;
+}
+.ix__fine {
+  margin-top: 1rem;
+  font-size: 0.9375rem;
+  color: #5a676d;
+  max-width: 75ch;
+}
+.ix__steps {
+  padding-left: 1.25rem;
+  display: grid;
+  gap: 0.4rem;
+}
+.ix__quote {
+  margin-top: 1.25rem;
+  padding: 1rem 1.25rem;
+  border-left: 3px solid #b77a4b;
+  background: #fff;
+  border-radius: 0;
+  font-family: var(--font-serif), Georgia, serif;
+  font-style: italic;
+  font-size: 1.15rem;
+}
+.ix__src {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 0;
+  border-top: 1px solid rgba(22, 25, 27, 0.14);
+}
+.ix__src li {
+  display: grid;
+  grid-template-columns: 7.5rem 1fr;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(22, 25, 27, 0.14);
+  font-size: 0.9375rem;
+  color: #45535a;
+}
+.ix__src strong {
+  color: #18252c;
+}
+.ix__tag {
+  align-self: start;
+  justify-self: start;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  padding: 0.2em 0.6em;
+  border-radius: 0;
+}
+.ix__tag--bron {
+  background: #dcebd0;
+  color: #2f5520;
+}
+.ix__tag--bevestigen {
+  background: #fff0c2;
+  color: #5a4515;
+}
+.ix__tag--ontbreekt {
+  background: #f6dcd6;
+  color: #7a2a1c;
+}
+.ix__tag--concept {
+  background: #e3e9ee;
+  color: #23414f;
+}
+@media (max-width: 520px) {
+  .ix__src li {
+    grid-template-columns: 1fr;
+    gap: 0.4rem;
+  }
+}
+
+@media(min-width:1024px){.ix__cards{grid-template-columns:repeat(3,minmax(0,1fr))}.ix-card__preview{height:250px}.ix-card__body h2{font-size:30px}}

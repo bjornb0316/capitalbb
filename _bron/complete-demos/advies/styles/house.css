@@ -1,0 +1,357 @@
+/* Woningmodel variant 2 als architectentekening ---------------------------------
+   Haarlijnen, papierwitte vlakken, bomen als cirkels zoals op een bouwtekening.
+   Eén accentkleur markeert wat bij de gekozen situatie hoort.
+   ------------------------------------------------------------------------------ */
+.hm {
+  --hm-ink: #121b1d;
+  --hm-face: #fbfbf9;
+  --hm-side: #e7e6e0;
+  --hm-roof: #d3d1c9;
+  --hm-roof-dark: #b9b7ae;
+  --hm-ground: #eeede8;
+  --hm-glass: #dfe3e1;
+  --hm-lit: #ecc78c;
+  --hm-accent: #cfd8c6;
+  --hm-accent-ink: #3f5a43;
+  --hm-w: 1.1px;
+  --t: 640ms;
+  --e: cubic-bezier(0.2, 0.7, 0.2, 1);
+  position: relative;
+  perspective: 1400px;
+}
+/* Omgekeerde tekening op donkere vlakken */
+.hm--inverse,
+.v2-shapes .hm,
+.v2-close .hm {
+  --hm-ink: rgba(243, 243, 240, 0.86);
+  --hm-face: #102a2d;
+  --hm-side: #0c2225;
+  --hm-roof: #183538;
+  --hm-roof-dark: #1f4044;
+  --hm-ground: #0f2629;
+  --hm-glass: #163236;
+  --hm-accent: #2f4c45;
+  --hm-accent-ink: #cfd8c6;
+}
+.hm__svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  transform: rotateX(var(--rx)) rotateY(var(--ry));
+  transform-style: preserve-3d;
+  transition: transform 800ms var(--e);
+}
+.hm__svg polygon,
+.hm__svg rect,
+.hm__svg circle,
+.hm__svg ellipse,
+.hm__svg line {
+  stroke: var(--hm-ink);
+  stroke-width: var(--hm-w);
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+.hm-layer {
+  transition:
+    opacity var(--t) var(--e),
+    transform var(--t) var(--e);
+  transform-box: view-box;
+}
+
+/* vlakken */
+.hm-ground-shadow {
+  display: none;
+}
+.hm-slab-top {
+  fill: var(--hm-ground);
+}
+.hm-slab-front,
+.hm-slab-side {
+  fill: var(--hm-side);
+}
+.hm-path {
+  fill: var(--hm-face);
+}
+.hm-wall-front {
+  fill: var(--hm-face);
+}
+.hm-wall-light {
+  opacity: 0;
+  stroke: none !important;
+  transition: opacity var(--t) var(--e);
+}
+.hm-wall-side {
+  fill: var(--hm-side);
+}
+.hm-roof-slope {
+  fill: var(--hm-roof);
+}
+.hm-roof-fascia,
+.hm-roof-edge {
+  fill: var(--hm-roof-dark);
+}
+.hm-roof-ridge {
+  stroke-width: 1.4px;
+}
+.hm-roof-seam {
+  opacity: 0.35;
+}
+.hm-glass {
+  fill: var(--hm-glass) !important;
+  stroke: none !important;
+}
+.hm-glow {
+  fill: var(--hm-lit) !important;
+  stroke: none !important;
+  opacity: 0;
+  transition: opacity var(--t) var(--e);
+}
+.hm-frame {
+  fill: none;
+}
+.hm-mullion {
+  opacity: 0.8;
+}
+.hm-door {
+  fill: var(--hm-ink);
+}
+.hm-handle {
+  fill: var(--hm-face);
+  stroke: none !important;
+}
+.hm-canopy-top {
+  fill: var(--hm-roof);
+}
+.hm-canopy-front {
+  fill: var(--hm-roof-dark);
+}
+.hm-ws-front,
+.hm-ws-side,
+.hm-ws-top {
+  fill: var(--hm-accent);
+}
+.hm-ws-side {
+  filter: brightness(0.94);
+}
+.hm-ext-glass,
+.hm-ext-top,
+.hm-ext-side {
+  fill: var(--hm-accent);
+  opacity: 0.7;
+  stroke: none !important;
+}
+.hm-ext-line {
+  opacity: 0.5;
+}
+.hm-ext-outline {
+  fill: none;
+  stroke-dasharray: 5 5;
+}
+/* Bomen als cirkels, zoals op een situatietekening */
+.hm-shadow,
+.hm-canopy-hi {
+  display: none;
+}
+.hm-trunk {
+  opacity: 0.6;
+}
+.hm-canopy {
+  fill: color-mix(in srgb, var(--hm-face) 60%, transparent);
+}
+.hm-hedge {
+  display: none;
+}
+.hm-piece {
+  fill: var(--hm-accent);
+}
+.hm-halo {
+  fill: none;
+  stroke-dasharray: 3 6;
+  opacity: 0.7;
+}
+
+/* Basis: optionele lagen verborgen */
+.hm-workspace {
+  opacity: 0;
+  transform: translate(26px, 18px);
+}
+.hm-extension {
+  opacity: 0;
+  transform: translate(-26px, 14px) scale(0.98);
+}
+.hm-pieces,
+.hm-done {
+  opacity: 0;
+}
+
+/* Woning kopen: hoofdvolume uitgelicht */
+.hm[data-state="kopen"] .hm-wall-front {
+  fill: var(--hm-accent);
+}
+.hm[data-state="kopen"] .hm-volume,
+.hm[data-state="kopen"] .hm-roof {
+  transform: translateY(-10px);
+}
+.hm[data-state="kopen"] .hm-env {
+  opacity: 0.35;
+}
+.hm[data-state="kopen"] .hm-w-living .hm-glow,
+.hm[data-state="kopen"] .hm-w-side .hm-glow {
+  opacity: 0.9;
+}
+
+/* Ondernemer: werkruimte zichtbaar */
+.hm[data-state="ondernemer"] .hm-workspace {
+  opacity: 1;
+  transform: none;
+}
+.hm[data-state="ondernemer"] .hm-w-desk .hm-glow {
+  opacity: 0.95;
+}
+
+/* Overwaarde: extra woonruimte als wens */
+.hm[data-state="overwaarde"] .hm-extension {
+  opacity: 1;
+  transform: none;
+}
+
+/* Complex: losse delen komen samen */
+.hm[data-state="complex"] .hm-pieces {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hm[data-state="complex"] .hm-roof {
+    animation: hm-assemble-roof 1200ms var(--e) both;
+  }
+  .hm[data-state="complex"] .hm-part--right {
+    animation: hm-assemble-right 1200ms var(--e) both;
+  }
+  .hm[data-state="complex"] .hm-part--front {
+    animation: hm-assemble-front 1200ms var(--e) both;
+  }
+  .hm[data-state="complex"] .hm-piece {
+    animation: hm-piece 1200ms var(--e) both;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+  .hm[data-state="complex"] .hm-piece--1 {
+    animation-delay: 120ms;
+  }
+  .hm[data-state="complex"] .hm-piece--2 {
+    animation-delay: 240ms;
+  }
+}
+.hm[data-state="complex"] .hm-w-gable .hm-glow {
+  opacity: 0.9;
+}
+@keyframes hm-assemble-roof {
+  from {
+    transform: translate(10px, -46px);
+  }
+}
+@keyframes hm-assemble-right {
+  from {
+    transform: translate(34px, -10px);
+  }
+}
+@keyframes hm-assemble-front {
+  from {
+    transform: translate(-30px, 14px);
+  }
+}
+@keyframes hm-piece {
+  from {
+    transform: translateY(-14px) rotate(20deg);
+    opacity: 0;
+  }
+}
+
+/* Afgerond */
+.hm[data-state="done"] .hm-glow {
+  opacity: 0.85;
+}
+.hm[data-state="done"] .hm-done {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hm[data-state="done"] .hm-halo {
+    animation: hm-halo 1600ms var(--e) both;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+}
+@keyframes hm-halo {
+  from {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+}
+
+/* Voorbeeld bij hover over een kaart: zachter */
+.hm[data-preview="true"] .hm-workspace,
+.hm[data-preview="true"] .hm-extension {
+  opacity: 0.6;
+}
+
+/* Introductie: de tekening wordt opgebouwd */
+@media (prefers-reduced-motion: no-preference) {
+  .hm--intro .hm-ground {
+    animation: hm-in-fade 1000ms var(--e) both;
+  }
+  .hm--intro .hm-volume {
+    animation: hm-in-volume 1100ms var(--e) 150ms both;
+  }
+  .hm--intro .hm-roof {
+    animation: hm-in-roof 1100ms var(--e) 300ms both;
+  }
+  .hm--intro .hm-env {
+    animation: hm-in-fade 1200ms var(--e) 500ms both;
+  }
+}
+@keyframes hm-in-volume {
+  from {
+    opacity: 0;
+    transform: translateY(-18px);
+  }
+}
+@keyframes hm-in-roof {
+  from {
+    opacity: 0;
+    transform: translateY(-34px);
+  }
+}
+@keyframes hm-in-fade {
+  from {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hm__svg {
+    transform: none !important;
+  }
+  .hm-layer {
+    transition-duration: 1ms;
+  }
+}
+
+/* Bouwfasen (werkwijze): schets, ontwerp, oplevering */
+.hm[data-build="1"] .hm-roof,
+.hm[data-build="1"] .hm-env--front {
+  opacity: 0;
+  transform: translateY(-30px);
+}
+.hm[data-build="1"] .hm-volume polygon,
+.hm[data-build="1"] .hm-volume line {
+  fill: transparent !important;
+  stroke-dasharray: 4 4;
+}
+.hm[data-build="1"] .hm-glass,
+.hm[data-build="1"] .hm-wall-light {
+  opacity: 0;
+}
+.hm[data-build="2"] .hm-env--front {
+  opacity: 0.4;
+}
+.hm[data-build="3"] .hm-glow {
+  opacity: 0.85;
+}

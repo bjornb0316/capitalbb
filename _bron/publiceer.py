@@ -41,7 +41,7 @@ BESTANDEN = [
 ]
 
 # Mappen met statische assets die integraal mee mogen.
-MAPPEN = ["css", "js", "img"]
+MAPPEN = ["css", "js", "img", "demos"]
 
 # Nooit publiceren, ongeacht waar het staat.
 VERBODEN_EXT = {".py", ".pyc", ".md", ".yml", ".yaml", ".toml", ".ini", ".log",
