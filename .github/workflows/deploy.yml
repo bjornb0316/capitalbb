@@ -49,6 +49,9 @@ jobs:
         # online dan een nieuwe met kapotte structured data of dode links.
         run: python _bron/controle.py
 
+      - name: Volledige conceptdemo’s controleren
+        run: python _bron/controle-demos.py
+
       - name: Waarschuwen als de gebouwde HTML afwijkt van wat er in git staat
         # Niet fataal: de deployment gebruikt sowieso de versie die hier net
         # is gebouwd. Wel een signaal dat er met de hand in een index.html is

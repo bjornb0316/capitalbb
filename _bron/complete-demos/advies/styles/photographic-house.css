@@ -1,0 +1,17 @@
+.hm-photo { position:relative; perspective:1400px; isolation:isolate; }
+.hm-photo__scene { position:relative; transform:rotateX(var(--model-rx,0deg)) rotateY(var(--model-ry,0deg)); transform-style:preserve-3d; transition:transform 650ms cubic-bezier(.2,.7,.2,1); }
+.hm-photo__image { width:100%; height:auto; filter:drop-shadow(0 32px 28px rgba(0,0,0,.12)); transition:transform 1000ms cubic-bezier(.2,.7,.2,1),filter 800ms; }
+.hm-photo__focus { position:absolute; width:26%; height:16%; left:43%; top:67%; border-radius:50%; background:radial-gradient(ellipse,rgba(239,188,109,.5),transparent 68%); mix-blend-mode:screen; opacity:0; transform:rotate(-28deg); transition:left 850ms,top 850ms,opacity 600ms; pointer-events:none; }
+.hm-photo__outline { position:absolute; inset:8% 9% 9%; border:1px solid rgba(183,122,75,.35); transform:rotate(-7deg); opacity:0; transition:opacity 800ms,transform 1000ms; pointer-events:none; }
+.hm-photo[data-state="kopen"] .hm-photo__focus { opacity:1; top:63%; left:29%; }
+.hm-photo[data-state="ondernemer"] .hm-photo__focus { opacity:1; top:41%; left:54%; }
+.hm-photo[data-state="overwaarde"] .hm-photo__focus { opacity:1; top:73%; left:58%; }
+.hm-photo[data-state="complex"] .hm-photo__outline { opacity:1; transform:rotate(0); }
+.hm-photo[data-state="kopen"] .hm-photo__image { transform:translateY(4px) scale(1.018); }
+.hm-photo[data-state="ondernemer"] .hm-photo__image { transform:translateY(-10px) rotate(-1deg); }
+.hm-photo[data-state="overwaarde"] .hm-photo__image { transform:translateX(-12px) scale(1.02); }
+.hm-photo[data-state="done"] .hm-photo__image { transform:translateY(-8px); }
+.hm-photo[data-state="done"] .hm-photo__outline { opacity:1; transform:rotate(0); border-color:rgba(183,122,75,.6); }
+@media(prefers-reduced-motion:no-preference) { .hm-photo--intro .hm-photo__image { animation:model-enter 1400ms cubic-bezier(.2,.7,.2,1) both; } }
+@keyframes model-enter { from { opacity:0; transform:translateY(38px) scale(.92); } to { opacity:1; transform:translateY(0) scale(1); } }
+@media(prefers-reduced-motion:reduce) { .hm-photo__scene,.hm-photo__image { transform:none!important; transition:none; animation:none; } .hm-photo__focus,.hm-photo__outline { transition:none; } }

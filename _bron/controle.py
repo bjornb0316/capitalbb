@@ -252,6 +252,13 @@ for p, h in HTML.items():
         doel = doel.rstrip("/")
         if doel.startswith(("css/", "js/", "img/")) or doel in ("robots.txt", "sitemap.xml", "llms.txt"):
             continue
+        if doel.startswith("demos/"):
+            demo_pad = os.path.join(WORTEL, *doel.split("/"), "index.html")
+            if not os.path.isfile(demo_pad):
+                fout(p, f"interne link naar niet-bestaande demo: {href}")
+            elif not re.search(r'<meta[^>]+name="robots"[^>]+content="[^"]*noindex', lees(demo_pad)):
+                fout(p, f"demo moet noindex zijn: {href}")
+            continue
         if doel not in bestaand:
             fout(p, f"interne link naar niet-bestaande pagina: {href}")
             continue

@@ -1,0 +1,1 @@
+import Link from "next/link";export default function NotFound(){return <main className="missing"><p className="section-label">404 / ROUTE ONBEKEND</p><h1>VERKEERDE<br/><em>AFSLAG.</em></h1><Link className="primary" href="/">TERUG NAAR DE HOMEPAGE ↗</Link></main>}

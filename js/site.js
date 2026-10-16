@@ -572,3 +572,34 @@
   }, { rootMargin: '0px 0px -20px 0px' });
   page.querySelectorAll('.dienst-concept, .marketing-verhaal > *, .proces-baan li, .bouwt-item, .stapje, .dienstkaart').forEach(function (element) { element.classList.add('reveal-ready'); observer.observe(element); });
 })();
+/* De volledige websites delen een previewvenster; elke selectie start zijn eigen demo. */
+(function () {
+  var picker = document.querySelector('.demo-kiezer');
+  if (!picker) return;
+  var tabs = Array.from(picker.querySelectorAll('[role="tab"]'));
+  var frame = document.getElementById('demo-frame');
+  var panel = document.getElementById('demo-paneel');
+  var open = document.getElementById('demo-open');
+  function select(tab) {
+    if (tab.getAttribute('aria-selected') === 'true') return;
+    tabs.forEach(function (item) {
+      item.setAttribute('aria-selected', String(item === tab));
+      item.tabIndex = item === tab ? 0 : -1;
+    });
+    frame.src = tab.dataset.demoUrl;
+    frame.title = 'Interactief websiteconcept: ' + tab.dataset.demoLabel;
+    panel.setAttribute('aria-labelledby', tab.id);
+    open.href = tab.dataset.demoUrl;
+    document.getElementById('demo-actief').textContent = tab.dataset.demoLabel;
+  }
+  tabs.forEach(function (tab, index) {
+    tab.addEventListener('click', function () { select(tab); });
+    tab.addEventListener('keydown', function (event) {
+      var next = event.key === 'ArrowRight' ? (index + 1) % tabs.length :
+        event.key === 'ArrowLeft' ? (index + tabs.length - 1) % tabs.length :
+        event.key === 'Home' ? 0 : event.key === 'End' ? tabs.length - 1 : -1;
+      if (next < 0) return;
+      event.preventDefault(); tabs[next].focus(); select(tabs[next]);
+    });
+  });
+})();
