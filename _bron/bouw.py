@@ -72,6 +72,8 @@ DIENSTEN = {
 # ---------------------------------------------------------------------------
 GEWIJZIGD = {
     "*": "2026-09-03",
+    "": "2026-10-16",
+    "werk": "2026-10-16",
     "privacy": "2026-08-21",
 }
 
@@ -958,12 +960,12 @@ def bouw_home():
       <p class="eyebrow">Gebouwd werk</p>
       <h2 class="display">Gebouwd om<br>te werken.</h2>
       <p class="lede">Van een overtuigende website tot een compleet bedrijfssysteem. Bekijk het gebouwde werk en de concepten, met de keuzes achter elk ontwerp.</p>
-      <a class="btn btn-ghost" href="werk/">Bekijk dit werk en de andere cases</a>
+      <a class="btn btn-ghost" href="werk/#filmische-demos">Bekijk de filmische demo’s</a>
     </div>
-    <a class="case-beeld project-preview" href="werk/" aria-label="Bekijk ons werk en de concepten">
-      <div class="project-browser" aria-hidden="true"><i></i><i></i><i></i><b>Barbershop · Websiteconcept</b></div>
-      <div class="project-window"><img src="img/werk/demo-barbershop.webp" width="1280" height="6118" alt="Websiteconcept voor een barbershop" loading="lazy"></div>
-      <span>Websiteconcept · Bekijk het werk <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></span>
+    <a class="case-beeld project-preview film-teaser" href="werk/#filmische-demos" aria-label="Bekijk vier filmische hero-concepten">
+      <div class="project-browser" aria-hidden="true"><i></i><i></i><i></i><b>Wonen & advies · Concept</b></div>
+      <div class="film-teaser-beeld"><img src="img/werk/film/wonen.webp" width="1280" height="720" alt="Filmisch woonconcept: een verlichte villa in de avond" loading="lazy"><strong>Een eerste indruk.<br>Die blijft.</strong><span class="film-teaser-play" aria-hidden="true">▶</span></div>
+      <span>Vier filmische hero’s · Bekijk de concepten <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></span>
     </a>
   </div>
 </section>
@@ -1437,6 +1439,29 @@ def bouw_scan():
 # ===========================================================================
 # WERK / WERKWIJZE / PRIJZEN / CONTACT
 # ===========================================================================
+def filmische_demos():
+    demos = [
+        ("wonen", "01 / Wonen & advies", "Ruimte voor een volgende stap.",
+         "Een avondlijke villa, warme interieurs en een vloeiende beweging van buiten naar binnen."),
+        ("advies", "02 / Wonen & advies", "Een ander huis. Een ander gevoel.",
+         "Een tweede richting: een landelijke woning en een rustige toenadering tot de voordeur."),
+        ("installatie", "03 / Installatietechniek", "Van techniek naar comfort.",
+         "Van de buitenunit naar de woonkamer. Een filmische overgang die het resultaat voelbaar maakt."),
+        ("automotive", "04 / Automotive", "De avond. De volgende rit.",
+         "Een bewegende blik over auto's in de avond, met ruimte voor een krachtig verhaal."),
+    ]
+    kaarten = "".join(f'''<article class="film-demo">
+      <div class="film-demo-media"><video controls playsinline preload="none" poster="../img/werk/film/{sleutel}.webp" width="1280" height="720" aria-label="Speel filmisch concept: {label.split(' / ')[1]}"><source src="../img/werk/film/{sleutel}.mp4" type="video/mp4">Uw browser ondersteunt deze film niet.</video></div>
+      <div class="film-demo-tekst"><p class="eyebrow">{label} <span>Concept</span></p><h3>{kop}</h3><p>{tekst}</p></div>
+    </article>''' for sleutel, label, kop, tekst in demos)
+    return f'''<section class="sectie film-demos" id="filmische-demos" aria-labelledby="film-demos-kop">
+  <div class="wrap"><div class="film-demos-kop"><div><p class="eyebrow">Filmische websiteconcepten</p><h2 class="display" id="film-demos-kop">Een website.<br>Een hele beleving.</h2></div><div><p class="lede">Beweging, licht en een verhaal dat u meeneemt. Vier hero-concepten laten zien hoe een eerste indruk kan voelen.</p><p class="film-demo-noot">Vrij te bekijken ontwerpvoorbeelden, gebouwd zonder opdracht. Anoniem gepresenteerd; geen klantcases.</p></div></div>
+  <div class="film-demos-grid">{kaarten}</div>
+  <p class="voetnoot">Druk op afspelen om een film te bekijken. Via de tijdlijn bepaalt u zelf het tempo; volledig scherm is ook mogelijk. De fragmenten hebben geen geluid.</p>
+  <a class="tekstlink" href="../contact/?over=websites">Ook een website met een eigen verhaal? →</a></div>
+</section>'''
+
+
 def bouw_werk():
     impact2 = "".join(f"<li>{p}</li>" for p in CASE2["impact"])
     impact_j = "".join(f"<li>{p}</li>" for p in CASE_JEZZ["impact"])
@@ -1466,7 +1491,7 @@ def bouw_werk():
         <figcaption>Nagelstudio, mobiel: licht en zacht, met de agenda van de studio erachter</figcaption>
       </figure>
     </div>"""
-    blokken = f"""<section class="sectie">
+    blokken = filmische_demos() + f"""<section class="sectie">
   <div class="wrap case-jezz">
     <div>
       <p class="eyebrow">Live te bekijken</p>
