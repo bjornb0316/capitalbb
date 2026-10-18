@@ -28,6 +28,15 @@ class DemoParser(HTMLParser):
                 target = root / unquote(urlsplit(value).path).lstrip('/')
                 if not target.is_file() and not (target / 'index.html').is_file():
                     errors.append(f'{self.page.relative_to(root)}: ontbreekt {value}')
+        for candidate in attrs.get('srcset', '').split(','):
+            parts = candidate.strip().split()
+            if not parts:
+                continue
+            value = parts[0]
+            if value.startswith('/'):
+                target = root / unquote(urlsplit(value).path).lstrip('/')
+                if not target.is_file():
+                    errors.append(f'{self.page.relative_to(root)}: ontbrekend responsief beeld {value}')
 
     def handle_endtag(self, tag):
         if tag in {'script', 'style'}:
