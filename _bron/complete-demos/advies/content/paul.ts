@@ -26,7 +26,7 @@ export const paul = {
     "Vertel me wat er speelt. Dan kunnen we samen bepalen wat een passende volgende stap is.",
   intakeQuote: "Vertel me waar je staat. Dan hebben we een goed vertrekpunt.",
   // Er is nog geen goedgekeurde foto. Zet hier het pad zodra de adviseur er een aanlevert.
-  portrait: { src: "/demos/advies/assets/paul/paul-profile.jpg", alt: "Onafhankelijk financieel adviseur" } as null | { src: string; alt: string },
+  portrait: { src: "/demos/advies/assets/paul/v2-house-interior.webp", alt: "Sfeerbeeld van een woning" } as null | { src: string; alt: string },
 } as const;
 
 export const process = [
